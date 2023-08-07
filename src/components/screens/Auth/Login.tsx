@@ -9,7 +9,6 @@ export default function Login() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     height: window.innerHeight,
-    /* Other styles */
   };
 
   return (
