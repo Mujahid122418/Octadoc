@@ -1,0 +1,32 @@
+/* Sidebar.css */
+.sidebar-content {
+  width: 240px;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  background-color: #222;
+}
+
+.sidebar-content {
+  padding: 16px;
+  background-color: #222;
+  height: 100%;
+  color: white;
+}
+
+.sidebar-content li {
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.sidebar-content li:hover {
+  background-color: #444;
+}
+
+.sidebar-content li .MuiListItemIcon-root {
+  color: white;
+}
