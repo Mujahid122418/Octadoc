@@ -3,6 +3,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import backgroundImage from "../../../assets/left_image.png";
 import logo from "../../../assets/gp_notes.png";
+import Button from "../Button/Button";
+
 export default function Login() {
   const backgroundImageStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -78,6 +80,16 @@ export default function Login() {
                         <span className="icon"></span> Keep me Signed in
                       </label>
                     </div>
+                    {/* <div
+                      className="group"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Button />
+                    </div> */}
+
                     <div className="group">
                       <input type="submit" className="button" value="Sign In" />
                     </div>
