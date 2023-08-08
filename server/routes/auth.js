@@ -8,11 +8,9 @@ const {
   updateDetails,
   updatePassword,
 } = require("../controller/auth");
-const User = require("../models/user");
-const router = express.Router();
-const { protect } = require("../middleware/auth");
 
-// const { protect } = require('../middleware/auth');
+const router = express.Router();
+// const { protect } = require("../middleware/auth");
 
 router.post("/register", register);
 router.post("/forgotPassword", forgotPassword);
