@@ -1,4 +1,5 @@
 import React from 'react'
+import './Header.css'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import IconButton from '@mui/material/IconButton';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
@@ -18,14 +19,14 @@ const Header = () => {
     };
 
   return (
-    <div>
-      <div className='header'>
+    <div className='header'>
+      <div className=' d-flex align-items-center justify-content-end'>
         <IconButton>
         <HelpOutlineIcon /> 
         </IconButton>
         <button className='btn btn-danger mx-2'>New Template</button>
         <Avatar>A</Avatar>
-        <p className='mx-2'>Ahmad</p>
+        <p className='mx-2 mb-0'>Ahmad</p>
         <IconButton
         id="demo-positioned-button"
         aria-controls={open ? 'demo-positioned-menu' : undefined}

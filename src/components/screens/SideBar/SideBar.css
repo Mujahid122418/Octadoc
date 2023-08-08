@@ -1,11 +1,11 @@
 /* Sidebar.css */
 .sidebar-content {
-  width: 240px;
+  width: 300px;
 }
 
 .toggle-btn {
   position: absolute;
-  top: 10px;
+  top: -50px;
   left: 10px;
   color: white;
   background-color: #222;
@@ -29,4 +29,20 @@
 
 .sidebar-content li .MuiListItemIcon-root {
   color: white;
+}
+
+/* ===manu=== */
+.list-item{
+  background-color: white !important;
+  border-radius: 5px !important;
+  margin-top: 15px !important;
+}
+.list-item:hover{
+  background-color: #c5c5c5 !important;
+}
+.list-item.active{
+  background-color: #c5c5c5 !important;
+}
+.list-text{
+  color: black;
 }
