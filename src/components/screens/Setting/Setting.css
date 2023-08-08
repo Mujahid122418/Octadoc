@@ -1,0 +1,59 @@
+@import '../../../varible.css';
+.form-box{
+    font-family: var(--font) !important;
+    margin-top: 50px;
+    border-radius: 20px;
+    background: var(--theme-color) !important;
+    padding: 50px;
+}
+h4{
+    color: var(--white);
+}
+.profile-box{
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.avatar{
+    width: 120px !important;
+    height: 120px !important;
+    border: 1px solid var(--color);
+}
+.btn-update ,  .btn-update:active{
+    background-color: var(--white) !important;
+    color: var(--color) !important;
+    font-weight: var(--normal-weight) !important;
+    padding: 10px 30px;
+    border: 1px solid var(--color) !important;
+    transition: 0s !important;
+}
+.btn-update:hover {
+    background: var(--theme-color) !important;
+    color: var(--white) !important;
+}
+form{
+    padding: 30px;
+    border-radius: 20px;
+}
+form .form-control{
+    margin: 25px 0px;
+    outline: none;
+    padding: 10px !important;
+    background-color: var(--white);
+    border: 1px solid var(--color) !important;
+}
+.form-control:focus {
+    color: #212529;
+    background-color: var(--white) !important;
+    border-color: var(--color);
+    box-shadow: 0 0 0 0.2rem var(--rgba) !important;
+}
+.mui-select-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}

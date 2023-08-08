@@ -7,9 +7,11 @@ import {
   ListItemText,
   IconButton,
 } from "@mui/material";
+import { Link } from 'react-router-dom';
 import { Home as HomeIcon, Menu as MenuIcon } from "@mui/icons-material";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import PublicIcon from "@mui/icons-material/Public";
+import imageSrc from '../../../assets/purple_logo.png';
 import "./SideBar.css";
 
 const SideBar: React.FC = () => {
@@ -30,7 +32,12 @@ const SideBar: React.FC = () => {
       </IconButton>
       <Drawer open={isSidebarOpen} onClose={toggleSidebar} anchor="left">
         <div className="sidebar-content" onClick={toggleSidebar}>
+          <div className="logo w-100 ms-2">
+            <img style={{width:'100%' , height:'130px'}} src={imageSrc} alt="logo" />
+          </div>
           <List>
+
+            <Link to='/'>
             <ListItem
               button
               className={`list-item ${
@@ -41,8 +48,9 @@ const SideBar: React.FC = () => {
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
-              <ListItemText primary="Home" className="list-text" />
+              <p className="list-text">Home</p>
             </ListItem>
+            </Link>
 
             <ListItem
               button
@@ -54,7 +62,7 @@ const SideBar: React.FC = () => {
               <ListItemIcon>
                 <StickyNote2Icon />
               </ListItemIcon>
-              <ListItemText primary="My Templates" className="list-text" />
+              <p className="list-text">My Templates</p>
             </ListItem>
 
             <ListItem
@@ -67,10 +75,7 @@ const SideBar: React.FC = () => {
               <ListItemIcon>
                 <PublicIcon />
               </ListItemIcon>
-              <ListItemText
-                primary="Community Templates"
-                className="list-text"
-              />
+              <p className="list-text">Community Templates</p>
             </ListItem>
           </List>
         </div>

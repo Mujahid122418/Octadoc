@@ -6,6 +6,8 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { Link } from 'react-router-dom';
+import Button2 from '../Button2/Button2';
 
 const Header = () => {
 
@@ -24,7 +26,7 @@ const Header = () => {
         <IconButton>
         <HelpOutlineIcon /> 
         </IconButton>
-        <button className='btn btn-danger mx-2'>New Template</button>
+        <Button2 name='New Templates' />
         <Avatar>A</Avatar>
         <p className='mx-2 mb-0'>Ahmad</p>
         <IconButton
@@ -53,6 +55,9 @@ const Header = () => {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
+        <Link to='/setting'>
+        <MenuItem onClick={handleClose}>Setting</MenuItem>
+        </Link>
         <MenuItem onClick={handleClose}>Logout</MenuItem>
       </Menu>
       </div>

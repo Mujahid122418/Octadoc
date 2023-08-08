@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,500;1,900&family=Ubuntu:ital,wght@0,500;0,700;1,500;1,700&display=swap');
+
+:root {
+  --smaller-font:14px;
+    --small-font: 16px;
+    --medium-font: 22px;
+    --Large-font: 26px;
+    --theme-color: linear-gradient(90deg, #9d62f5 0%, #6049cd 100%);
+    --color:#6049cd;
+    --white: #ffffff;
+    --dark: #222222;
+    --gray:#6A6F8C;
+    --rgba : rgba(201, 152, 245, 0.2);
+    --box-shadow: 0 0 5px rgba(96, 73, 205, 1);
+    --font: 'Poppins', sans-serif;
+    --lower-weight: 400 ; 
+    --normal-weight:500 ;
+    --weight:600 ;
+    --h-weight: 700 ; 
+  }

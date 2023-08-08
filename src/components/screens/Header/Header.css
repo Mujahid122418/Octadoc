@@ -1,3 +1,7 @@
+@import '../../../varible.css';
+
 .header{
+   font-family: var(--font);
    padding: 15px 10px;
+   box-shadow: var(--box-shadow);
 }
