@@ -1,0 +1,31 @@
+.search-box{
+    padding: 70px 0px !important;
+    border-radius: 20px;
+    background: var(--theme-color) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search-row{
+display: flex !important;
+justify-content: center !important;
+}
+.search-bar{
+    display: flex;
+    align-items: center;
+    background-color: var(--white);
+    padding: 0 10px;
+    border-radius: 40px;
+    overflow: hidden;
+    width: 100% !important;
+}
+.search-bar svg{
+    font-size: 30px !important;
+}
+input{
+    padding: 15px 0px;
+    outline: none;
+    border: 1px;
+    width: 100% !important;
+    margin-left: 5px;
+}

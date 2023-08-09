@@ -1,0 +1,14 @@
+@import '../../../varible.css';
+.community-box{
+    font-family: var(--font);
+    border: 2px solid var(--color) !important;
+    border-radius: 20px !important;
+    padding: 30px !important;
+}
+h2{
+    font-weight: var(--weight);
+    color: var(--color)  !important;
+}
+h2 svg{
+    font-size:40px !important;
+}

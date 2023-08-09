@@ -6,6 +6,8 @@ import Header from "./components/screens/Header/Header";
 
 import Home from "./components/screens/Home/Home";
 import Setting from "./components/screens/Setting/Setting";
+import Template from "./components/screens/Template/Template";
+import Community from "./components/screens/Community/Community";
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
             </div>
           }
         />
+
         <Route
           path="/setting"
           element={
@@ -28,6 +31,28 @@ function App() {
               <Header />
               <SideBar />
               <Setting />
+            </div>
+          }
+        />
+
+        <Route
+          path="/template"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <Template />
+            </div>
+          }
+        />
+
+        <Route
+          path="/community"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <Community />
             </div>
           }
         />

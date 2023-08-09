@@ -12,6 +12,9 @@ import {
   deleteEmployee,
 } from "../../../redux/Template/TemplateAPI";
 import { AppDispatch } from "../../../redux/Store";
+
+import Search from "../Search/search";
+
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const template = useSelector((state: RootState) => state?.template?.template);
@@ -36,16 +39,7 @@ const Home: React.FC = () => {
   return (
     <div className="home">
       <div className="container">
-        <div className="search-box">
-          <div className="rowc search-row w-100">
-            <div className="col-lg-6 col-md-6 col-10">
-              <div className="search-bar">
-                <SearchIcon />
-                <input type="text" placeholder="Search all Octados templates" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <Search />
 
         <div className="card-sec mt-5">
           <div className="row">

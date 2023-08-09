@@ -52,6 +52,7 @@ const SideBar: React.FC = () => {
             </ListItem>
             </Link>
 
+            <Link to='/template'>
             <ListItem
               button
               className={`list-item ${
@@ -64,7 +65,9 @@ const SideBar: React.FC = () => {
               </ListItemIcon>
               <p className="list-text">My Templates</p>
             </ListItem>
+            </Link>
 
+            <Link to='/community'>
             <ListItem
               button
               className={`list-item ${
@@ -77,6 +80,9 @@ const SideBar: React.FC = () => {
               </ListItemIcon>
               <p className="list-text">Community Templates</p>
             </ListItem>
+            </Link>
+
+
           </List>
         </div>
       </Drawer>

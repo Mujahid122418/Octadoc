@@ -1,6 +1,17 @@
+@import '../../../varible.css';
+
 .btn-template , .btn-template:hover{
     background: var(--theme-color);
     color: white;
     padding: 5px 25px !important;
     font-weight: var(--normal-weight);
  }
+
+ @media screen and (max-width: 450px) {
+    .btn-template , .btn-template:hover{
+        padding: 3px 15px !important;
+        font-weight: var( --lower-weight);
+        font-size: var(--smaller-font);
+     }
+  }
+ 

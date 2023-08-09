@@ -1,3 +1,8 @@
+@import '../../../varible.css';
+
+*{
+  font-family: var(--font) !important;
+}
 .not-found-container {
     display: flex;
     justify-content: center;
@@ -11,34 +16,21 @@
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    box-shadow: var(--box-shadow);
   }
   
   .not-found-heading {
     font-size: 3rem;
     margin: 0;
-    color: #ff6b6b;
+    color: var(--color);
   }
   
   .not-found-text {
     font-size: 1.2rem;
     color: #333;
     margin: 10px 0;
+    font-weight: var(--normal-weight);
   }
-  
-  .not-found-link {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    border: none;
-    background-color: #ff6b6b;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .not-found-link:hover {
-    background-color: #ff4f4f;
-  }
+
   
