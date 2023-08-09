@@ -16,6 +16,7 @@ interface TemplateArray {
   isLoading: Boolean;
   error: string;
   status: string;
+  addTemplateModel: Boolean;
 }
 
 const initialState: TemplateArray = {
@@ -23,6 +24,7 @@ const initialState: TemplateArray = {
   isLoading: false,
   status: "",
   error: "",
+  addTemplateModel: false,
 };
 
 export const templateSlice = createSlice({
@@ -33,6 +35,9 @@ export const templateSlice = createSlice({
     getTemplate: (state) => {},
     updateTemplate: (state, action: PayloadAction<number>) => {},
     deleteTemplate: (state, action: PayloadAction<number>) => {},
+    addTemplateModel: (state, action) => {
+      state.addTemplateModel = action.payload;
+    },
   },
   extraReducers: {
     [getTemplates.pending.type]: (state, action) => {
@@ -64,5 +69,5 @@ export const templateSlice = createSlice({
 
 // export const { addTemplate, getTemplate, updateTemplate, deleteTemplate } =
 //   templateSlice.actions;
-
+export const { addTemplateModel } = templateSlice.actions;
 export default templateSlice.reducer;

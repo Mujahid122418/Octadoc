@@ -14,6 +14,7 @@ import {
 import { AppDispatch } from "../../../redux/Store";
 
 import Search from "../Search/search";
+import AddTemplate from "../Template/AddTemplate";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +41,7 @@ const Home: React.FC = () => {
     <div className="home">
       <div className="container">
         <Search />
-
+        <AddTemplate />
         <div className="card-sec mt-5">
           <div className="row">
             {template?.length > 0 ? (
