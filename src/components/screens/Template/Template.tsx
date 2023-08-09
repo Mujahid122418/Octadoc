@@ -1,41 +1,35 @@
-import React from "react";
-import "./Home.css";
+
+import React from 'react'
+import './Template.css'
+import Search from '../Search/search'
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import IconButton from '@mui/material/IconButton';
 import ViewStreamIcon from '@mui/icons-material/ViewStream';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import Search from "../Search/search";
 
+const Template = () => {
 
-
-
-const Home: React.FC = () => {
-
-  const dummyArray = [
-    { id: 1,},
-    { id: 2, },
-    { id: 3, },
-    { id: 4,},
-    { id: 5,},
-    { id: 6,},
-    { id: 7,},
-    { id: 8,},
-    { id: 9,},
-    { id: 10,},
-    { id: 11,},
-    { id: 12,},
-    { id: 13,},
-    { id: 14,},
-    { id: 15,},
-
-  ];
+    const dummyArray = [
+        { id: 1,},
+        { id: 2, },
+        { id: 3, },
+        { id: 4,},
+        { id: 5,},
+        { id: 6,},
+        { id: 7,},
+        { id: 8,},
+       
+    
+      ];
 
   return (
-    <div className="home">
-
-      <div className="container">
+    <div>
+      <div className="container mt-5">
         <Search />
+        <div className="community-box mt-5 mb-5">
+            <h2><DescriptionOutlinedIcon /> My Template</h2>
 
-        <div className="card-sec mt-5">
+            
             <div className="row">
 
             {dummyArray.map(item => (
@@ -70,10 +64,9 @@ const Home: React.FC = () => {
             </div>
         </div>
 
+        </div>
       </div>
+  )
+}
 
-    </div>
-  );
-};
-
-export default Home;
+export default Template

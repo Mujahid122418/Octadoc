@@ -28,7 +28,7 @@ const Header = () => {
         </IconButton>
         <Button2 name='New Templates' />
         <Avatar>A</Avatar>
-        <p className='mx-2 mb-0'>Ahmad</p>
+        <p className='mx-2 mb-0 header-name'>Ahmad</p>
         <IconButton
         id="demo-positioned-button"
         aria-controls={open ? 'demo-positioned-menu' : undefined}

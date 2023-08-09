@@ -48,6 +48,7 @@
 }
 .list-item{
   color: var(--gray);
+  background-color: #eeeded !important;
 }
 .list-item:hover{
   background-color: var(--rgba) !important;
