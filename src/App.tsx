@@ -3,13 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "./components/screens/PageNotFound/NotFound";
 import SideBar from "./components/screens/SideBar/SideBar";
 import Header from "./components/screens/Header/Header";
-import React, { Component } from "react";
 
-class Home extends Component {
-  render() {
-    return <div>home</div>;
-  }
-}
+import Home from "./components/screens/Home/Home";
+import Setting from "./components/screens/Setting/Setting";
 
 function App() {
   return (
@@ -18,10 +14,21 @@ function App() {
         <Route
           path="/"
           element={
-            <>
+            <div className="position-relative">
+              <Header />
               <SideBar />
               <Home />
-            </>
+            </div>
+          }
+        />
+        <Route
+          path="/setting"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <Setting />
+            </div>
           }
         />
 

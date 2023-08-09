@@ -1,19 +1,27 @@
+
 /* Sidebar.css */
+@import '../../../varible.css';
+
 .sidebar-content {
-  width: 240px;
+  width: 320px;
+  font-family: var(--font) !important;
 }
 
 .toggle-btn {
   position: absolute;
-  top: 10px;
+  top: -50px;
   left: 10px;
   color: white;
-  background-color: #222;
+  background: var(--theme-color) !important
 }
+
+.toggle-btn svg {
+  color: white !important;
+}
+
 
 .sidebar-content {
   padding: 16px;
-  background-color: #222;
   height: 100%;
   color: white;
 }
@@ -30,3 +38,29 @@
 .sidebar-content li .MuiListItemIcon-root {
   color: white;
 }
+
+/* ===manu=== */
+.list-item{
+  padding: 15px 15px !important;
+  background-color: white !important;
+  border-radius: 5px !important;
+  margin-top: 15px !important;
+}
+.list-item{
+  color: var(--gray);
+}
+.list-item:hover{
+  background-color: var(--rgba) !important;
+}
+.list-item.active{
+  background: var(--theme-color) !important;
+}
+.list-text{
+  font-weight: var(--normal-weight) !important;
+  color: var(--gray);
+  margin-bottom: 0px;
+}
+.list-item.active .list-text , .list-item.active svg{
+  color: var(--white) !important ;
+}
+

@@ -1,0 +1,6 @@
+.btn-template , .btn-template:hover{
+    background: var(--theme-color);
+    color: white;
+    padding: 5px 25px !important;
+    font-weight: var(--normal-weight);
+ }

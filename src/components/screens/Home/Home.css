@@ -1,0 +1,91 @@
+@import '../../../varible.css';
+.home{
+    padding: 10px 20px !important;
+    font-family: var(--font) !important;
+    ;
+}
+.search-box{
+    padding: 70px 0px !important;
+    border-radius: 20px;
+    background: var(--theme-color) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search-row{
+display: flex !important;
+justify-content: center !important;
+}
+.search-bar{
+    display: flex;
+    align-items: center;
+    background-color: var(--white);
+    padding: 0 10px;
+    border-radius: 40px;
+    overflow: hidden;
+    width: 100% !important;
+}
+.search-bar svg{
+    font-size: 30px !important;
+}
+input{
+    padding: 15px 0px;
+    outline: none;
+    border: 1px;
+    width: 100% !important;
+    margin-left: 5px;
+}
+
+/* ======= card sec ===-== */
+.card-sec{
+    border: 2px solid var(--color);
+    border-radius: 20px;
+    padding: 30px;
+}
+.card-box{ 
+ padding: 20px;
+ border-radius: 20px; 
+ background-color: var(--rgba);
+
+}
+.card-head{
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--small-font);
+}
+.icon-box{
+    position: relative;
+    width: 43px;
+    height: 43px;
+    border-radius: 43px;
+    background:var(--theme-color) ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-box .band{
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 17px;
+    height: 17px;
+    border-radius: 20px;
+    background-color: var(--white);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12px;
+}
+.icon-box .band p{
+    margin-bottom: 0px;
+}
+.icon-box svg{
+    color: var(--white);
+}
+.btm-text{
+    margin-top: 20px;
+    font-weight: var(--lower-weight);
+    font-size: var(--smaller-font);
+    color: var(--color);
+}
+
