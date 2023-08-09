@@ -39,7 +39,7 @@ const Community = () => {
                   </div>
                   <div className="text">
                   <center><h6>New pregnancy - 1st consult</h6>
-                  <p>By <b>Octados</b></p></center>
+                  <p>By <b>GP Scribe</b></p></center>
                   </div>
                   <div className="icon-box">
                       <IconButton>

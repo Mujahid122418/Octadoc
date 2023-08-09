@@ -10,7 +10,7 @@ const search = () => {
             <div className="col-lg-6 col-md-6 col-10">
               <div className="search-bar">
                 <SearchIcon />
-                <input type="text" placeholder="Search all Octados templates" />
+                <input type="text" placeholder="Search all GP Scribe templates" />
               </div>
             </div>
           </div>
