@@ -19,6 +19,10 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+  };
   return (
     <div className="header">
       <div className=" d-flex align-items-center justify-content-end">
@@ -26,7 +30,7 @@ const Header = () => {
           <HelpOutlineIcon />
         </IconButton>
         <div data-bs-toggle="modal" data-bs-target="#exampleModal">
-          <Button2 name="New Templates" />
+          <Button2 name="New Templates" onClick={handleClickBtn}/>
         </div>
         {/* ========modal box========== */}
         <div
@@ -87,13 +91,14 @@ const Header = () => {
                 >
                   Close
                 </button>
-                <Button2 name="Submit" />
+                <Button2 name="Submit" onClick={handleClickBtn} />
               </div>
             </div>
           </div>
         </div>
         {/* ========= modal box end ========= */}
-        <Avatar>A</Avatar>
+             <Avatar>A</Avatar>
+
         <p className="mx-2 mb-0 header-name">Ahmad</p>
         <IconButton
           id="demo-positioned-button"

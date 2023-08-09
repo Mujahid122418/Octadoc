@@ -5,6 +5,10 @@ import Button2 from "../Button2/Button2";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const Setting = () => {
+  const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("setting update");
+  };
   return (
     <div>
       <div className="container mb-5">
@@ -39,7 +43,10 @@ const Setting = () => {
                   </div>
 
                   <div className="position-relative">
-                    <select className="form-control select-arrow" id="customSelect">
+                    <select
+                      className="form-control select-arrow"
+                      id="customSelect"
+                    >
                       <option value="" disabled>
                         Gender
                       </option>
@@ -51,7 +58,10 @@ const Setting = () => {
                   </div>
 
                   <div className="position-relative">
-                    <select className="form-control select-arrow" id="customSelect">
+                    <select
+                      className="form-control select-arrow"
+                      id="customSelect"
+                    >
                       <option value="" disabled>
                         State
                       </option>
@@ -65,7 +75,10 @@ const Setting = () => {
                   </div>
 
                   <div className="position-relative">
-                    <select className="form-control select-arrow" id="customSelect">
+                    <select
+                      className="form-control select-arrow"
+                      id="customSelect"
+                    >
                       <option value="" disabled>
                         First Language
                       </option>
@@ -79,7 +92,10 @@ const Setting = () => {
                   </div>
 
                   <div className="position-relative">
-                    <select className="form-control select-arrow" id="customSelect">
+                    <select
+                      className="form-control select-arrow"
+                      id="customSelect"
+                    >
                       <option value="" disabled>
                         Country Of Traning
                       </option>
@@ -93,7 +109,10 @@ const Setting = () => {
                   </div>
 
                   <div className="position-relative">
-                    <select className="form-control select-arrow" id="customSelect">
+                    <select
+                      className="form-control select-arrow"
+                      id="customSelect"
+                    >
                       <option value="" disabled>
                         Working hours
                       </option>
@@ -103,7 +122,7 @@ const Setting = () => {
                     <ArrowDropDownIcon className="mui-select-arrow" />
                   </div>
 
-                  <Button2 name="Update" />
+                  <Button2 name="Update" onClick={handleClickBtn} />
                 </form>
               </div>
             </div>
