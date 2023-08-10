@@ -1,0 +1,48 @@
+.modalStyle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px !important;
+    background-color: var(--white) !important;
+    border: 1px solid var(--color) !important;
+    box-shadow: var(--box-shadow) !important;
+    padding: 20px !important;
+    border-radius: 20px !important;
+}
+.modal-header{
+    border-bottom: 0px !important;
+ }
+ .modal-body{
+    padding: 0px !important;
+ }
+ .modal-footer {
+    border-top: 0px !important;
+ }
+ .btn-close:focus{
+    outline: none !important;
+    box-shadow: 0 0 0 0rem rgba(13,110,253,.25)
+ }
+ .lab{
+    margin-bottom: -20px !important;
+    padding-bottom:-20px !important ;
+ }
+ .tem-box{
+    padding: 20px !important;
+    border-radius: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--rgba);
+ }
+ .form-check-input{
+    width: 30px !important;
+    height: 30px !important;
+ }
+ .form-check-input:checked {
+    background-color: var(--color);
+    border-color: var(--color);
+ }
+ .form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem var(--rgba);
+ }

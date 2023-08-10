@@ -8,6 +8,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import Button2 from "../Button2/Button2";
+import ModalBox from "../ModalBox/ModalBox";
+
+
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -33,6 +36,8 @@ const Header = () => {
           <Button2 name="New Templates" onClick={handleClickBtn}/>
         </div>
         {/* ========modal box========== */}
+
+        <ModalBox />
         <div
           className="modal fade"
           id="exampleModal"

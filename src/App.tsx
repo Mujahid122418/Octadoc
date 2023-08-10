@@ -8,6 +8,7 @@ import Home from "./components/screens/Home/Home";
 import Setting from "./components/screens/Setting/Setting";
 import Template from "./components/screens/Template/Template";
 import Community from "./components/screens/Community/Community";
+import TemplateQuestion from "./components/screens/TemplateQuestion/TemplateQuestion";
 
 function App() {
   return (
@@ -56,6 +57,18 @@ function App() {
             </div>
           }
         />
+
+        <Route
+          path="/questions"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <TemplateQuestion />
+            </div>
+          }
+        />
+
 
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
