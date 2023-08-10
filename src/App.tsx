@@ -6,8 +6,7 @@ import Header from "./components/screens/Header/Header";
 
 import Home from "./components/screens/Home/Home";
 import Setting from "./components/screens/Setting/Setting";
-import Template from "./components/screens/Template/Template";
-import Community from "./components/screens/Community/Community";
+
 import TemplateQuestion from "./components/screens/TemplateQuestion/TemplateQuestion";
 
 function App() {
@@ -42,7 +41,8 @@ function App() {
             <div className="position-relative">
               <Header />
               <SideBar />
-              <Template />
+              {/* <Template /> */}
+              <Home />
             </div>
           }
         />
@@ -53,7 +53,8 @@ function App() {
             <div className="position-relative">
               <Header />
               <SideBar />
-              <Community />
+
+              <Home />
             </div>
           }
         />
@@ -68,7 +69,6 @@ function App() {
             </div>
           }
         />
-
 
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />

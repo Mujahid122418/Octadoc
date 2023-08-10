@@ -1,36 +1,36 @@
+import { useState } from "react";
 import "./Login.css"; // Import your CSS file if needed
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import backgroundImage from "../../../assets/left_image.png";
-import logo from "../../../assets/gp_notes.png";
-
+import { LoginFun } from "../../../redux/Auth/AuthAPI";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../redux/Store";
+import { useNavigate } from "react-router-dom";
 export default function Login() {
-  const backgroundImageStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    height: window.innerHeight,
+  const navigate = useNavigate(); // Use useNavigate hook to access
+  const dispatch = useDispatch<AppDispatch>();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handelLogin = () => {
+    try {
+      let data = {
+        email: email,
+        password: password,
+      };
+      console.log("data", data);
+      dispatch(LoginFun(data))
+        .unwrap()
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((error) => {});
+    } catch (error) {
+      console.log("errpr", error);
+    }
   };
-  // commment
+
   return (
-    // <Box sx={{ flexGrow: 1 }}>
-    //   <Grid container>
-    //     <Grid item xs={12} md={6}>
-    //       <div style={backgroundImageStyle}></div>
-    //     </Grid>
-    //     <Grid item xs={12} md={6}>
     <div className="login-Container" style={{ height: window.innerHeight }}>
       <div className="login-wrap">
-        {/* <div
-          style={{
-          
-            display: "flex",
-            justifyContent: "center",
-           
-          }}
-        >
-          <img alt="logo" src={logo} />
-        </div> */}
         <div className="login-html">
           <input
             id="tab-1"
@@ -52,7 +52,13 @@ export default function Login() {
                 <label htmlFor="user" className="label">
                   Username or Email
                 </label>
-                <input id="user" type="text" className="input" />
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  id="user"
+                  type="text"
+                  className="input"
+                />
               </div>
               <div className="group">
                 <label htmlFor="pass" className="label">
@@ -63,6 +69,8 @@ export default function Login() {
                   type="password"
                   className="input"
                   data-type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="group">
@@ -78,11 +86,14 @@ export default function Login() {
               </div>
 
               <div className="group">
-                <input type="submit" className="button" value="Sign In" />
+                {/* <input type="submit" className="button" value="Sign In" /> */}
+                <button onClick={handelLogin} className="button">
+                  Sign In
+                </button>
               </div>
               <div className="hr"></div>
               <div className="foot-lnk">
-                <a href="#forgot">Forgot Password?</a>
+                <a>Forgot Password?</a>
               </div>
             </div>
             <div className="sign-up-htm">
@@ -134,8 +145,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-    //   </Grid>
-    // </Grid>
-    // </Box>
   );
 }

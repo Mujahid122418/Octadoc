@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { getTemplates, deleteEmployee } from "./TemplateAPI";
+import {
+  getTemplates,
+  deleteEmployee,
+  addTemplate,
+  updateTemplate,
+} from "./TemplateAPI";
 interface Template {
   template_name: string;
   description: string;
@@ -17,6 +22,7 @@ interface TemplateArray {
   error: string;
   status: string;
   addTemplateModel: Boolean;
+  selectedTemplate: any;
 }
 
 const initialState: TemplateArray = {
@@ -25,18 +31,18 @@ const initialState: TemplateArray = {
   status: "",
   error: "",
   addTemplateModel: true,
+  selectedTemplate: {},
 };
 
 export const templateSlice = createSlice({
   name: "template",
   initialState,
   reducers: {
-    addTemplate: (state) => {},
-    getTemplate: (state) => {},
-    updateTemplate: (state, action: PayloadAction<number>) => {},
-    deleteTemplate: (state, action: PayloadAction<number>) => {},
     addTemplateModelFun: (state, action) => {
       state.addTemplateModel = action.payload;
+    },
+    selectTemplateModelFun: (state, action) => {
+      state.selectedTemplate = action.payload;
     },
   },
   extraReducers: {
@@ -62,6 +68,24 @@ export const templateSlice = createSlice({
     [deleteEmployee.rejected.type]: (state, action) => {
       state.isLoading = false;
     },
+    [addTemplate.pending.type]: (state, action) => {
+      state.isLoading = true;
+    },
+    [addTemplate.fulfilled.type]: (state, action) => {
+      state.isLoading = false;
+    },
+    [addTemplate.rejected.type]: (state, action) => {
+      state.isLoading = false;
+    },
+    [updateTemplate.pending.type]: (state, action) => {
+      state.isLoading = true;
+    },
+    [updateTemplate.fulfilled.type]: (state, action) => {
+      state.isLoading = false;
+    },
+    [updateTemplate.rejected.type]: (state, action) => {
+      state.isLoading = false;
+    },
   },
 });
 
@@ -69,5 +93,6 @@ export const templateSlice = createSlice({
 
 // export const { addTemplate, getTemplate, updateTemplate, deleteTemplate } =
 //   templateSlice.actions;
-export const { addTemplateModelFun } = templateSlice.actions;
+export const { addTemplateModelFun, selectTemplateModelFun } =
+  templateSlice.actions;
 export default templateSlice.reducer;

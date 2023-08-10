@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import "./Home.css";
-import SearchIcon from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
-import ViewStreamIcon from "@mui/icons-material/ViewStream";
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../redux/Store";
 import { toast } from "react-toastify";
@@ -15,10 +12,41 @@ import { AppDispatch } from "../../../redux/Store";
 
 import Search from "../Search/search";
 import AddTemplate from "../Template/AddTemplate";
+import {
+  addTemplateModelFun,
+  selectTemplateModelFun,
+} from "../../../redux/Template/TemplateSlice";
+import SimpleBackdrop from "../../../utils/BackDrop";
+
+import { useNavigate } from "react-router-dom";
+import { getMeFun } from "../../../redux/Auth/AuthAPI";
+import Card from "./Card";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const template = useSelector((state: RootState) => state?.template?.template);
+  const { template, isLoading } = useSelector(
+    (state: RootState) => state?.template
+  );
+  const { user } = useSelector((state: RootState) => state?.auth);
+
+  const navigate = useNavigate(); // Use useNavigate hook to access navigation
+  const init = async () => {
+    let token = await localStorage.getItem("token");
+    let user = await localStorage.getItem("user");
+
+    if (token && user) {
+      navigate("/");
+      let data = {
+        id: user,
+      };
+      dispatch(getMeFun(data));
+    } else {
+      navigate("/login");
+    }
+  };
+  useEffect(() => {
+    init();
+  }, []);
 
   useEffect(() => {
     dispatch(getTemplates());
@@ -36,58 +64,72 @@ const Home: React.FC = () => {
         });
     }
   };
+  const updateTemplate = async (e: any) => {
+    if (e) {
+      dispatch(selectTemplateModelFun(e));
+      dispatch(addTemplateModelFun(false));
+    }
+  };
 
   return (
     <div className="home">
       <div className="container">
+        <SimpleBackdrop isLoading={!isLoading} />
         <Search />
         <AddTemplate />
         <div className="card-sec mt-5">
-          <div className="row">
-            {template?.length > 0 ? (
-              template?.map((item, i) => (
-                <div className="col-lg-4 col-md-6 mt-4" key={i}>
-                  {/* <button onClick={() => DeleteTemplate(item?._id)}>
-                    delete
-                  </button> */}
-                  <div className="card-box">
-                    <div className="card-head">
-                      <div className="icon-box">
-                        <IconButton>
-                          <ViewStreamIcon />
-                        </IconButton>
-                        <div className="band">
-                          <p>12</p>
-                        </div>
-                      </div>
-                      <div className="text">
-                        <center>
-                          <h6>{item?.template_name}</h6>
-                          <p>
-                            By <b>{item?.template_type}</b>
-                          </p>
-                        </center>
-                      </div>
-                      <div className="icon-box">
-                        <IconButton>
-                          <QuestionMarkIcon />
-                        </IconButton>
-                        <div className="band">
-                          <p>2</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <center>
-                      <p className="btm-text">{item?.description}</p>
-                    </center>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p style={{ textAlign: "center" }}>No Record Found</p>
-            )}
-          </div>
+          {window.location.pathname === "/" ? (
+            <div className="row">
+              {template?.length > 0 ? (
+                template?.map((item, i) => (
+                  <Card
+                    item={item}
+                    key={i}
+                    updateTemplate={updateTemplate}
+                    DeleteTemplate={DeleteTemplate}
+                  />
+                ))
+              ) : (
+                <p style={{ textAlign: "center" }}>No Record Found</p>
+              )}
+            </div>
+          ) : window.location.pathname === "/template" ? (
+            <div className="row">
+              {template.filter((item) => item?.user_id === user?._id)?.length >
+              0 ? (
+                template
+                  .filter((item) => item?.user_id === user?._id)
+                  ?.map((item, i) => (
+                    <Card
+                      item={item}
+                      key={i}
+                      updateTemplate={updateTemplate}
+                      DeleteTemplate={DeleteTemplate}
+                    />
+                  ))
+              ) : (
+                <p style={{ textAlign: "center" }}>No Record Found</p>
+              )}
+            </div>
+          ) : (
+            <div className="row">
+              {template.filter((item) => item?.isapprove === "true")?.length >
+              0 ? (
+                template
+                  .filter((item) => item?.isapprove === "true")
+                  .map((item, i) => (
+                    <Card
+                      item={item}
+                      key={i}
+                      updateTemplate={updateTemplate}
+                      DeleteTemplate={DeleteTemplate}
+                    />
+                  ))
+              ) : (
+                <p style={{ textAlign: "center" }}>No Record Found</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
