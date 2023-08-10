@@ -28,7 +28,7 @@ const AddTemplate: React.FC = () => {
   };
   useEffect(() => {
     // let v = addTemplateModel
-    setOpen(true);
+    setOpen(false);
   }, [addTemplateModel]);
 
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -47,7 +47,6 @@ const AddTemplate: React.FC = () => {
       .catch((error) => {
         toast.error(error);
       });
-    console.log("data", data);
   };
 
   return (
