@@ -8,8 +8,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import Button2 from "../Button2/Button2";
+
+
 import { useDispatch } from "react-redux";
-import { addTemplateModel } from "../../../redux/Template/TemplateSlice";
+import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ const Header = () => {
 
   const handleClickBtn = (event: any) => {
     event.preventDefault();
-    dispatch(addTemplateModel(true));
+    dispatch(addTemplateModelFun(false));
   };
   return (
     <div className="header">
@@ -36,7 +38,6 @@ const Header = () => {
         <Button2 name="New Templates 2" onClick={handleClickBtn} />
 
         <Avatar>A</Avatar>
-
         <p className="mx-2 mb-0 header-name">Ahmad</p>
         <IconButton
           id="demo-positioned-button"

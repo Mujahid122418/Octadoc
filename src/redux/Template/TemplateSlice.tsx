@@ -24,7 +24,7 @@ const initialState: TemplateArray = {
   isLoading: false,
   status: "",
   error: "",
-  addTemplateModel: false,
+  addTemplateModel: true,
 };
 
 export const templateSlice = createSlice({
@@ -35,7 +35,7 @@ export const templateSlice = createSlice({
     getTemplate: (state) => {},
     updateTemplate: (state, action: PayloadAction<number>) => {},
     deleteTemplate: (state, action: PayloadAction<number>) => {},
-    addTemplateModel: (state, action) => {
+    addTemplateModelFun: (state, action) => {
       state.addTemplateModel = action.payload;
     },
   },
@@ -69,5 +69,5 @@ export const templateSlice = createSlice({
 
 // export const { addTemplate, getTemplate, updateTemplate, deleteTemplate } =
 //   templateSlice.actions;
-export const { addTemplateModel } = templateSlice.actions;
+export const { addTemplateModelFun } = templateSlice.actions;
 export default templateSlice.reducer;
