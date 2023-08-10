@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
 import { useNavigate } from "react-router-dom";
 export default function Login() {
-  const navigate = useNavigate(); // Use useNavigate hook to access navigation
+  const navigate = useNavigate(); // Use useNavigate hook to access
   const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
