@@ -18,6 +18,6 @@ router.post("/login", login);
 router.put("/updatedetails", updateDetails);
 router.put("/resetpassword/:resettoken", resetPassword);
 router.put("/updatepassword", updatePassword);
-router.get("/getme", getMe);
+router.post("/getme", getMe);
 
 module.exports = router;

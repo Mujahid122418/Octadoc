@@ -40,8 +40,22 @@ export const addTemplate = createAsyncThunk(
   async (data: any) => {
     try {
       const response = await axios.post(Baseurl + `/template/template`, data);
-      console.log("add data", response.data);
 
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const updateTemplate = createAsyncThunk(
+  "template/updateTemplate",
+  async (data: any) => {
+    try {
+      const response = await axios.put(
+        Baseurl + `/template/template/${data?.id}`,
+        data
+      );
       return response.data;
     } catch (error) {
       console.log(error);

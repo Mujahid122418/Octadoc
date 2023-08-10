@@ -8,15 +8,16 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import Button2 from "../Button2/Button2";
-
-
-import { useDispatch } from "react-redux";
+import type { RootState } from "../../../redux/Store";
+import { useDispatch, useSelector } from "react-redux";
 import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const { user } = useSelector((state: RootState) => state?.auth);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -34,11 +35,9 @@ const Header = () => {
         <IconButton>
           <HelpOutlineIcon />
         </IconButton>
-
-        <Button2 name="New Templates 2" onClick={handleClickBtn} />
-
+        <Button2 name="New Templates " onClick={handleClickBtn} />
         <Avatar>A</Avatar>
-        <p className="mx-2 mb-0 header-name">Ahmad</p>
+        <p className="mx-2 mb-0 header-name">{user?.name}</p>
         <IconButton
           id="demo-positioned-button"
           aria-controls={open ? "demo-positioned-menu" : undefined}

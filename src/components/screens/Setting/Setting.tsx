@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Setting.css";
 import Avatar from "@mui/material/Avatar";
 import Button2 from "../Button2/Button2";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../redux/Store";
 const Setting = () => {
+  const { user } = useSelector((state: RootState) => state?.auth);
+
+  const [name, setName] = useState("");
+
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log("setting update");
   };
   return (
     <div>
@@ -31,6 +35,9 @@ const Setting = () => {
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
                       placeholder="Enter email"
+                      disabled
+                      value={user?.email}
+                      onChange={(e) => setName(e.target.name)}
                     />
                   </div>
                   <div className="form-group">

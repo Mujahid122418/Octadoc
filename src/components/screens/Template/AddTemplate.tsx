@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../redux/Store";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { addTemplate, getTemplates } from "../../../redux/Template/TemplateAPI";
+import {
+  addTemplate,
+  getTemplates,
+  updateTemplate,
+} from "../../../redux/Template/TemplateAPI";
 import { toast } from "react-toastify";
 import { AppDispatch } from "../../../redux/Store";
 import "./ModalBox.css";
@@ -13,9 +17,11 @@ import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 
 const AddTemplate: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { addTemplateModel } = useSelector(
+  const { addTemplateModel, selectedTemplate } = useSelector(
     (state: RootState) => state?.template
   );
+  const { user } = useSelector((state: RootState) => state?.auth);
+
   const [open, setOpen] = React.useState<boolean>(false);
   // form states start
   const [name, setName] = useState("");
@@ -25,11 +31,14 @@ const AddTemplate: React.FC = () => {
 
   const handleClose = () => {
     // setOpen(false);
-
     dispatch(addTemplateModelFun(true));
   };
-  console.log("addTemplateModel", addTemplateModel);
 
+  useEffect(() => {
+    setName(selectedTemplate?.template_name);
+    setdescription(selectedTemplate?.description);
+    setCommunity(selectedTemplate?.isapprove);
+  }, [selectedTemplate]);
   useEffect(() => {
     // let v = addTemplateModel
     setOpen(!addTemplateModel);
@@ -40,19 +49,46 @@ const AddTemplate: React.FC = () => {
     let data = {
       template_name: name,
       description: description,
-      isapprove: community,
+      isapprove: community === true ? true : false,
+      user_id: user?._id,
     };
+    console.log("send data", data);
+
     dispatch(addTemplate(data))
       .unwrap()
       .then((response) => {
+        console.log("respoce", response);
+
         toast.success("Template Added successfully");
         dispatch(getTemplates());
+        dispatch(addTemplateModelFun(true));
       })
       .catch((error) => {
         toast.error(error);
       });
   };
+  const handleClickBtnUpdate = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    let data = {
+      id: selectedTemplate?._id,
+      template_name: name,
+      description: description,
+      isapprove: community === true ? true : false,
+      user_id: user?._id,
+    };
 
+    dispatch(updateTemplate(data))
+      .unwrap()
+      .then((response) => {
+        toast.success("Template Upated successfully");
+        dispatch(getTemplates());
+        dispatch(addTemplateModelFun(true));
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
+  };
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open Child Modal</Button> */}
@@ -76,6 +112,7 @@ const AddTemplate: React.FC = () => {
                 <input
                   type="text"
                   className="form-control mt-2"
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="What is this template for?"
                 />
@@ -86,6 +123,7 @@ const AddTemplate: React.FC = () => {
                   Description*
                 </label>
                 <textarea
+                  value={description}
                   onChange={(e) => setdescription(e.target.value)}
                   className="form-control mt-2"
                   placeholder="Give us an idea of this template is about. This will help you (and others) find it easily.  "
@@ -99,6 +137,7 @@ const AddTemplate: React.FC = () => {
                   Comunity Template
                   <div className="">
                     <input
+                      // value={community}
                       onChange={(e) => setCommunity(e.target.checked)}
                       className="form-check-input"
                       type="checkbox"
@@ -110,9 +149,13 @@ const AddTemplate: React.FC = () => {
             {/* ===== form end ==== */}
           </div>
           <div className="modal-footer">
-            <Link to="/questions">
+            {/* <Link to="/questions"> */}
+            {Object.keys(selectedTemplate).length > 0 ? (
+              <Button2 name="Update" onClick={handleClickBtnUpdate} />
+            ) : (
               <Button2 name="Submit" onClick={handleClickBtn} />
-            </Link>
+            )}
+            {/* </Link> */}
           </div>
         </Box>
       </Modal>
