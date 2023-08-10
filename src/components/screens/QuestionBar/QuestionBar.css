@@ -1,0 +1,32 @@
+@import '../../../varible.css';
+
+*{
+    font-family: var(--font) !important;
+}
+.qu-bar input{
+ background-color: var(--rgba) !important;
+ padding: 13px 15px;
+ border-radius: 5px;
+ border: 2px solid transparent;
+}
+.qu-bar input:focus{
+    border: 2px solid var(--color) !important;
+}
+.coll{
+    background-color: rgb(245, 245, 245);
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+.coll-band{
+    padding: 10px;
+    border: 1px solid var(--color) !important;
+    border-radius: 5px;
+}
+.coll-band p{
+    font-weight: 300 !important;
+    color: var(--color);
+    font-size: var(--smaller-font);
+    text-align: center;
+}
