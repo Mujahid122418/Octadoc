@@ -14,20 +14,22 @@ import type { RootState } from "../../../redux/Store";
 import FormGroup from "@mui/material/FormGroup";
 import Checkbox from "@mui/material/Checkbox";
 import QuestionBar from "../QuestionBar/QuestionBar";
+
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
 import { addQuestionModelFun } from "../../../redux/TemplateQuestion/TemplateQuestion";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import IconButton from "@mui/material/IconButton";
-// import { v4 as uuidv4 } from "uuid";
+import AnswerBar from "../QuestionBar/Answerpart/AnswerPart";
+
 const TemplateQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [section, setSection] = useState([1]);
-  const { addQuestionModel, isLoading } = useSelector(
+  const { addQuestionModel, addQuestionFollowupModel, isLoading } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
-  // console.log("add ", uuidv4());
+  console.log("mode;s", addQuestionModel, addQuestionFollowupModel);
 
   const customRadioStyle = {
     color: "#6049cd", // Your custom color code
@@ -239,6 +241,7 @@ const TemplateQuestion = () => {
               />
 
               <QuestionBar />
+              <AnswerBar />
             </div>
           </div>
         </div>

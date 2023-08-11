@@ -16,7 +16,7 @@ const Setting = () => {
   const [countryofTraining, setcountryofTraining] = useState("");
   const [workingHours, setworkingHours] = useState("");
   const [yearsofPractice, setyearsofPractice] = useState("");
-  const [phone, setPhone] = useState("");
+
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {

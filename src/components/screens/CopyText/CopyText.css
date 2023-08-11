@@ -1,0 +1,33 @@
+@import '../../../varible.css';
+
+.copy-box{
+    background: var(--theme-color);
+    border-radius: 20px;
+    padding: 20px;
+}
+.copy-text{
+    background-color: var(--white);
+    border-radius: 5px;
+    padding: 10px;
+}
+.head-text{
+    font-weight: var(--weight);
+    font-size: 19px;
+    color: var(--color);
+}
+.uper-list{
+    margin: 20px 0px;
+}
+.uper-li{
+    margin: 10px 0px;
+    font-weight: var(--normal-weight);
+}
+.copy-text .btn{
+    width: 97%;
+    padding: 8px !important;
+}
+.copy-text .download-btn .btn{
+    background: var(--white);
+    color: var(--color);
+    border:  2px solid var(--color);
+}

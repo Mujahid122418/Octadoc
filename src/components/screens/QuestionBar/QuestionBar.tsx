@@ -7,14 +7,21 @@ import List from "@mui/material/List";
 import CloseIcon from "@mui/icons-material/Close";
 import "./QuestionBar.css";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+
 import type { RootState } from "../../../redux/Store";
 import Collapse from "@mui/material/Collapse";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
-import { addQuestionModelFun } from "../../../redux/TemplateQuestion/TemplateQuestion";
+import {
+  addQuestionModelFun,
+  addQuestionFollowupModelFun,
+} from "../../../redux/TemplateQuestion/TemplateQuestion";
+import Checkbox from "@mui/material/Checkbox";
+
+import Button2 from "../Button2/Button2";
+import AddIcon from "@mui/icons-material/Add";
 
 interface StateType {
   // Define your state properties here
@@ -40,13 +47,16 @@ export default function QuestionBar() {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  const handleClickBtn = () => {};
   // ===collpase end====
 
   const [state, setState] = React.useState<StateType>({
     right: false,
   });
-
+  const addQuestionFollowupBtn = () => {
+    dispatch(addQuestionFollowupModelFun(true));
+    dispatch(addQuestionModelFun(false));
+  };
   useEffect(() => {
     setState((state) => ({
       ...state,
@@ -116,6 +126,33 @@ export default function QuestionBar() {
             <option>4</option>
           </select>
         </div>
+        <input
+          type="text"
+          className="mt-2 ms-0"
+          placeholder="What do you want to ask?"
+          onClick={handleInputClick}
+        />
+        <FormControlLabel
+          className="ms-1"
+          control={<Checkbox defaultChecked style={customRadioStyle} />}
+          label="Hide this from your clinical notes"
+        />
+
+        <div className="label-button">
+          <label htmlFor="">Answer</label>
+          <Button2
+            name="Add "
+            onClick={() => addQuestionFollowupBtn()}
+            icon={<AddIcon />}
+          />
+        </div>
+        <textarea name="" id="" cols={30} rows={5} />
+        <div className="save-button mt-2">
+          <Button2 name="Save Question " onClick={handleClickBtn} />
+        </div>
+        <div className="close-button mt-2">
+          <Button2 name="Close" onClick={handleClickBtn} />
+        </div>
       </List>
     </Box>
   );
@@ -124,12 +161,7 @@ export default function QuestionBar() {
 
   return (
     <div>
-      {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
-      <Drawer
-        anchor={anchor}
-        open={state[anchor]}
-        // onClose={toggleDrawer(anchor, false)}
-      >
+      <Drawer anchor={anchor} open={state[anchor]}>
         {list(anchor)}
       </Drawer>
     </div>

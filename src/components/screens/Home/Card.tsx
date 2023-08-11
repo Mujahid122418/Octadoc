@@ -23,8 +23,8 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
 
   return (
     <div className="col-lg-4 col-md-6 mt-4">
-      <Link to={`/questions/${item?._id}`}>
-        <div className="card-box">
+      <div className="card-box">
+        <Link to={`/questions/${item?._id}`}>
           <div className="card-head">
             <div className="icon-box">
               <IconButton>
@@ -34,6 +34,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
                 <p>12</p>
               </div>
             </div>
+
             <div className="text">
               <center>
                 <h6>{item?.template_name}</h6>
@@ -51,36 +52,35 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
               </div>
             </div>
           </div>
-
-          <center>
-            <p className="btm-text">{item?.description}</p>
-          </center>
-          {item?._id === user?._id && (
-            <Stack
-              direction="row"
-              spacing={1}
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
+        </Link>
+        <center>
+          <p className="btm-text">{item?.description}</p>
+        </center>
+        {item?.user_id === user?._id && (
+          <Stack
+            direction="row"
+            spacing={1}
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <IconButton
+              aria-label="delete"
+              onClick={() => updateTemplate(item)}
             >
-              <IconButton
-                aria-label="delete"
-                onClick={() => updateTemplate(item)}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                aria-label="delete"
-                onClick={() => DeleteTemplate(item?._id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-              {/* </div> */}
-            </Stack>
-          )}
-        </div>
-      </Link>
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              aria-label="delete"
+              onClick={() => DeleteTemplate(item?._id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+            {/* </div> */}
+          </Stack>
+        )}
+      </div>
     </div>
   );
 };
