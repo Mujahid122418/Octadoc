@@ -5,29 +5,37 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import CloseIcon from '@mui/icons-material/Close'; 
-import './QuestionBar.css';
+import './AnswerBar.css';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from '@mui/material/Checkbox';
 
-import Collapse from '@mui/material/Collapse';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import Button2 from '../Button2/Button2';
+
 import AddIcon from '@mui/icons-material/Add';
-import AnswerBar from './Answerpart/AnswerPart';
+import Button2 from '../../Button2/Button2';
+
+
 
 const customRadioStyle = {
-    color: '#6049cd', // Your custom color code
+    color: '#6049cd', 
   };
 
 type Anchor = 'right';
 
-export default function QuestionBar() {
+export default function AnswerBar() {
 
   const handleClickBtn = (event: any) => {
     event.preventDefault();
   };
+
+    // ===collpase====
+    const [expanded, setExpanded] = useState(false);
+
+    const handleExpandClick = () => {
+      setExpanded(!expanded);
+    };
   
+    // ===collpase end====
+
   const [state, setState] = React.useState({
     right: false,
   });
@@ -65,17 +73,33 @@ export default function QuestionBar() {
         <CloseIcon />
       </IconButton>
       <List className='p-3 qu-bar'>
-        <h2 className='mb-1'>Add New Question</h2>
-        <p>Section Name</p>
-        <label htmlFor="">Question</label>
-        <input type="text" placeholder='What do you want to ask?' onClick={handleInputClick} />
+        <h2 className='mb-1'>Add Answer to</h2>
+    
+        <label htmlFor="">Answer</label>
+        <input type="text" placeholder='Add Your Answer' onClick={handleInputClick} />
         <FormControlLabel className='ms-1' control={<Checkbox defaultChecked  style={customRadioStyle} />} label="Hide this from your clinical notes" />
+    {/* ===collpase==== */}
+    <div className='mt-3'>
+      <h6 className='coll' >
+       No Tip
+      </h6>
+     
+        <div>
+          <div className="coll-body">
+            <div className="coll-band">
+                <p className='mb-0'>Text that will appear in the patient notes</p>
+            </div>
+            <input className='mt-2 ms-0' type="text" placeholder='add Out Put Text' />
+          </div>
+        </div>
+  
+    </div>
+    {/* ===collpase==== */}
 
 
-    <div className="label-button">
-    <label htmlFor="">Answer</label>
+    <div className="label-button mt-4">
+  <label htmlFor="">Follow Up Question</label>
     <Button2 name='Add' onClick={handleClickBtn} icon={<AddIcon />} />
-    <AnswerBar />
     </div>
     <textarea name="" id="" cols={30} rows={5} />
     <div className="save-button mt-2">

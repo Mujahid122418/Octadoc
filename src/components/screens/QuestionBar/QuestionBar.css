@@ -3,18 +3,36 @@
 *{
     font-family: var(--font) !important;
 }
+
+.qu-bar ::-webkit-input-placeholder { /* Edge */
+    font-size: var(--smaller-font);
+  }
+  
+  .qu-bar :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    font-size: var(--smaller-font);
+  }
+  
+  .qu-bar ::placeholder {
+    font-size: var(--smaller-font);
+  }
+.qu-bar label{
+    font-weight: bold !important;
+}
 .qu-bar input{
  background-color: var(--rgba) !important;
- padding: 13px 15px;
+ padding: 10px 15px;
  border-radius: 5px;
  border: 2px solid transparent;
 }
 .qu-bar input:focus{
     border: 2px solid var(--color) !important;
 }
+.qu-bar .MuiFormControlLabel-label{
+    font-size: var(--smaller-font);
+}
 .coll{
     background-color: rgb(245, 245, 245);
-    padding: 15px;
+    padding: 10px;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
@@ -30,3 +48,58 @@
     font-size: var(--smaller-font);
     text-align: center;
 }
+.selectt-box select{
+    background-color: var(--rgba);
+    border: 2px solid transparent;
+    outline: none;
+    box-shadow: 0 0 0 0.0rem rgba(13,110,253,.25) !important;
+}
+.selectt-box select:focus{
+    border: 2px solid var(--color);
+    outline: none;
+}
+.label-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.label-button label{
+    font-size: var(--small-font)  !important;
+    font-weight: bold;
+    margin-bottom: -10px;
+}
+.label-button .btn-template {
+    font-size: var( --smaller-font) !important;
+}
+.label-button .btn-template svg{
+    font-size: var( --small-font) !important;
+    margin-bottom: 5px;
+}
+.qu-bar textarea{
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+textarea:focus{
+   border: 1px solid var(--color) !important;
+}
+.save-button .btn{
+    width: 100% !important;
+    margin-left: 0px !important;
+    padding: 10px !important;
+}
+.close-button .btn{
+    width: 100% !important;
+    margin-left: 0px !important;
+    padding: 10px !important;
+    background: var(--white) !important;
+    color: var(--color ) !important;
+    border: 2px solid var(--color) !important;
+}
+@media (max-width: 600px) {
+    .responsive-sidebar {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+  }

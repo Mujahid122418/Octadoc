@@ -8,11 +8,14 @@ import Home from "./components/screens/Home/Home";
 import Setting from "./components/screens/Setting/Setting";
 
 import TemplateQuestion from "./components/screens/TemplateQuestion/TemplateQuestion";
+import AnswerPart from "./components/screens/QuestionBar/Answerpart/AnswerPart";
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         <Route
           path="/"
           element={
@@ -69,6 +72,8 @@ function App() {
             </div>
           }
         />
+
+
 
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
