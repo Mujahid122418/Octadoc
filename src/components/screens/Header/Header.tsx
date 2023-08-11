@@ -11,9 +11,10 @@ import Button2 from "../Button2/Button2";
 import type { RootState } from "../../../redux/Store";
 import { useDispatch, useSelector } from "react-redux";
 import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
-
+import { useNavigate } from "react-router-dom";
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Use useNavigate hook to access navigation
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { user } = useSelector((state: RootState) => state?.auth);
@@ -28,6 +29,15 @@ const Header = () => {
   const handleClickBtn = (event: any) => {
     event.preventDefault();
     dispatch(addTemplateModelFun(false));
+  };
+  const Logout = () => {
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   return (
     <div className="header">
@@ -67,7 +77,7 @@ const Header = () => {
           <Link to="/setting">
             <MenuItem onClick={handleClose}>Setting</MenuItem>
           </Link>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
+          <MenuItem onClick={Logout}>Logout</MenuItem>
         </Menu>
       </div>
     </div>

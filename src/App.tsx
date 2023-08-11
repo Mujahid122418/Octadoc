@@ -60,7 +60,7 @@ function App() {
         />
 
         <Route
-          path="/questions"
+          path="/questions/:id"
           element={
             <div className="position-relative">
               <Header />

@@ -93,7 +93,7 @@ export default function Login() {
               </div>
               <div className="hr"></div>
               <div className="foot-lnk">
-                <a>Forgot Password?</a>
+                <p>Forgot Password?</p>
               </div>
             </div>
             <div className="sign-up-htm">

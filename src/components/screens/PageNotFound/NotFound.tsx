@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
 import "./NotFound.css"; // Import your CSS file for styling
 import Button2 from "../Button2/Button2";
 import { useNavigate } from "react-router-dom";

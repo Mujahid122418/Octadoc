@@ -8,11 +8,33 @@ import type { RootState } from "../../../redux/Store";
 const Setting = () => {
   const { user } = useSelector((state: RootState) => state?.auth);
 
-  const [name, setName] = useState("");
-
+  // const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
+  const [state, setState] = useState("");
+  const [language, setLanguage] = useState("");
+  const [countryofTraining, setcountryofTraining] = useState("");
+  const [workingHours, setworkingHours] = useState("");
+  const [yearsofPractice, setyearsofPractice] = useState("");
+  const [phone, setPhone] = useState("");
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    try {
+      let data = {
+        id: user?._id,
+        gender: gender,
+        state: state,
+        language: language,
+        countryofTraining: countryofTraining,
+        workingHours: workingHours,
+        yearsofPractice: yearsofPractice,
+        // phone: "",
+        password: password,
+      };
+      console.log("data ==>", data);
+    } catch (error) {}
   };
+
   return (
     <div>
       <div className="container mb-5">
@@ -37,7 +59,7 @@ const Setting = () => {
                       placeholder="Enter email"
                       disabled
                       value={user?.email}
-                      onChange={(e) => setName(e.target.name)}
+                      // onChange={(e) => setName(e.target.name)}
                     />
                   </div>
                   <div className="form-group">
@@ -46,6 +68,8 @@ const Setting = () => {
                       className="form-control"
                       id="exampleInputPassword1"
                       placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
 
@@ -53,6 +77,7 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      onChange={(e) => setGender(e.target.value)}
                     >
                       <option value="" disabled>
                         Gender
@@ -68,6 +93,7 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      onChange={(e) => setState(e.target.value)}
                     >
                       <option value="" disabled>
                         State
@@ -85,6 +111,7 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      onChange={(e) => setLanguage(e.target.value)}
                     >
                       <option value="" disabled>
                         First Language
@@ -102,6 +129,7 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      onChange={(e) => setcountryofTraining(e.target.value)}
                     >
                       <option value="" disabled>
                         Country Of Traning
@@ -119,6 +147,7 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      onChange={(e) => setworkingHours(e.target.value)}
                     >
                       <option value="" disabled>
                         Working hours
