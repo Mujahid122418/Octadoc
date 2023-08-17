@@ -149,95 +149,15 @@ const AddTemplate: React.FC = () => {
             {/* ===== form end ==== */}
           </div>
           <div className="modal-footer">
-            {/* <Link to="/questions"> */}
             {Object.keys(selectedTemplate).length > 0 ? (
               <Button2 name="Update" onClick={handleClickBtnUpdate} />
             ) : (
               <Button2 name="Submit" onClick={handleClickBtn} />
             )}
-            {/* </Link> */}
           </div>
         </Box>
       </Modal>
-
     </div>
   );
 };
 export default AddTemplate;
-
-{
-  /* <div
-// className="modal-dialog"
-//   style={{ width: "300px", display: "flex", justifyContent: "center" }}
->
-  <div>
-    <div>
-      <h1 className="modal-title fs-5" id="exampleModalLabel">
-        New Template
-      </h1>
-      <button
-        type="button"
-        className="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
-    </div>
-    <div className="modal-body">
-      <form className="bg-white w-100">
-        <div className="form-group">
-          <label className="lab" htmlFor="">
-            Title*
-          </label>
-          <input
-            type="text"
-            className="form-control mt-2"
-            aria-describedby="emailHelp"
-            placeholder="What is this template for?"
-         
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="lab" htmlFor="">
-            Description*
-          </label>
-          <textarea
-            className="form-control mt-2"
-            placeholder="Give us an idea of this template is about. This will help you (and others) find it easily.  "
-            id="exampleFormControlTextarea1"
-            rows={4}
-         
-          ></textarea>
-        </div>
-
-        <div className="form-group">
-          <label className="lab" htmlFor="">
-            Make available to the community?
-          </label>
-          <div className="tem-box mt-2">
-            Comunity Template
-            <div className="">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="flexSwitchCheckChecked"
-             
-              ></input>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div className="modal-footer">
-      <button
-        type="button"
-        className="btn btn-secondary"
-        data-bs-dismiss="modal"
-      >
-        Close
-      </button>
-      <Button2 name="Submit" onClick={handleClickBtn} />
-    </div>
-  </div>
-</div> */
-}

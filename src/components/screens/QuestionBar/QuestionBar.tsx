@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
+
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,14 +14,19 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
+
 import {
   addQuestionModelFun,
   addQuestionFollowupModelFun,
+  questionTypeFun,
+  passQuestionFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestion";
 import Checkbox from "@mui/material/Checkbox";
 
 import Button2 from "../Button2/Button2";
 import AddIcon from "@mui/icons-material/Add";
+import { addQuestionFunAPI } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
+import { toast } from "react-toastify";
 
 interface StateType {
   // Define your state properties here
@@ -37,23 +42,56 @@ export default function QuestionBar() {
   // let url = window.location?.pathname.split("/questions/")[1];
   const dispatch = useDispatch<AppDispatch>();
 
-  const { addQuestionModel, isLoading } = useSelector(
+  const { addQuestionModel, questionType } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
 
+  // handel states start
+  const [question, setQuestion] = useState("");
+  // useEffect(() => {
+  //   console.log("question", question);
+  // }, [question]);
+  // handel states end
   // ===collpase====
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const handleClickBtn = () => {};
+  const handleClickSaveBtn = () => {
+    if (!question) {
+      toast.error("Please enter Question");
+    } else if (!questionType) {
+      toast.error("Please Select Question type");
+    } else if (
+      questionType === "Single Choice" ||
+      questionType === "Multiple Choice"
+    ) {
+      toast.error("The answers field is required.");
+    } else {
+      try {
+        let data = {
+          name: question,
+          template_id: window.location.href.split("/questions/")[1],
+          question_type: questionType,
+        };
+        dispatch(addQuestionFunAPI(data));
+      } catch (error) {}
+    }
+  };
   // ===collpase end====
 
   const [state, setState] = React.useState<StateType>({
     right: false,
   });
   const addQuestionFollowupBtn = () => {
+    let pass = {
+      name: question,
+      template_id: window.location.href.split("/questions/")[1],
+      question_type: questionType,
+    };
+
+    dispatch(passQuestionFun(pass));
     dispatch(addQuestionFollowupModelFun(true));
     dispatch(addQuestionModelFun(false));
   };
@@ -84,8 +122,9 @@ export default function QuestionBar() {
         <label htmlFor="">Question</label>
         <input
           type="text"
-          placeholder="What do you want to ask?"
-          onClick={handleInputClick}
+          placeholder="What do you want to ask? "
+          // onClick={handleInputClick}
+          onChange={(e) => setQuestion(e.target.value)}
         />
         <FormControlLabel
           className="ms-1"
@@ -119,11 +158,16 @@ export default function QuestionBar() {
         {/* ===collpase==== */}
         <div className="selectt-box mt-3">
           <label htmlFor="">Type*</label>
-          <select className="form-select mt-1">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+          <select
+            className="form-select mt-1"
+            onChange={(e) => dispatch(questionTypeFun(e.target.value))}
+          >
+            <option>Select</option>
+            <option>Date Time</option>
+            <option>Dosage</option>
+            <option>Free Text</option>
+            <option>Multiple Choice</option>
+            <option>Single Choice</option>
           </select>
         </div>
         <input
@@ -137,21 +181,40 @@ export default function QuestionBar() {
           control={<Checkbox defaultChecked style={customRadioStyle} />}
           label="Hide this from your clinical notes"
         />
+        {questionType === "Multiple Choice" ? (
+          <div>
+            <div className="label-button">
+              <label htmlFor="">Answer </label>
+              <Button2
+                name="Add"
+                onClick={() => addQuestionFollowupBtn()}
+                icon={<AddIcon />}
+              />
+            </div>
+            <textarea name="" id="" cols={30} rows={5} />
+          </div>
+        ) : questionType === "Single Choice" ? (
+          <div>
+            <div className="label-button">
+              <label htmlFor="">Answer </label>
+              <Button2
+                name="Add"
+                onClick={() => addQuestionFollowupBtn()}
+                icon={<AddIcon />}
+              />
+            </div>
+            <textarea name="" id="" cols={30} rows={5} />
+          </div>
+        ) : null}
 
-        <div className="label-button">
-          <label htmlFor="">Answer</label>
-          <Button2
-            name="Add "
-            onClick={() => addQuestionFollowupBtn()}
-            icon={<AddIcon />}
-          />
-        </div>
-        <textarea name="" id="" cols={30} rows={5} />
         <div className="save-button mt-2">
-          <Button2 name="Save Question " onClick={handleClickBtn} />
+          <Button2 name="Save Question " onClick={handleClickSaveBtn} />
         </div>
         <div className="close-button mt-2">
-          <Button2 name="Close" onClick={handleClickBtn} />
+          <Button2
+            name="Close"
+            onClick={() => dispatch(addQuestionModelFun(false))}
+          />
         </div>
       </List>
     </Box>

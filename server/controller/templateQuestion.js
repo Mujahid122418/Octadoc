@@ -1,3 +1,5 @@
+const answer = require("../models/answer");
+const Answer = require("../models/answer");
 const TemplateQuestions = require("../models/templateQuestions");
 
 exports.addQuestion = async (req, res) => {
@@ -27,10 +29,42 @@ exports.getQuestion = async (req, res) => {
 
     // Query and retrieve paginated data
     const data = await TemplateQuestions.find()
-      .populate("template_id")
+      // .populate("template_id")
       .skip(skip)
       .limit(pageSize);
 
+    let ans = await Answer.findOne({ question_id: { $in: data } });
+    let nn = data.forEach((item) => {});
+    console.log("ans", ans);
+    // console.log("ans", ans);
+    // const appendObjTo = (thatArray, newObj) => {
+    //   const frozenObj = Object.freeze(newObj);
+    //   return Object.freeze(thatArray.concat(frozenObj));
+    // };
+
+    const updatedData = data.map((item) => ({
+      item,
+      ans,
+    }));
+
+    // console.log(updatedData);
+    // Create a mapping of question IDs to their respective items
+    const questionIdToItemMap = {};
+
+    updatedData.forEach((updatedItem) => {
+      const { item, ans } = updatedItem;
+
+      if (!questionIdToItemMap[item._id]) {
+        questionIdToItemMap[item._id] = { ...item, answers: [] };
+      }
+
+      questionIdToItemMap[item._id].answers.push(ans);
+    });
+
+    // Convert the mapped items back into an array
+    const itemsWithAnswers = Object.values(questionIdToItemMap);
+
+    // console.log("itemsWithAnswers", itemsWithAnswers);
     res.json({
       data,
       currentPage: page,

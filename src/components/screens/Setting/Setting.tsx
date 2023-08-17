@@ -5,6 +5,8 @@ import Button2 from "../Button2/Button2";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../redux/Store";
+import { questionTypeFun } from "../../../redux/TemplateQuestion/TemplateQuestion";
+
 const Setting = () => {
   const { user } = useSelector((state: RootState) => state?.auth);
 

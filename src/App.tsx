@@ -8,6 +8,7 @@ import Home from "./components/screens/Home/Home";
 import Setting from "./components/screens/Setting/Setting";
 
 import TemplateQuestion from "./components/screens/TemplateQuestion/TemplateQuestion";
+import ShowTemplateQuestion from "./components/screens/TemplateQuestion/ShowTemplateQuestion";
 
 function App() {
   return (
@@ -65,7 +66,7 @@ function App() {
             <div className="position-relative">
               <Header />
               <SideBar />
-              <TemplateQuestion />
+              <ShowTemplateQuestion />
             </div>
           }
         />

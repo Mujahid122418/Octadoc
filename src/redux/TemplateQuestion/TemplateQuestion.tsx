@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { addQuestionFunAPI, getQuestion } from "./TemplateQuestionAPI";
 
 interface TemplateArray {
   isLoading: Boolean;
@@ -7,6 +8,10 @@ interface TemplateArray {
   addQuestionModel: Boolean;
   addQuestionFollowupModel: Boolean;
   selectedQuestion: any;
+  addQuestion: any;
+  questionType: string;
+  getQuestions: any;
+  passQuestion: any;
 }
 
 const initialState: TemplateArray = {
@@ -16,6 +21,10 @@ const initialState: TemplateArray = {
   addQuestionModel: false,
   addQuestionFollowupModel: false,
   selectedQuestion: {},
+  addQuestion: [],
+  questionType: "",
+  getQuestions: [],
+  passQuestion: {},
 };
 
 export const templateQuestionSlice = createSlice({
@@ -28,6 +37,27 @@ export const templateQuestionSlice = createSlice({
     addQuestionFollowupModelFun: (state, action) => {
       state.addQuestionFollowupModel = action.payload;
     },
+    addQuestionFun: (state, action) => {
+      state.addQuestion = action.payload;
+    },
+    questionTypeFun: (state, action) => {
+      state.questionType = action.payload;
+    },
+    passQuestionFun: (state, action) => {
+      state.passQuestion = action.payload;
+    },
+  },
+  extraReducers: {
+    [getQuestion.pending.type]: (state, action) => {
+      state.isLoading = true;
+    },
+    [getQuestion.fulfilled.type]: (state, { payload }) => {
+      state.isLoading = false;
+      state.getQuestions = payload;
+    },
+    [getQuestion.rejected.type]: (state, action) => {
+      state.isLoading = false;
+    },
   },
 });
 
@@ -35,6 +65,11 @@ export const templateQuestionSlice = createSlice({
 
 // export const { addTemplate, getTemplate, updateTemplate, deleteTemplate } =
 //   templateQuestionSlice.actions;
-export const { addQuestionModelFun, addQuestionFollowupModelFun } =
-  templateQuestionSlice.actions;
+export const {
+  addQuestionModelFun,
+  addQuestionFollowupModelFun,
+  addQuestionFun,
+  questionTypeFun,
+  passQuestionFun,
+} = templateQuestionSlice.actions;
 export default templateQuestionSlice.reducer;

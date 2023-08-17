@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const schema = mongoose.Schema;
-const question_Type_Schema = new mongoose.Schema({
-  text: String,
-});
+// const question_Type_Schema = new mongoose.Schema({
+//   text: String,
+// });
 const template_Schema = new schema(
   {
     name: {
@@ -18,7 +18,7 @@ const template_Schema = new schema(
       type: String,
     },
     question_type: {
-      type: [question_Type_Schema], // Defining the array schema
+      type: String, // Defining the array schema
     },
     order: {
       type: String,

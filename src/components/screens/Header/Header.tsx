@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Header.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import IconButton from "@mui/material/IconButton";
@@ -12,12 +12,32 @@ import type { RootState } from "../../../redux/Store";
 import { useDispatch, useSelector } from "react-redux";
 import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 import { useNavigate } from "react-router-dom";
+import { getMeFun } from "../../../redux/Auth/AuthAPI";
+import { AppDispatch } from "../../../redux/Store";
+
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate(); // Use useNavigate hook to access navigation
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { user } = useSelector((state: RootState) => state?.auth);
+
+  const init = async () => {
+    let token = await localStorage.getItem("token");
+    let user = await localStorage.getItem("user");
+
+    if (token && user) {
+      let data = {
+        id: user,
+      };
+      dispatch(getMeFun(data));
+    } else {
+      navigate("/login");
+    }
+  };
+  useEffect(() => {
+    init();
+  }, []);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

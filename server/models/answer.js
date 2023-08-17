@@ -15,6 +15,10 @@ const answer_Schema = new schema(
     order: {
       type: String,
     },
+    question_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "templateQuestion",
+    },
   },
   { timestamps: true }
 );

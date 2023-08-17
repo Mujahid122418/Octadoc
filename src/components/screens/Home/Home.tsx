@@ -18,8 +18,6 @@ import {
 } from "../../../redux/Template/TemplateSlice";
 import SimpleBackdrop from "../../../utils/BackDrop";
 
-import { useNavigate } from "react-router-dom";
-import { getMeFun } from "../../../redux/Auth/AuthAPI";
 import Card from "./Card";
 
 const Home: React.FC = () => {
@@ -28,25 +26,6 @@ const Home: React.FC = () => {
     (state: RootState) => state?.template
   );
   const { user } = useSelector((state: RootState) => state?.auth);
-
-  const navigate = useNavigate(); // Use useNavigate hook to access navigation
-  const init = async () => {
-    let token = await localStorage.getItem("token");
-    let user = await localStorage.getItem("user");
-
-    if (token && user) {
-      navigate("/");
-      let data = {
-        id: user,
-      };
-      dispatch(getMeFun(data));
-    } else {
-      navigate("/login");
-    }
-  };
-  useEffect(() => {
-    init();
-  }, []);
 
   useEffect(() => {
     dispatch(getTemplates());

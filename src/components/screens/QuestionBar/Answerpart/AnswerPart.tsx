@@ -18,6 +18,11 @@ import {
   addQuestionFollowupModelFun,
   addQuestionModelFun,
 } from "../../../../redux/TemplateQuestion/TemplateQuestion";
+import { toast } from "react-toastify";
+import {
+  addAnswerFunAPI,
+  addQuestionFunAPI,
+} from "../../../../redux/TemplateQuestion/TemplateQuestionAPI";
 
 interface StateType {
   // Define your state properties here
@@ -32,14 +37,36 @@ type Anchor = "right";
 export default function AnswerBar() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { addQuestionFollowupModel, isLoading } = useSelector(
+  const { addQuestionFollowupModel, passQuestion } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
 
-  const handleClickBtn = (event: any) => {
+  // handel answer state start
+  const [answer, setAnswer] = useState("");
+  // handel answer state end
+  const handleClickBtnSaveAnswer = (event: any) => {
     event.preventDefault();
+    if (!answer) {
+      toast.error("Answer is required");
+    } else {
+      dispatch(addQuestionFunAPI(passQuestion))
+        .unwrap()
+        .then((res) => {
+          console.log("ques res", res?.data);
+          let { _id } = res?.data;
+          let data = {
+            follow_up_question_group_id: _id,
+            text: answer,
+            question_id: _id,
+          };
+          console.log("ans data", data);
 
-    console.log("caa;;;;;");
+          dispatch(addAnswerFunAPI(data));
+        })
+        .catch((e) => {
+          console.log("err ans", e);
+        });
+    }
   };
 
   const [state, setState] = React.useState<StateType>({
@@ -55,12 +82,6 @@ export default function AnswerBar() {
 
   const addQuestionFollowupBtn = () => {
     dispatch(addQuestionFollowupModelFun(true));
-  };
-
-  const handleInputClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    if (event.target === event.currentTarget) {
-      event.stopPropagation();
-    }
   };
 
   const list = (anchor: Anchor) => (
@@ -81,7 +102,9 @@ export default function AnswerBar() {
         <input
           type="text"
           placeholder="Add Your Answer"
-          onClick={handleInputClick}
+          // onClick={handleInputClick}
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
         />
         <FormControlLabel
           className="ms-1"
@@ -100,6 +123,8 @@ export default function AnswerBar() {
                 </p>
               </div>
               <input
+                value={answer}
+                disabled
                 className="mt-2 ms-0"
                 type="text"
                 placeholder="add Out Put Text"
@@ -118,12 +143,18 @@ export default function AnswerBar() {
             icon={<AddIcon />}
           />
         </div>
-        <textarea name="" id="" cols={30} rows={5} />
+        <textarea disabled name="" id="" cols={30} rows={5} />
         <div className="save-button mt-2">
-          <Button2 name="Save Question " onClick={handleClickBtn} />
+          <Button2 name="Save Answer " onClick={handleClickBtnSaveAnswer} />
         </div>
         <div className="close-button mt-2">
-          <Button2 name="Close" onClick={handleClickBtn} />
+          <Button2
+            name="Close"
+            onClick={() => {
+              dispatch(addQuestionModelFun(true));
+              dispatch(addQuestionFollowupModelFun(false));
+            }}
+          />
         </div>
       </List>
     </Box>
