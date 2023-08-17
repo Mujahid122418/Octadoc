@@ -29,24 +29,6 @@ const Home: React.FC = () => {
   );
   const { user } = useSelector((state: RootState) => state?.auth);
 
-  const navigate = useNavigate(); // Use useNavigate hook to access navigation
-  const init = async () => {
-    let token = await localStorage.getItem("token");
-    let user = await localStorage.getItem("user");
-
-    if (token && user) {
-      navigate("/");
-      let data = {
-        id: user,
-      };
-      dispatch(getMeFun(data));
-    } else {
-      navigate("/login");
-    }
-  };
-  useEffect(() => {
-    init();
-  }, []);
 
   useEffect(() => {
     dispatch(getTemplates());
@@ -95,7 +77,7 @@ const Home: React.FC = () => {
             </div>
           ) : window.location.pathname === "/template" ? (
             <div className="row">
-              {template.filter((item) => item?.user_id === user?._id)?.length >
+              {template?.filter((item) => item?.user_id === user?._id)?.length >
               0 ? (
                 template
                   .filter((item) => item?.user_id === user?._id)
@@ -113,7 +95,7 @@ const Home: React.FC = () => {
             </div>
           ) : (
             <div className="row">
-              {template.filter((item) => item?.isapprove === "true")?.length >
+              {template?.filter((item) => item?.isapprove === "true")?.length >
               0 ? (
                 template
                   .filter((item) => item?.isapprove === "true")

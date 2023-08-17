@@ -9,6 +9,10 @@ import Setting from "./components/screens/Setting/Setting";
 
 import TemplateQuestion from "./components/screens/TemplateQuestion/TemplateQuestion";
 
+import SendMail from "./components/screens/Auth/SendMail";
+import ForgotPass from "./components/screens/Auth/ForgotPass";
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -71,6 +75,8 @@ function App() {
         />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/SendMail" element={<SendMail />} />
+        <Route path="/forgot" element={<ForgotPass />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

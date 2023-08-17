@@ -29,7 +29,7 @@ const TemplateQuestion = () => {
   const { addQuestionModel, addQuestionFollowupModel, isLoading } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
-  console.log("mode;s", addQuestionModel, addQuestionFollowupModel);
+  console.log("models", addQuestionModel, addQuestionFollowupModel);
 
   const customRadioStyle = {
     color: "#6049cd", // Your custom color code
