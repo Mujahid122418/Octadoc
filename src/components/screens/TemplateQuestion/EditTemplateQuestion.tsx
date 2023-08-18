@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./TemplateQuestion.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import Button2 from "../Button2/Button2";
-import HelpCenterIcon from "@mui/icons-material/HelpCenter";
-import HighlightAltIcon from "@mui/icons-material/HighlightAlt";
+
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 
 import Radio from "@mui/material/Radio";
@@ -12,73 +10,69 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import type { RootState } from "../../../redux/Store";
 
-import QuestionBar from "../QuestionBar/QuestionBar";
-
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
-import { addQuestionModelFun } from "../../../redux/TemplateQuestion/TemplateQuestion";
 
-import AnswerBar from "../QuestionBar/Answerpart/AnswerPart";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import IconButton from "@mui/material/IconButton";
+
 import SimpleBackdrop from "../../../utils/BackDrop";
-import { getQuestion } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
-import { useNavigate } from "react-router-dom";
 
-const ShowTemplateQuestion = () => {
+import EditIcon from "@mui/icons-material/Edit";
+import Stack from "@mui/material/Stack";
+import {
+  DeleteQuestion,
+  getQuestion,
+} from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
+
+const EditTemplateQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const [section, setSection] = useState([1]);
-  const {
-    isLoading,
+  const { isLoading, getQuestions } = useSelector(
+    (state: RootState) => state?.templateQuestion
+  );
 
-    getQuestions,
-  } = useSelector((state: RootState) => state?.templateQuestion);
+  let tem_id = window.location.href.split("/questions/edit/")[1];
 
-  let tem_id = window.location.href.split("/questions/")[1];
-  useEffect(() => {
-    let data = {
-      page: 1,
-      pageSize: 20,
-    };
-    dispatch(getQuestion(data));
-  }, []);
   const customRadioStyle = {
     color: "#6049cd", // Your custom color code
   };
 
-  const AddQuestionModel = () => {
-    try {
-      dispatch(addQuestionModelFun(true));
-    } catch (error) {}
-  };
-  const AddSection = async (e: any) => {
-    console.log("ee", e);
-
-    setSection((current) => [...current, ++e]);
-  };
-  const EditSection = async (e: any) => {
-    console.log("edit", e);
-    let id = window.location.href.split("/questions/")[1];
-    navigate(`/questions/edit/${id}`);
-  };
+  // const AddQuestionModel = () => {
+  //   try {
+  //     dispatch(addQuestionModelFun(true));
+  //   } catch (error) {}
+  // };
+  // const AddSection = async (e: any) => {
+  //   setSection((current) => [...current, ++e]);
+  // };
   // const DeleteSection = (e: any) => {
   //   let filter = section.filter((item) => item !== e);
+
   //   setSection(filter);
   // };
+  const DeleteTemplateQuestion = async (id: any) => {
+    dispatch(DeleteQuestion(id))
+      .unwrap()
+      .then((res) => {
+        let data = {
+          page: 1,
+          pageSize: 20,
+        };
+        dispatch(getQuestion(data));
+      })
+      .catch((e) => {
+        console.log("delete question", e);
+      });
+  };
+  const updateTemplateQuestion = async (e: any) => {
+    console.log("eee", e);
+  };
   const SectionDetails = section.map((item, index) => {
     return (
       <>
         <div className="container-xxl" key={index}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginBottom: 2,
-            }}
-          >
-            <Button2 name="Copy" onClick={AddQuestionModel} />
-
-            <Button2 name="Edit" onClick={() => EditSection(item)} />
-          </div>
           <div className="questions-box mb-5">
             <h3 className="text-white">Questions</h3>
             <div className="question-head">
@@ -95,9 +89,41 @@ const ShowTemplateQuestion = () => {
                     .map((item: any) => {
                       return (
                         <div key={item._id}>
-                          <li>
-                            <ArrowForwardIosRoundedIcon /> {item?.name}
-                          </li>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <li>
+                              <ArrowForwardIosRoundedIcon /> {item?.name}
+                            </li>
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() => updateTemplateQuestion(item)}
+                              >
+                                <EditIcon />
+                              </IconButton>
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() =>
+                                  DeleteTemplateQuestion(item?._id)
+                                }
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Stack>
+                          </div>
                           {item?.question_type === "Date Time" ? (
                             <div className="answer mt-3 mb-2 ms-3">
                               <div className="first">
@@ -203,22 +229,6 @@ const ShowTemplateQuestion = () => {
                 )}
               </ul>
             </div>
-            <div className="question-footer">
-              <Button2
-                name="Add Question"
-                onClick={AddQuestionModel}
-                icon={<HelpCenterIcon />}
-              />
-
-              <Button2
-                name="Add Section"
-                onClick={() => AddSection(item)}
-                icon={<HighlightAltIcon />}
-              />
-
-              <QuestionBar />
-              {/* <AnswerBar /> */}
-            </div>
           </div>
         </div>
       </>
@@ -233,4 +243,4 @@ const ShowTemplateQuestion = () => {
   );
 };
 
-export default ShowTemplateQuestion;
+export default EditTemplateQuestion;

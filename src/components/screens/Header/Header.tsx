@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 import "./Header.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import IconButton from "@mui/material/IconButton";
@@ -17,6 +18,7 @@ import { AppDispatch } from "../../../redux/Store";
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const navigate = useNavigate(); // Use useNavigate hook to access navigation
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

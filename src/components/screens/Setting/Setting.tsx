@@ -1,29 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Setting.css";
 import Avatar from "@mui/material/Avatar";
 import Button2 from "../Button2/Button2";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../redux/Store";
 import type { RootState } from "../../../redux/Store";
-import { questionTypeFun } from "../../../redux/TemplateQuestion/TemplateQuestion";
+
+import { updateProfile } from "../../../redux/Auth/AuthAPI";
 
 const Setting = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const { user } = useSelector((state: RootState) => state?.auth);
 
-  // const [name, setName] = useState("");
+  const [name, setname] = useState("");
   const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [state, setState] = useState("");
-  const [language, setLanguage] = useState("");
-  const [countryofTraining, setcountryofTraining] = useState("");
-  const [workingHours, setworkingHours] = useState("");
-  const [yearsofPractice, setyearsofPractice] = useState("");
+  const [gender, setGender] = useState(user?.gender || ""); // Initialize with user's gender
+  const [state, setState] = useState(user?.state || ""); // Initialize with user's state
+  const [language, setLanguage] = useState(user?.language || ""); // Initialize with user's language
+  const [countryofTraining, setcountryofTraining] = useState(
+    user?.countryofTraining || ""
+  ); // Initialize with user's countryofTraining
+  const [workingHours, setworkingHours] = useState(user?.workingHours || ""); // Initialize with user's workingHours
+  const [yearsofPractice, setyearsofPractice] = useState(
+    user?.yearsofPractice || ""
+  ); // Initialize with user's yearsofPractice
 
+  useEffect(() => {
+    setname(user?.name);
+  }, [user]);
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
       let data = {
         id: user?._id,
+        name: name,
         gender: gender,
         state: state,
         language: language,
@@ -33,6 +45,8 @@ const Setting = () => {
         // phone: "",
         password: password,
       };
+      dispatch(updateProfile(data));
+
       console.log("data ==>", data);
     } catch (error) {}
   };
@@ -64,6 +78,17 @@ const Setting = () => {
                       // onChange={(e) => setName(e.target.name)}
                     />
                   </div>
+                  <div className="form-group">
+                    <input
+                      type="Text"
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="name"
+                      value={name}
+                      onChange={(e) => setname(e.target.value)}
+                    />
+                  </div>
+
                   <div className="form-group">
                     <input
                       type="password"

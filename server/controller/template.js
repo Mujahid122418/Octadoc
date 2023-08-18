@@ -1,4 +1,6 @@
+const answer = require("../models/answer");
 const Template = require("../models/template");
+const templateQuestions = require("../models/templateQuestions");
 
 exports.addTemplate = async (req, res) => {
   const payload = req.body;
@@ -39,6 +41,10 @@ exports.getTemplate = async (req, res) => {
 };
 
 exports.deleteTemplate = async (req, res) => {
+  let { id } = req.params;
+  await templateQuestions.deleteMany({ template_id: id });
+  await answer.deleteMany({ template_id: id });
+
   Template.findByIdAndDelete(req.params?.id)
     .then((deletedPost) => {
       if (deletedPost) {

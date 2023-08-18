@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import {
   addAnswerFunAPI,
   addQuestionFunAPI,
+  getQuestion,
 } from "../../../../redux/TemplateQuestion/TemplateQuestionAPI";
 
 interface StateType {
@@ -33,38 +34,82 @@ const customRadioStyle = {
 };
 
 type Anchor = "right";
+interface IAnswerBar {
+  newAnswer: string;
+  setNewAnswer: (value: any) => void;
+  newQuestion: string;
+  qna: any;
+  setQna: (value: any) => void;
+  newFollowUp: any;
+}
 
-export default function AnswerBar() {
+const AnswerBar: React.FC<IAnswerBar> = ({
+  newAnswer,
+  setNewAnswer,
+  newQuestion,
+  qna,
+  setQna,
+  newFollowUp,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { addQuestionFollowupModel, passQuestion } = useSelector(
-    (state: RootState) => state?.templateQuestion
-  );
+  const { addQuestionFollowupModel, passQuestion, addQuestionModel } =
+    useSelector((state: RootState) => state?.templateQuestion);
 
   // handel answer state start
-  const [answer, setAnswer] = useState("");
+
+  console.log("qna", qna);
+
   // handel answer state end
   const handleClickBtnSaveAnswer = (event: any) => {
     event.preventDefault();
-    if (!answer) {
+    if (!newAnswer) {
       toast.error("Answer is required");
     } else {
+      // const newQnaItem = {
+      //   id: qna.length + 1,
+      //   question: newQuestion,
+      //   answer: newAnswer,
+      //   followUp: newFollowUp
+      //     ? [
+      //         {
+      //           question: newFollowUp,
+      //           answers: [], // You can add answers for follow-up questions if needed
+      //           followUp: [],
+      //         },
+      //       ]
+      //     : [],
+      // };
+      // setQna([...qna, newQnaItem]);
+
       dispatch(addQuestionFunAPI(passQuestion))
         .unwrap()
         .then((res) => {
-          console.log("ques res", res?.data);
-          let { _id } = res?.data;
+          let { _id, template_id } = res?.data;
+
           let data = {
             follow_up_question_group_id: _id,
-            text: answer,
+            text: newAnswer,
             question_id: _id,
+            template_id: template_id,
           };
-          console.log("ans data", data);
 
-          dispatch(addAnswerFunAPI(data));
+          dispatch(addAnswerFunAPI(data))
+            .unwrap()
+            .then((response) => {
+              let d1 = {
+                page: 1,
+                pageSize: 20,
+              };
+              dispatch(getQuestion(d1));
+            })
+            .catch((error) => {
+              toast.error(error);
+            });
         })
         .catch((e) => {
           console.log("err ans", e);
+          toast.error("error", e);
         });
     }
   };
@@ -81,7 +126,8 @@ export default function AnswerBar() {
   }, [addQuestionFollowupModel]);
 
   const addQuestionFollowupBtn = () => {
-    dispatch(addQuestionFollowupModelFun(true));
+    dispatch(addQuestionModelFun(!addQuestionModel));
+    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
   };
 
   const list = (anchor: Anchor) => (
@@ -89,8 +135,8 @@ export default function AnswerBar() {
       <IconButton
         sx={{ ml: "auto" }}
         onClick={() => {
-          dispatch(addQuestionModelFun(true));
-          dispatch(addQuestionFollowupModelFun(false));
+          dispatch(addQuestionModelFun(!addQuestionModel));
+          dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
         }}
       >
         <CloseIcon />
@@ -103,8 +149,8 @@ export default function AnswerBar() {
           type="text"
           placeholder="Add Your Answer"
           // onClick={handleInputClick}
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
+          value={newAnswer}
+          onChange={(e) => setNewAnswer(e.target.value)}
         />
         <FormControlLabel
           className="ms-1"
@@ -123,7 +169,7 @@ export default function AnswerBar() {
                 </p>
               </div>
               <input
-                value={answer}
+                value={newAnswer}
                 disabled
                 className="mt-2 ms-0"
                 type="text"
@@ -151,8 +197,8 @@ export default function AnswerBar() {
           <Button2
             name="Close"
             onClick={() => {
-              dispatch(addQuestionModelFun(true));
-              dispatch(addQuestionFollowupModelFun(false));
+              dispatch(addQuestionModelFun(!addQuestionModel));
+              dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
             }}
           />
         </div>
@@ -179,4 +225,5 @@ export default function AnswerBar() {
       </Drawer>
     </div>
   );
-}
+};
+export default AnswerBar;

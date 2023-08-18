@@ -2,7 +2,7 @@ const Section = require("../models/section");
 
 exports.addSection = async (req, res) => {
   const payload = req.body;
-  console.log("payload", payload);
+
   await Section(payload)
     .save()
     .then((item) => {

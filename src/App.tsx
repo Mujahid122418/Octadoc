@@ -7,8 +7,11 @@ import Header from "./components/screens/Header/Header";
 import Home from "./components/screens/Home/Home";
 import Setting from "./components/screens/Setting/Setting";
 
-import TemplateQuestion from "./components/screens/TemplateQuestion/TemplateQuestion";
+import EditTemplateQuestion from "./components/screens/TemplateQuestion/EditTemplateQuestion";
 import ShowTemplateQuestion from "./components/screens/TemplateQuestion/ShowTemplateQuestion";
+
+import SendMail from "./components/screens/Auth/SendMail";
+import ForgotPass from "./components/screens/Auth/ForgotPass";
 
 function App() {
   return (
@@ -70,8 +73,19 @@ function App() {
             </div>
           }
         />
-
+        <Route
+          path="/questions/edit/:id"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <EditTemplateQuestion />
+            </div>
+          }
+        />
         <Route path="/login" element={<Login />} />
+        <Route path="/SendMail" element={<SendMail />} />
+        <Route path="/forgot" element={<ForgotPass />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

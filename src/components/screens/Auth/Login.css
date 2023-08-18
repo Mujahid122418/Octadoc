@@ -1,8 +1,7 @@
+@import '../../../varible.css';
 body{
 	margin:0;
-	color:#6a6f8c;
-	/* background:#c8c8c8; */
-	font:600 16px/18px 'Open Sans',sans-serif;
+	/* background:#c8c8c8; */	
 }
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
@@ -12,16 +11,19 @@ a{color:inherit;text-decoration:none}
  
   display: flex;
    background-color: white;
-  
+  background: var(--rgba);
    
+}
+.link:hover{
+	color: white !important;
 }
 .Login-BackgroundImage{
     background-image: url("../../../assets/left_image.png");
     width: auto;
     height: 100px;
-    background-size: cover; /* or contain, auto, etc. */
-    background-position: center center; /* or top, bottom, left, right, etc. */
-    /* Other styles */
+    background-size: cover; 
+    background-position: center center; 
+
 }
 .login-wrap{
 	width:100%;
@@ -29,7 +31,24 @@ a{color:inherit;text-decoration:none}
 	max-width:525px;
 	min-height:670px;
 	position:relative;
-	/* background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center; */
+	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+    border-radius: 30px;
+}
+.email-wrap{
+	width:100%;
+	margin:auto;
+	max-width:525px;
+	min-height:400px;
+	position:relative;
+	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+    border-radius: 30px;
+}
+.forgot-wrap{
+	width:100%;
+	margin:auto;
+	max-width:525px;
+	min-height:500px;
+	position:relative;
 	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
     border-radius: 30px;
 }
@@ -38,7 +57,7 @@ a{color:inherit;text-decoration:none}
 	height:100%;
 	position:absolute;
 	padding:90px 70px 50px 70px;
-	background:rgba(40,57,101,.9);
+	background: var(--theme-color) !important;
     border-radius: 30px;
 }
 .login-html .sign-in-htm,
@@ -71,17 +90,20 @@ a{color:inherit;text-decoration:none}
 	margin:0 15px 10px 0;
 	display:inline-block;
 	border-bottom:2px solid transparent;
+	color: White;
+	cursor: pointer;
 }
 .login-html .sign-in:checked + .tab,
 .login-html .sign-up:checked + .tab{
 	color:#fff;
-	border-color:#1161ee;
+	border-color:var(--white);
 }
 .login-form{
 	min-height:345px;
 	position:relative;
 	perspective:1000px;
 	transform-style:preserve-3d;
+	margin-top: 15px;
 }
 .login-form .group{
 	margin-bottom:15px;
@@ -90,26 +112,30 @@ a{color:inherit;text-decoration:none}
 .login-form .group .input,
 .login-form .group .button{
 	width:100%;
-	color:#fff;
+	color:#fff !important;
 	display:block;
+	
 }
-.login-form .group .input,
 .login-form .group .button{
+	background-color: var(--rgba) !important;
+	border: 1px solid var(--white) !important;
+	color: var(--white) !important;
+	padding:15px 20px;
+	border-radius:25px;
+}
+.login-form .group .input
+{
 	border:none;
 	padding:15px 20px;
 	border-radius:25px;
-	background:rgba(255,255,255,.1);
+	color: var(--color) !important;
 }
 .login-form .group input[data-type="password"]{
 	text-security:circle;
 	-webkit-text-security:circle;
 }
 .login-form .group .label{
-	color:#aaa;
 	font-size:12px;
-}
-.login-form .group .button{
-	background:#1161ee;
 }
 .login-form .group label .icon{
 	width:15px;
@@ -117,7 +143,7 @@ a{color:inherit;text-decoration:none}
 	border-radius:2px;
 	position:relative;
 	display:inline-block;
-	background:rgba(255,255,255,.1);
+	background-color: var(--white);
 }
 .login-form .group label .icon:before,
 .login-form .group label .icon:after{
@@ -141,9 +167,10 @@ a{color:inherit;text-decoration:none}
 }
 .login-form .group .check:checked + label{
 	color:#fff;
+	
 }
 .login-form .group .check:checked + label .icon{
-	background:#1161ee;
+	background: var(--color);
 }
 .login-form .group .check:checked + label .icon:before{
 	transform:scale(1) rotate(45deg);
@@ -160,7 +187,7 @@ a{color:inherit;text-decoration:none}
 
 .hr{
 	height:2px;
-	margin:60px 0 50px 0;
+	margin:0px 0 15px 0;
 	background:rgba(255,255,255,.2);
 }
 .foot-lnk{

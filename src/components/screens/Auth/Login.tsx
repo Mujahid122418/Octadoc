@@ -3,7 +3,9 @@ import "./Login.css"; // Import your CSS file if needed
 import { LoginFun } from "../../../redux/Auth/AuthAPI";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+
 export default function Login() {
   const navigate = useNavigate(); // Use useNavigate hook to access
   const dispatch = useDispatch<AppDispatch>();
@@ -80,8 +82,8 @@ export default function Login() {
                   className="check"
                   defaultChecked
                 />
-                <label htmlFor="check">
-                  <span className="icon"></span> Keep me Signed in
+                <label htmlFor="check" className=" d-flex">
+                  <span className="icon"></span> <p className="ms-2 text-white">Keep me Signed in</p>
                 </label>
               </div>
 
@@ -93,7 +95,9 @@ export default function Login() {
               </div>
               <div className="hr"></div>
               <div className="foot-lnk">
-                <p>Forgot Password?</p>
+              <Link to='/SendMail' className="link">
+              <p>Forgot Password?</p>
+              </Link>
               </div>
             </div>
             <div className="sign-up-htm">

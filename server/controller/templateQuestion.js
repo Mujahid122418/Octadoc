@@ -1,4 +1,3 @@
-const answer = require("../models/answer");
 const Answer = require("../models/answer");
 const TemplateQuestions = require("../models/templateQuestions");
 
@@ -28,43 +27,47 @@ exports.getQuestion = async (req, res) => {
     const skip = (page - 1) * pageSize; // Calculate the number of documents to skip
 
     // Query and retrieve paginated data
-    const data = await TemplateQuestions.find()
+    const data1 = await TemplateQuestions.find()
+      .lean()
       // .populate("template_id")
       .skip(skip)
       .limit(pageSize);
 
-    let ans = await Answer.findOne({ question_id: { $in: data } });
-    let nn = data.forEach((item) => {});
-    console.log("ans", ans);
-    // console.log("ans", ans);
-    // const appendObjTo = (thatArray, newObj) => {
-    //   const frozenObj = Object.freeze(newObj);
-    //   return Object.freeze(thatArray.concat(frozenObj));
-    // };
+    let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
 
-    const updatedData = data.map((item) => ({
-      item,
-      ans,
-    }));
+    const data = await data1.map((objA) => {
+      const matchingObjB = ans.find(
+        (objB) => objB?.question_id.toString() === objA._id.toString()
+      );
 
-    // console.log(updatedData);
-    // Create a mapping of question IDs to their respective items
-    const questionIdToItemMap = {};
+      if (
+        matchingObjB &&
+        Object.keys(matchingObjB).length > 0 &&
+        matchingObjB !== null &&
+        matchingObjB !== undefined
+      ) {
+        let {
+          follow_up_question_group_id,
+          text,
+          question_id,
+          template_id,
+          _id,
+        } = matchingObjB;
 
-    updatedData.forEach((updatedItem) => {
-      const { item, ans } = updatedItem;
+        let send = {
+          follow_up_question_group_id,
+          text,
+          question_id,
+          template_id,
+          ans_id: _id,
+        };
 
-      if (!questionIdToItemMap[item._id]) {
-        questionIdToItemMap[item._id] = { ...item, answers: [] };
+        return { ...objA, ...send };
+      } else {
+        return { ...objA };
       }
-
-      questionIdToItemMap[item._id].answers.push(ans);
     });
 
-    // Convert the mapped items back into an array
-    const itemsWithAnswers = Object.values(questionIdToItemMap);
-
-    // console.log("itemsWithAnswers", itemsWithAnswers);
     res.json({
       data,
       currentPage: page,
@@ -76,7 +79,8 @@ exports.getQuestion = async (req, res) => {
 };
 
 exports.deleteQuestion = async (req, res) => {
-  TemplateQuestions.findByIdAndDelete(req.params?.id)
+  await Answer.deleteMany({ question_id: req.params?.id });
+  await TemplateQuestions.findByIdAndDelete(req.params?.id)
     .then((deletedPost) => {
       if (deletedPost) {
         res.status(200).send({
@@ -86,7 +90,7 @@ exports.deleteQuestion = async (req, res) => {
       } else {
         res.status(400).send({
           success: false,
-          message: "Not found",
+          message: "Not found ",
         });
       }
     })

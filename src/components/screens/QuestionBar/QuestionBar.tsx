@@ -25,8 +25,24 @@ import Checkbox from "@mui/material/Checkbox";
 
 import Button2 from "../Button2/Button2";
 import AddIcon from "@mui/icons-material/Add";
-import { addQuestionFunAPI } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
+import {
+  addQuestionFunAPI,
+  getQuestion,
+} from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { toast } from "react-toastify";
+import AnswerBar from "./Answerpart/AnswerPart";
+
+interface FollowUpQuestion {
+  question: string;
+  answers: string[];
+  followUp: FollowUpQuestion[];
+}
+
+interface QNAItem {
+  question: string;
+  answers: string[];
+  followUp: FollowUpQuestion[];
+}
 
 interface StateType {
   // Define your state properties here
@@ -42,12 +58,16 @@ export default function QuestionBar() {
   // let url = window.location?.pathname.split("/questions/")[1];
   const dispatch = useDispatch<AppDispatch>();
 
-  const { addQuestionModel, questionType } = useSelector(
-    (state: RootState) => state?.templateQuestion
-  );
+  const { addQuestionModel, questionType, addQuestionFollowupModel } =
+    useSelector((state: RootState) => state?.templateQuestion);
 
   // handel states start
-  const [question, setQuestion] = useState("");
+
+  const [qna, setQna] = useState<QNAItem[]>([]); //qnaData
+  const [newQuestion, setNewQuestion] = useState<string>("");
+  const [newAnswer, setNewAnswer] = useState<string>("");
+  const [newFollowUp, setNewFollowUp] = useState<string>("");
+
   // useEffect(() => {
   //   console.log("question", question);
   // }, [question]);
@@ -59,7 +79,7 @@ export default function QuestionBar() {
     setExpanded(!expanded);
   };
   const handleClickSaveBtn = () => {
-    if (!question) {
+    if (!newQuestion) {
       toast.error("Please enter Question");
     } else if (!questionType) {
       toast.error("Please Select Question type");
@@ -71,11 +91,25 @@ export default function QuestionBar() {
     } else {
       try {
         let data = {
-          name: question,
+          name: newQuestion,
           template_id: window.location.href.split("/questions/")[1],
           question_type: questionType,
         };
-        dispatch(addQuestionFunAPI(data));
+        dispatch(addQuestionFunAPI(data))
+          .unwrap()
+          .then((response) => {
+            console.log("respoce", response);
+
+            dispatch(getQuestion(data));
+          })
+          .catch((error) => {
+            toast.error(error);
+          });
+
+        // let data = {
+        //   page: 1,
+        //   pageSize: 20,
+        // };
       } catch (error) {}
     }
   };
@@ -86,14 +120,15 @@ export default function QuestionBar() {
   });
   const addQuestionFollowupBtn = () => {
     let pass = {
-      name: question,
+      name: newQuestion,
       template_id: window.location.href.split("/questions/")[1],
       question_type: questionType,
     };
 
     dispatch(passQuestionFun(pass));
-    dispatch(addQuestionFollowupModelFun(true));
-    dispatch(addQuestionModelFun(false));
+
+    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+    dispatch(addQuestionModelFun(!addQuestionModel));
   };
   useEffect(() => {
     setState((state) => ({
@@ -112,7 +147,7 @@ export default function QuestionBar() {
     <Box sx={{ width: 550 }} role="presentation">
       <IconButton
         sx={{ ml: "auto" }}
-        onClick={() => dispatch(addQuestionModelFun(false))}
+        onClick={() => dispatch(addQuestionModelFun(!addQuestionModel))}
       >
         <CloseIcon />
       </IconButton>
@@ -124,7 +159,7 @@ export default function QuestionBar() {
           type="text"
           placeholder="What do you want to ask? "
           // onClick={handleInputClick}
-          onChange={(e) => setQuestion(e.target.value)}
+          onChange={(e) => setNewQuestion(e.target.value)}
         />
         <FormControlLabel
           className="ms-1"
@@ -213,7 +248,7 @@ export default function QuestionBar() {
         <div className="close-button mt-2">
           <Button2
             name="Close"
-            onClick={() => dispatch(addQuestionModelFun(false))}
+            onClick={() => dispatch(addQuestionModelFun(!addQuestionModel))}
           />
         </div>
       </List>
@@ -227,6 +262,14 @@ export default function QuestionBar() {
       <Drawer anchor={anchor} open={state[anchor]}>
         {list(anchor)}
       </Drawer>
+      <AnswerBar
+        newAnswer={newAnswer}
+        setNewAnswer={setNewAnswer}
+        newQuestion={newQuestion}
+        qna={qna}
+        setQna={setQna}
+        newFollowUp={newFollowUp}
+      />
     </div>
   );
 }

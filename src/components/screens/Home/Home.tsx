@@ -74,7 +74,7 @@ const Home: React.FC = () => {
             </div>
           ) : window.location.pathname === "/template" ? (
             <div className="row">
-              {template.filter((item) => item?.user_id === user?._id)?.length >
+              {template?.filter((item) => item?.user_id === user?._id)?.length >
               0 ? (
                 template
                   .filter((item) => item?.user_id === user?._id)
@@ -92,7 +92,7 @@ const Home: React.FC = () => {
             </div>
           ) : (
             <div className="row">
-              {template.filter((item) => item?.isapprove === "true")?.length >
+              {template?.filter((item) => item?.isapprove === "true")?.length >
               0 ? (
                 template
                   .filter((item) => item?.isapprove === "true")

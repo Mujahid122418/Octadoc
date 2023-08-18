@@ -19,6 +19,9 @@ const answer_Schema = new schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "templateQuestion",
     },
+    template_id: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

@@ -77,7 +77,6 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
             >
               <DeleteIcon />
             </IconButton>
-            {/* </div> */}
           </Stack>
         )}
       </div>
