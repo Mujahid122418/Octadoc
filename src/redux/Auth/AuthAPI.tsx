@@ -33,7 +33,22 @@ export interface IAuth {
 //     }
 //   }
 // );
+export const SignupFun = createAsyncThunk(
+  "auth/register",
+  async (data: any) => {
+    try {
+      const response = await axios.post(Baseurl + `/auth/register`, data);
 
+      if (response?.data?.success) {
+        localStorage.setItem("token", response?.data?.token);
+        localStorage.setItem("user", response?.data?.user?._id);
+      }
+      return response.data.user;
+    } catch (error) {
+      console.log("error auth api", error);
+    }
+  }
+);
 export const LoginFun = createAsyncThunk("auth/login", async (data: any) => {
   try {
     const response = await axios.post(Baseurl + `/auth/login`, data);
@@ -57,24 +72,18 @@ export const getMeFun = createAsyncThunk("auth/getme", async (data: any) => {
   } catch (error) {
     console.log("error auth getme api", error);
   }
- 
 });
 
 export const updateProfile = createAsyncThunk(
   "auth/updatedetails",
   async (data: any) => {
     try {
-      const response = await axios.put(
-        Baseurl + `/auth/updatedetails`,
-        data
-      );
-      console.log("ressss" , response.data);
-      
+      const response = await axios.put(Baseurl + `/auth/updatedetails`, data);
+      console.log("ressss", response.data);
+
       return response.data;
     } catch (error) {
       console.log(error);
     }
   }
 );
-
-

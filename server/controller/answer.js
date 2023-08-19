@@ -3,7 +3,7 @@ const { populate } = require("../models/template");
 
 exports.addAnswer = async (req, res) => {
   const payload = req.body;
-  console.log("payload", payload);
+  
   await Answer(payload)
     .save()
     .then((item) => {
