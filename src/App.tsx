@@ -12,6 +12,8 @@ import ShowTemplateQuestion from "./components/screens/TemplateQuestion/ShowTemp
 
 import SendMail from "./components/screens/Auth/SendMail";
 import ForgotPass from "./components/screens/Auth/ForgotPass";
+import Admin from "./components/screens/Admin/Admin";
+
 
 function App() {
   return (
@@ -83,6 +85,18 @@ function App() {
             </div>
           }
         />
+
+      <Route
+          path="/admin"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <Admin/>
+            </div>
+          }
+        />
+
         <Route path="/login" element={<Login />} />
         <Route path="/SendMail" element={<SendMail />} />
         <Route path="/forgot" element={<ForgotPass />} />

@@ -1,0 +1,7 @@
+.table-head{
+    background: var(--theme-color) !important;
+    color: var(--white) !important;
+}
+.table-head .MuiTableCell-root{
+    color: var(--white ) !important;
+}

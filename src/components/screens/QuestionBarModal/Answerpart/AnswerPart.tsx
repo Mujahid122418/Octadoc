@@ -110,10 +110,11 @@ const QNAComponent: React.FC<{
   return (
     <div>
       {qna.map((item: any, questionIndex: any) => (
-        <div key={item.index} style={{ padding: 10 }}>
+        <div key={item.index} className="input-cover" style={{ padding: 10 }}>
           <input
             type="text"
             value={item.question}
+            className="question-input"
             placeholder="Question"
             onChange={(e) => {
               const value = e.target.value;
@@ -124,6 +125,7 @@ const QNAComponent: React.FC<{
           />
           <input
             type="text"
+            className="answer-input"
             value={item.answers}
             placeholder="Answers"
             onChange={(e) => {

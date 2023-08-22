@@ -1,0 +1,12 @@
+.answer-input{
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+.question-input{
+    border-bottom-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom: 1px solid rgb(216, 216, 216) !important;
+}
+.input-cover{
+    border-left: 1px solid var(--color);
+}

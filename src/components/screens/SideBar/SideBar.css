@@ -1,7 +1,11 @@
 
 /* Sidebar.css */
 @import '../../../varible.css';
-
+.MuiPaper-root {
+  border-radius: 20px !important;
+  border: 2px solid var(--color);
+  box-shadow: var(--box-shadow);
+}
 .sidebar-content {
   width: 320px;
   font-family: var(--font) !important;
