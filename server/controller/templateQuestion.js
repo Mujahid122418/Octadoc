@@ -34,7 +34,11 @@ exports.getQuestion = async (req, res) => {
       .limit(pageSize);
 
     let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
-
+    // let d = {
+    //   ques: data1,
+    //   ans: ans,
+    // };
+    // console.log("d is d", d);
     const data = await data1.map((objA) => {
       const matchingObjB = ans.find(
         (objB) => objB?.question_id.toString() === objA._id.toString()
@@ -127,4 +131,63 @@ exports.updateQuestion = async (req, res) => {
         message: error.message,
       });
     });
+};
+
+exports.singleQuestion = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
+  const pageSize = parseInt(req.query.pageSize) || 10; // Get the page size or default to 10
+
+  try {
+    const totalDocuments = await TemplateQuestions.countDocuments(); // Get the total number of documents
+
+    const totalPages = Math.ceil(totalDocuments / pageSize); // Calculate the total number of pages
+
+    const skip = (page - 1) * pageSize; // Calculate the number of documents to skip
+
+    // Query and retrieve paginated data
+    const data1 = await TemplateQuestions.find({ _id: req?.params.id })
+      .lean()
+      // .populate("template_id")
+      .skip(skip)
+      .limit(pageSize);
+    let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
+
+    const data = await data1.map((objA) => {
+      const matchingObjB = ans.find(
+        (objB) => objB?.question_id.toString() === objA._id.toString()
+      );
+      if (
+        matchingObjB &&
+        Object.keys(matchingObjB).length > 0 &&
+        matchingObjB !== null &&
+        matchingObjB !== undefined
+      ) {
+        let {
+          follow_up_question_group_id,
+          text,
+          question_id,
+          template_id,
+          _id,
+        } = matchingObjB;
+
+        let send = {
+          follow_up_question_group_id,
+          text,
+          question_id,
+          template_id,
+          ans_id: _id,
+        };
+        // console.log("objA", ...objA, ...send);
+        return { ...objA, ...send };
+      } else {
+        // console.log("objA", objA);
+        return { ...objA };
+      }
+    });
+    res.json({
+      data,
+      currentPage: page,
+      totalPages,
+    });
+  } catch (error) {}
 };

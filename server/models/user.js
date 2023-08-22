@@ -20,31 +20,25 @@ const UserSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    required: [true, "Please select gender"],
   },
   state: {
     type: String,
-    required: [true, "Please select state"],
   },
   language: {
     type: String,
-    required: [true, "Please select language"],
   },
   countryofTraining: {
     type: String,
-    required: [true, "Please select Country of Training"],
   },
   workingHours: {
     type: String,
-    required: [true, "Please select Working Hours"],
   },
   yearsofPractice: {
     type: String,
-    required: [true, "Please select Years of Practice"],
   },
   phone: {
     type: String,
-    required: [true, "Please add Phone Number"],
+
     message: "{VALUE} is not a valid  number!",
   },
   role: {
@@ -54,7 +48,7 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Please add a password"],
+
     minlength: 6,
     select: false,
   },

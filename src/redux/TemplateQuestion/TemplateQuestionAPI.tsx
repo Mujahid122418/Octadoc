@@ -30,6 +30,21 @@ export const getQuestion = createAsyncThunk(
     }
   }
 );
+export const getSingleQuestionFun = createAsyncThunk(
+  "question/singleQueston",
+  async (data: any) => {
+    try {
+      const response = await axios.get(
+        Baseurl +
+          `/question/singleQueston/${data}?page=${data.page}&pageSize=${data.pageSize}`
+      );
+
+      return response.data?.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 export const addAnswerFunAPI = createAsyncThunk(
   "answer/addAnswer",
@@ -49,6 +64,21 @@ export const getAnswerFunAPI = createAsyncThunk(
   async (data: any) => {
     try {
       const response = await axios.post(Baseurl + `/answer/answer`, data);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const updateAnswerFunAPI = createAsyncThunk(
+  "answer/answer",
+  async (data: any) => {
+    try {
+      const response = await axios.put(
+        Baseurl + `/answer/answer/${data.id}`,
+        data
+      );
 
       return response.data;
     } catch (error) {

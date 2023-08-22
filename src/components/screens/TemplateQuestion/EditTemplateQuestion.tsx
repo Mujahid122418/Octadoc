@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./TemplateQuestion.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
@@ -25,33 +25,31 @@ import {
   DeleteQuestion,
   getQuestion,
 } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
+import {
+  EditSelectedQuestionFun,
+  addQuestionModelFun,
+} from "../../../redux/TemplateQuestion/TemplateQuestion";
+import QuestionBar from "../QuestionBarModal/QuestionBar";
 
 const EditTemplateQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [section, setSection] = useState([1]);
-  const { isLoading, getQuestions } = useSelector(
+  const { isLoading, getQuestions, addQuestionModel } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
 
   let tem_id = window.location.href.split("/questions/edit/")[1];
-
+  useEffect(() => {
+    let data = {
+      page: 1,
+      pageSize: 20,
+    };
+    dispatch(getQuestion(data));
+  }, []);
   const customRadioStyle = {
     color: "#6049cd", // Your custom color code
   };
 
-  // const AddQuestionModel = () => {
-  //   try {
-  //     dispatch(addQuestionModelFun(true));
-  //   } catch (error) {}
-  // };
-  // const AddSection = async (e: any) => {
-  //   setSection((current) => [...current, ++e]);
-  // };
-  // const DeleteSection = (e: any) => {
-  //   let filter = section.filter((item) => item !== e);
-
-  //   setSection(filter);
-  // };
   const DeleteTemplateQuestion = async (id: any) => {
     dispatch(DeleteQuestion(id))
       .unwrap()
@@ -66,9 +64,14 @@ const EditTemplateQuestion = () => {
         console.log("delete question", e);
       });
   };
+
   const updateTemplateQuestion = async (e: any) => {
-    console.log("eee", e);
+    console.log("eee", e, addQuestionModel);
+    dispatch(EditSelectedQuestionFun(e));
+    // dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+    dispatch(addQuestionModelFun(!addQuestionModel));
   };
+
   const SectionDetails = section.map((item, index) => {
     return (
       <>
@@ -230,6 +233,7 @@ const EditTemplateQuestion = () => {
               </ul>
             </div>
           </div>
+          <QuestionBar />
         </div>
       </>
     );

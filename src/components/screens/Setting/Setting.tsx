@@ -8,6 +8,7 @@ import { AppDispatch } from "../../../redux/Store";
 import type { RootState } from "../../../redux/Store";
 
 import { updateProfile } from "../../../redux/Auth/AuthAPI";
+import { toast } from "react-toastify";
 
 const Setting = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,10 +16,11 @@ const Setting = () => {
   const { user } = useSelector((state: RootState) => state?.auth);
 
   const [name, setname] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [gender, setGender] = useState(user?.gender || ""); // Initialize with user's gender
-  const [state, setState] = useState(user?.state || ""); // Initialize with user's state
-  const [language, setLanguage] = useState(user?.language || ""); // Initialize with user's language
+  const [gender, setGender] = useState(""); // Initialize with user's gender
+  const [state, setState] = useState(""); // Initialize with user's state
+  const [language, setLanguage] = useState(""); // Initialize with user's language
   const [countryofTraining, setcountryofTraining] = useState(
     user?.countryofTraining || ""
   ); // Initialize with user's countryofTraining
@@ -26,29 +28,43 @@ const Setting = () => {
   const [yearsofPractice, setyearsofPractice] = useState(
     user?.yearsofPractice || ""
   ); // Initialize with user's yearsofPractice
+  console.log("gen val => ", user);
 
   useEffect(() => {
     setname(user?.name);
+    setEmail(user?.email);
+    setGender(user?.gender);
+    setState(user?.state);
+    setLanguage(user?.language);
+    setcountryofTraining(user?.countryofTraining);
+    setworkingHours(user?.workingHours);
+    setyearsofPractice(user?.yearsofPractice);
   }, [user]);
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    try {
-      let data = {
-        id: user?._id,
-        name: name,
-        gender: gender,
-        state: state,
-        language: language,
-        countryofTraining: countryofTraining,
-        workingHours: workingHours,
-        yearsofPractice: yearsofPractice,
-        // phone: "",
-        password: password,
-      };
-      dispatch(updateProfile(data));
+    if (!name) {
+      toast.error("Name is required");
+    } else if (!email) {
+      toast.error("Email is required");
+    } else {
+      try {
+        let data = {
+          id: user?._id,
+          name: name,
+          email: user?.email,
+          gender: gender,
+          state: state,
+          language: language,
+          countryofTraining: countryofTraining,
+          workingHours: workingHours,
+          yearsofPractice: yearsofPractice,
+          // phone: "",
+        };
+        dispatch(updateProfile(data));
 
-      console.log("data ==>", data);
-    } catch (error) {}
+        console.log("data ==>", data);
+      } catch (error) {}
+    }
   };
 
   return (
@@ -74,7 +90,7 @@ const Setting = () => {
                       aria-describedby="emailHelp"
                       placeholder="Enter email"
                       disabled
-                      value={user?.email}
+                      value={email}
                       // onChange={(e) => setName(e.target.name)}
                     />
                   </div>
@@ -104,11 +120,10 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      value={gender}
                       onChange={(e) => setGender(e.target.value)}
                     >
-                      <option value="" disabled>
-                        Gender
-                      </option>
+                      <option value="">Gender</option>
                       <option>Male</option>
                       <option>Female</option>
                       <option>Non Binary</option>
@@ -120,11 +135,10 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      value={state}
                       onChange={(e) => setState(e.target.value)}
                     >
-                      <option value="" disabled>
-                        State
-                      </option>
+                      <option value="">State</option>
                       <option>Pakistan</option>
                       <option>India</option>
                       <option>Dubai</option>
@@ -138,11 +152,10 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      value={language}
                       onChange={(e) => setLanguage(e.target.value)}
                     >
-                      <option value="" disabled>
-                        First Language
-                      </option>
+                      <option value="">Language</option>
                       <option>Urdu</option>
                       <option>English</option>
                       <option>Arbi</option>
@@ -156,11 +169,10 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      value={countryofTraining}
                       onChange={(e) => setcountryofTraining(e.target.value)}
                     >
-                      <option value="" disabled>
-                        Country Of Traning
-                      </option>
+                      <option value="">Country Of Traning</option>
                       <option>Dubai</option>
                       <option>Pakistan</option>
                       <option>India</option>
@@ -174,11 +186,10 @@ const Setting = () => {
                     <select
                       className="form-control select-arrow"
                       id="customSelect"
+                      value={workingHours}
                       onChange={(e) => setworkingHours(e.target.value)}
                     >
-                      <option value="" disabled>
-                        Working hours
-                      </option>
+                      <option value="">Working hours</option>
                       <option>Part Time</option>
                       <option>Full Time</option>
                     </select>

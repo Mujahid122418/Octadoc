@@ -14,20 +14,26 @@ export default function Login() {
 
   const handelLogin = (e: any) => {
     e.preventDefault();
-    try {
-      let data = {
-        email: email,
-        password: password,
-      };
-      console.log("data", data);
-      dispatch(LoginFun(data))
-        .unwrap()
-        .then((res) => {
-          navigate("/");
-        })
-        .catch((error) => {});
-    } catch (error) {
-      console.log("errpr", error);
+    if (!email) {
+      toast.error("Email is required");
+    } else if (!password) {
+      toast.error("Password is required");
+    } else {
+      try {
+        let data = {
+          email: email,
+          password: password,
+        };
+        console.log("data", data);
+        dispatch(LoginFun(data))
+          .unwrap()
+          .then((res) => {
+            navigate("/");
+          })
+          .catch((error) => {});
+      } catch (error) {
+        console.log("errpr", error);
+      }
     }
   };
 
@@ -38,9 +44,9 @@ export default function Login() {
   const [number, setNumber] = useState("");
   const handelSignup = (e: any) => {
     e.preventDefault();
-    if (!email) {
+    if (!signUpEmail) {
       toast.error("Email is required");
-    } else if (!password) {
+    } else if (!signupPassword) {
       toast.error("Password is required");
     } else {
       try {
@@ -55,7 +61,7 @@ export default function Login() {
         dispatch(SignupFun(data))
           .unwrap()
           .then((res) => {
-            navigate("/");
+            navigate("/login");
           })
           .catch((error) => {
             console.log("register error", error);
@@ -138,7 +144,7 @@ export default function Login() {
               </div>
             </div>
 
-            {/* <div className="sign-up-htm">
+            <div className="sign-up-htm">
               <div className="group">
                 <label htmlFor="user" className="label">
                   Name
@@ -159,7 +165,7 @@ export default function Login() {
                   type="text"
                   className="input"
                   data-type="input"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setSignUpEmail(e.target.value)}
                 />
               </div>
               <div className="group">
@@ -180,7 +186,7 @@ export default function Login() {
                   Password
                 </label>
                 <input
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setSignupPassword(e.target.value)}
                   id="pass"
                   type="text"
                   className="input"
@@ -201,7 +207,7 @@ export default function Login() {
               <div className="foot-lnk">
                 <label htmlFor="tab-1">Already Member?</label>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

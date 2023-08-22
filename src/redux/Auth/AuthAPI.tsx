@@ -1,8 +1,8 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Baseurl } from "../../utils/BaseUrl";
-import { redirect } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
 
 export interface IAuth {
   user: any;
@@ -40,12 +40,16 @@ export const SignupFun = createAsyncThunk(
       const response = await axios.post(Baseurl + `/auth/register`, data);
 
       if (response?.data?.success) {
-        localStorage.setItem("token", response?.data?.token);
-        localStorage.setItem("user", response?.data?.user?._id);
+        // localStorage.setItem("token", response?.data?.token);
+        // localStorage.setItem("user", response?.data?.user?._id);
+        toast.success("Account Created Successfully, Login First");
+      } else {
+        console.log("error signup api false", response?.data);
       }
       return response.data.user;
     } catch (error) {
       console.log("error auth api", error);
+      toast.error("Server Error");
     }
   }
 );
@@ -55,10 +59,13 @@ export const LoginFun = createAsyncThunk("auth/login", async (data: any) => {
 
     if (response?.data?.success) {
       localStorage.setItem("token", response?.data?.token);
-      localStorage.setItem("user", response?.data?.user?._id);
+      localStorage.setItem("user", response?.data?.data?._id);
+    } else {
+      console.log("error login api false", response?.data);
     }
     return response.data.user;
   } catch (error) {
+    toast.error("Server Error");
     console.log("error auth api", error);
   }
 });
@@ -78,9 +85,13 @@ export const updateProfile = createAsyncThunk(
   "auth/updatedetails",
   async (data: any) => {
     try {
+      console.log("data update", data);
+
       const response = await axios.put(Baseurl + `/auth/updatedetails`, data);
       console.log("ressss", response.data);
-
+      if (response.data?.success) {
+        toast.success("Profile Updated Successfully");
+      }
       return response.data;
     } catch (error) {
       console.log(error);

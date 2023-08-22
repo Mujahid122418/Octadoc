@@ -23,7 +23,9 @@ import {
   addAnswerFunAPI,
   addQuestionFunAPI,
   getQuestion,
+  updateAnswerFunAPI,
 } from "../../../../redux/TemplateQuestion/TemplateQuestionAPI";
+import { create_UUID } from "../../../../utils/UUID";
 
 interface StateType {
   // Define your state properties here
@@ -41,7 +43,103 @@ interface IAnswerBar {
   qna: any;
   setQna: (value: any) => void;
   newFollowUp: any;
+  UpdateQuestionsArray: (value: any) => void;
 }
+interface FollowUpQuestion {
+  question: string;
+  answers: string;
+  index: string;
+  followup: FollowUpQuestion[];
+}
+interface QNAItem {
+  question: string;
+  answers: string;
+  index: string;
+  followUp: FollowUpQuestion[];
+}
+
+const QNAComponent: React.FC<{
+  qna: any;
+  onUpdate: (updatedQna: QNAItem[]) => void;
+  // onDelete: (updatedQna: QNAItem[]) => void;
+}> = ({ qna, onUpdate }) => {
+  const createUUID = (): string => {
+    return create_UUID();
+  };
+
+  const handleAddQuestion = () => {
+    const updatedQna = [...qna];
+    updatedQna.push({
+      question: "",
+      answers: "",
+      index: createUUID(),
+      followUp: [],
+    });
+    onUpdate(updatedQna);
+  };
+
+  //   const handleAddFollowUp = (questionIndex: number) => {
+  //     const updatedQna = [...qna];
+  //     const followUpUUID = createUUID();
+  //     console.log("updatedQna", updatedQna[questionIndex]);
+
+  //     updatedQna[questionIndex].followUp.length > 0 &&
+  //       updatedQna[questionIndex].followUp.push({
+  //         question: "",
+  //         answers: "",
+  //         index: followUpUUID,
+  //         followup: [],
+  //       });
+  //     console.log("push test", updatedQna);
+
+  //     onUpdate(updatedQna);
+  //   };
+
+  return (
+    <div>
+      {qna.map((item: any, questionIndex: any) => (
+        <div key={item.index}>
+          <input
+            type="text"
+            value={item.question}
+            placeholder="Question"
+            onChange={(e) => {
+              const value = e.target.value;
+              const updatedQna = [...qna];
+              updatedQna[questionIndex].question = value;
+              onUpdate(updatedQna);
+            }}
+          />
+          <input
+            type="text"
+            value={item.answers}
+            placeholder="Answers"
+            onChange={(e) => {
+              const value = e.target.value;
+              const updatedQna = [...qna];
+              updatedQna[questionIndex].answers = value;
+              onUpdate(updatedQna);
+            }}
+          />
+
+          <QNAComponent
+            qna={item.followUp}
+            onUpdate={(updatedFollowUp) => {
+              const updatedQna = [...qna];
+              updatedQna[questionIndex].followUp = updatedFollowUp;
+              onUpdate(updatedQna);
+            }}
+          />
+        </div>
+      ))}
+      {qna.length > 0 ? (
+        <button onClick={handleAddQuestion}>Add Question </button>
+      ) : (
+        <button onClick={handleAddQuestion}>Add Followup Question </button>
+      )}
+    </div>
+  );
+};
 
 const AnswerBar: React.FC<IAnswerBar> = ({
   newAnswer,
@@ -50,15 +148,22 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   qna,
   setQna,
   newFollowUp,
+  UpdateQuestionsArray,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-
-  const { addQuestionFollowupModel, passQuestion, addQuestionModel } =
-    useSelector((state: RootState) => state?.templateQuestion);
+  // const handleDelete = (indexToDelete) => {
+  //   const updatedData = [...qna];
+  //   updatedData.splice(indexToDelete, 1);
+  //   setQna(updatedData);
+  // };
+  const {
+    addQuestionFollowupModel,
+    passQuestion,
+    addQuestionModel,
+    EditAnswer,
+  } = useSelector((state: RootState) => state?.templateQuestion);
 
   // handel answer state start
-
-  console.log("qna", qna);
 
   // handel answer state end
   const handleClickBtnSaveAnswer = (event: any) => {
@@ -66,22 +171,6 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     if (!newAnswer) {
       toast.error("Answer is required");
     } else {
-      // const newQnaItem = {
-      //   id: qna.length + 1,
-      //   question: newQuestion,
-      //   answer: newAnswer,
-      //   followUp: newFollowUp
-      //     ? [
-      //         {
-      //           question: newFollowUp,
-      //           answers: [], // You can add answers for follow-up questions if needed
-      //           followUp: [],
-      //         },
-      //       ]
-      //     : [],
-      // };
-      // setQna([...qna, newQnaItem]);
-
       dispatch(addQuestionFunAPI(passQuestion))
         .unwrap()
         .then((res) => {
@@ -129,7 +218,33 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     dispatch(addQuestionModelFun(!addQuestionModel));
     dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
   };
+  // update answer
+  useEffect(() => {
+    if (Object.keys(EditAnswer).length > 0) {
+      setNewAnswer(EditAnswer?.ans);
+    }
+  }, [EditAnswer]);
+  const updateAnswer = () => {
+    try {
+      let ans = { id: EditAnswer?.id, text: newAnswer };
+      console.log("send", ans);
 
+      dispatch(updateAnswerFunAPI(ans))
+        .unwrap()
+        .then((response) => {
+          let d1 = {
+            page: 1,
+            pageSize: 20,
+          };
+          dispatch(getQuestion(d1));
+        })
+        .catch((error) => {
+          toast.error(error);
+        });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
       <IconButton
@@ -142,7 +257,11 @@ const AnswerBar: React.FC<IAnswerBar> = ({
         <CloseIcon />
       </IconButton>
       <List className="p-3 qu-bar">
-        <h2 className="mb-1">Add Answer to</h2>
+        <h2 className="mb-1">
+          {Object.keys(EditAnswer).length > 0
+            ? "Edit Answer to"
+            : "Add Answer to"}
+        </h2>
 
         <label htmlFor="">Answer</label>
         <input
@@ -184,14 +303,32 @@ const AnswerBar: React.FC<IAnswerBar> = ({
           <label htmlFor="">Follow Up Question</label>
 
           <Button2
-            name="Add "
-            onClick={() => addQuestionFollowupBtn()}
+            name="Add Follow Up Question"
+            onClick={() => {
+              // addQuestionFollowupBtn();
+              UpdateQuestionsArray("answer");
+            }}
             icon={<AddIcon />}
           />
         </div>
-        <textarea disabled name="" id="" cols={30} rows={5} />
+        {qna.length > 0 ? (
+          <QNAComponent qna={qna} onUpdate={setQna} />
+        ) : (
+          <textarea disabled name="" id="" cols={30} rows={5} />
+        )}
         <div className="save-button mt-2">
-          <Button2 name="Save Answer " onClick={handleClickBtnSaveAnswer} />
+          <Button2
+            name={
+              Object.keys(EditAnswer).length > 0
+                ? "Update Answer "
+                : "Save Answer "
+            }
+            onClick={(e) => {
+              Object.keys(EditAnswer).length > 0
+                ? updateAnswer()
+                : handleClickBtnSaveAnswer(e);
+            }}
+          />
         </div>
         <div className="close-button mt-2">
           <Button2

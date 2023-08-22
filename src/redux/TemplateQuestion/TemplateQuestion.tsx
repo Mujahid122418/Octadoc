@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addQuestionFunAPI, getQuestion } from "./TemplateQuestionAPI";
+import {
+  addQuestionFunAPI,
+  getQuestion,
+  getSingleQuestionFun,
+} from "./TemplateQuestionAPI";
 
 interface TemplateArray {
   isLoading: Boolean;
@@ -7,11 +11,13 @@ interface TemplateArray {
   status: string;
   addQuestionModel: Boolean;
   addQuestionFollowupModel: Boolean;
-  selectedQuestion: any;
+  EditSelectedQuestion: any;
   addQuestion: any;
   questionType: string;
   getQuestions: any;
   passQuestion: any;
+  getSingleQuestion: any;
+  EditAnswer: any;
 }
 
 const initialState: TemplateArray = {
@@ -20,11 +26,13 @@ const initialState: TemplateArray = {
   error: "",
   addQuestionModel: false,
   addQuestionFollowupModel: false,
-  selectedQuestion: {},
+  EditSelectedQuestion: {},
   addQuestion: [],
   questionType: "",
   getQuestions: [],
   passQuestion: {},
+  getSingleQuestion: [],
+  EditAnswer: {},
 };
 
 export const templateQuestionSlice = createSlice({
@@ -46,6 +54,12 @@ export const templateQuestionSlice = createSlice({
     passQuestionFun: (state, action) => {
       state.passQuestion = action.payload;
     },
+    EditSelectedQuestionFun: (state, action) => {
+      state.EditSelectedQuestion = action.payload;
+    },
+    EditAnswerFun: (state, action) => {
+      state.EditAnswer = action.payload;
+    },
   },
   extraReducers: {
     [getQuestion.pending.type]: (state, action) => {
@@ -56,6 +70,16 @@ export const templateQuestionSlice = createSlice({
       state.getQuestions = payload;
     },
     [getQuestion.rejected.type]: (state, action) => {
+      state.isLoading = false;
+    },
+    [getSingleQuestionFun.pending.type]: (state, action) => {
+      state.isLoading = true;
+    },
+    [getSingleQuestionFun.fulfilled.type]: (state, { payload }) => {
+      state.isLoading = false;
+      state.getSingleQuestion = payload;
+    },
+    [getSingleQuestionFun.rejected.type]: (state, action) => {
       state.isLoading = false;
     },
   },
@@ -71,5 +95,7 @@ export const {
   addQuestionFun,
   questionTypeFun,
   passQuestionFun,
+  EditSelectedQuestionFun,
+  EditAnswerFun,
 } = templateQuestionSlice.actions;
 export default templateQuestionSlice.reducer;

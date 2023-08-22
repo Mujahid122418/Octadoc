@@ -12,13 +12,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import type { RootState } from "../../../redux/Store";
 
-import QuestionBar from "../QuestionBar/QuestionBar";
+import QuestionBar from "../QuestionBarModal/QuestionBar";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
 import { addQuestionModelFun } from "../../../redux/TemplateQuestion/TemplateQuestion";
 
-import AnswerBar from "../QuestionBar/Answerpart/AnswerPart";
+import AnswerBar from "../QuestionBarModal/Answerpart/AnswerPart";
 import SimpleBackdrop from "../../../utils/BackDrop";
 import { getQuestion } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { useNavigate } from "react-router-dom";

@@ -80,8 +80,9 @@ exports.login = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     res.status(401).send({ success: false, message: "Invalid credentials" });
   }
+  res.status(200).send({ success: true, data: user });
 
-  sendTokenResponse(user, 200, res);
+  // sendTokenResponse(user, 200, res);
 });
 
 // @desc      Get current logged in user
@@ -177,12 +178,28 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-  const { id, name, email } = req.body;
+  const {
+    id,
+    name,
+    email,
+    gender,
+    state,
+    language,
+    countryofTraining,
+    yearsofPractice,
+    workingHours,
+  } = req.body;
   const fieldsToUpdate = {
     name: name,
     email: email,
+    gender: gender,
+    state: state,
+    language: language,
+    countryofTraining: countryofTraining,
+    workingHours: workingHours,
+    yearsofPractice: yearsofPractice,
   };
-
+  console.log("fieldsToUpdate", id, fieldsToUpdate);
   const user = await User.findByIdAndUpdate(id, fieldsToUpdate, {
     new: true,
     runValidators: true,

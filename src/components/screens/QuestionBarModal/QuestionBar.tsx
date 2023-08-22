@@ -20,6 +20,7 @@ import {
   addQuestionFollowupModelFun,
   questionTypeFun,
   passQuestionFun,
+  EditAnswerFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestion";
 import Checkbox from "@mui/material/Checkbox";
 
@@ -28,20 +29,29 @@ import AddIcon from "@mui/icons-material/Add";
 import {
   addQuestionFunAPI,
   getQuestion,
+  getSingleQuestionFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { toast } from "react-toastify";
 import AnswerBar from "./Answerpart/AnswerPart";
+import SimpleBackdrop from "../../../utils/BackDrop";
 
-interface FollowUpQuestion {
-  question: string;
-  answers: string[];
-  followUp: FollowUpQuestion[];
-}
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import Stack from "@mui/material/Stack";
+import { create_UUID } from "../../../utils/UUID";
+
+// interface FollowUpQuestion {
+//   question: string;
+//   answers: string;
+//   //followUp: FollowUpQuestion[]; // Use 'followUp' here
+//   followUp: any;
+// }
 
 interface QNAItem {
   question: string;
-  answers: string[];
-  followUp: FollowUpQuestion[];
+  answers: string;
+  index: Number;
+  followUp: any; // Use 'followUp' here
 }
 
 interface StateType {
@@ -58,15 +68,50 @@ export default function QuestionBar() {
   // let url = window.location?.pathname.split("/questions/")[1];
   const dispatch = useDispatch<AppDispatch>();
 
-  const { addQuestionModel, questionType, addQuestionFollowupModel } =
-    useSelector((state: RootState) => state?.templateQuestion);
-
+  const {
+    addQuestionModel,
+    questionType,
+    addQuestionFollowupModel,
+    EditSelectedQuestion,
+    getSingleQuestion,
+    isLoading,
+  } = useSelector((state: RootState) => state?.templateQuestion);
+  // console.log("getSingleQuestion", getSingleQuestion);
+  const createUUID = (): string => {
+    return create_UUID();
+  };
   // handel states start
 
-  const [qna, setQna] = useState<QNAItem[]>([]); //qnaData
+  const [qna, setQna] = useState<any>([
+    // {
+    //   question: "",
+    //   answers: "",
+    //   index: createUUID(),
+    //   followUp: [],
+    // },
+  ]);
+
   const [newQuestion, setNewQuestion] = useState<string>("");
   const [newAnswer, setNewAnswer] = useState<string>("");
   const [newFollowUp, setNewFollowUp] = useState<string>("");
+  const [QuestionType, setQuestionType] = useState("");
+
+  console.log("test qna", qna);
+
+  const UpdateQuestionsArray = (e: any) => {
+    if (e === "answer") {
+      const updatedQna = [...qna];
+      updatedQna.push({
+        question: newQuestion,
+        answers: newAnswer,
+        index: createUUID(),
+        followUp: [],
+      });
+      setQna(updatedQna);
+      setNewQuestion("");
+      setNewAnswer("");
+    }
+  };
 
   // useEffect(() => {
   //   console.log("question", question);
@@ -105,11 +150,6 @@ export default function QuestionBar() {
           .catch((error) => {
             toast.error(error);
           });
-
-        // let data = {
-        //   page: 1,
-        //   pageSize: 20,
-        // };
       } catch (error) {}
     }
   };
@@ -126,7 +166,6 @@ export default function QuestionBar() {
     };
 
     dispatch(passQuestionFun(pass));
-
     dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
     dispatch(addQuestionModelFun(!addQuestionModel));
   };
@@ -142,6 +181,31 @@ export default function QuestionBar() {
       event.stopPropagation();
     }
   };
+  // handel qdit question
+
+  useEffect(() => {
+    if (Object.keys(EditSelectedQuestion).length > 0) {
+      console.log("EditSelectedQuestion ==>", EditSelectedQuestion);
+
+      dispatch(getSingleQuestionFun(EditSelectedQuestion?._id));
+    }
+  }, [EditSelectedQuestion]);
+
+  useEffect(() => {
+    if (getSingleQuestion && getSingleQuestion.length > 0) {
+      setNewQuestion(getSingleQuestion[0].name);
+      setQuestionType(getSingleQuestion[0].question_type);
+    }
+  }, [getSingleQuestion]);
+  const EditAnsewer = (e: any) => {
+    console.log("ans id", e);
+    let ans = {
+      id: e.ans_id,
+      ans: e.text,
+    };
+    dispatch(EditAnswerFun(ans));
+    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+  };
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
@@ -152,13 +216,18 @@ export default function QuestionBar() {
         <CloseIcon />
       </IconButton>
       <List className="p-3 qu-bar">
-        <h2 className="mb-1">Add New Question</h2>
+        <h2 className="mb-1">
+          {Object.keys(EditSelectedQuestion).length
+            ? "Edit Question"
+            : "Add New Question"}
+        </h2>
         <p>Section Name</p>
         <label htmlFor="">Question</label>
         <input
           type="text"
           placeholder="What do you want to ask? "
           // onClick={handleInputClick}
+          value={newQuestion}
           onChange={(e) => setNewQuestion(e.target.value)}
         />
         <FormControlLabel
@@ -195,7 +264,11 @@ export default function QuestionBar() {
           <label htmlFor="">Type*</label>
           <select
             className="form-select mt-1"
-            onChange={(e) => dispatch(questionTypeFun(e.target.value))}
+            value={QuestionType}
+            onChange={(e) => {
+              dispatch(questionTypeFun(e.target.value));
+              setQuestionType(e.target.value);
+            }}
           >
             <option>Select</option>
             <option>Date Time</option>
@@ -216,32 +289,73 @@ export default function QuestionBar() {
           control={<Checkbox defaultChecked style={customRadioStyle} />}
           label="Hide this from your clinical notes"
         />
-        {questionType === "Multiple Choice" ? (
+        {questionType === "Multiple Choice" ||
+        QuestionType === "Multiple Choice" ||
+        questionType === "Single Choice" ||
+        QuestionType === "Single Choice" ? (
           <div>
             <div className="label-button">
               <label htmlFor="">Answer </label>
               <Button2
-                name="Add"
-                onClick={() => addQuestionFollowupBtn()}
+                name="Add Answer"
+                onClick={() => {
+                  addQuestionFollowupBtn();
+                  UpdateQuestionsArray("question");
+                }}
                 icon={<AddIcon />}
               />
             </div>
-            <textarea name="" id="" cols={30} rows={5} />
-          </div>
-        ) : questionType === "Single Choice" ? (
-          <div>
-            <div className="label-button">
-              <label htmlFor="">Answer </label>
-              <Button2
-                name="Add"
-                onClick={() => addQuestionFollowupBtn()}
-                icon={<AddIcon />}
-              />
+            <div style={{ padding: 5 }}>
+              {getSingleQuestion?.length > 0 ? (
+                getSingleQuestion.map((item: any) => {
+                  return (
+                    <div
+                      style={{
+                        border: "1px black solid",
+                        borderRadius: 5,
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        padding: 10,
+                      }}
+                    >
+                      <div> {item?.text}</div>
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => EditAnsewer(item)}
+                          size="small"
+                        >
+                          <EditIcon sx={{ width: 15, height: 15 }} />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          // onClick={() => DeleteTemplate(item?._id)}
+                        >
+                          <DeleteIcon sx={{ width: 15, height: 15 }} />
+                        </IconButton>
+                      </Stack>
+                    </div>
+                  );
+                })
+              ) : (
+                <textarea name="" id="" cols={30} rows={5} />
+              )}
             </div>
-            <textarea name="" id="" cols={30} rows={5} />
+            {/* <textarea name="" id="" cols={30} rows={5} /> */}
           </div>
         ) : null}
+        {/* test value  start */}
 
+        {/* test value end  */}
         <div className="save-button mt-2">
           <Button2 name="Save Question " onClick={handleClickSaveBtn} />
         </div>
@@ -259,6 +373,7 @@ export default function QuestionBar() {
 
   return (
     <div>
+      <SimpleBackdrop isLoading={!isLoading} />
       <Drawer anchor={anchor} open={state[anchor]}>
         {list(anchor)}
       </Drawer>
@@ -269,6 +384,7 @@ export default function QuestionBar() {
         qna={qna}
         setQna={setQna}
         newFollowUp={newFollowUp}
+        UpdateQuestionsArray={UpdateQuestionsArray}
       />
     </div>
   );
