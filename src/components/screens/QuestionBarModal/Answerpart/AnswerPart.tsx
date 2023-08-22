@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 
@@ -95,10 +95,22 @@ const QNAComponent: React.FC<{
   //     onUpdate(updatedQna);
   //   };
 
+  // const inputRefs: React.RefObject<HTMLInputElement>[] = [];
+
+  // // Create refs for each input field
+  // for (let i = 0; i < qna.length; i++) {
+  //   inputRefs[i] = useRef<HTMLInputElement>(null);
+  // }
+  // const focusInput = (index: number) => {
+  //   if (inputRefs[index]?.current) {
+  //     // inputRefs[index].current.focus();
+  //   }
+  // };
+
   return (
     <div>
       {qna.map((item: any, questionIndex: any) => (
-        <div key={item.index}>
+        <div key={item.index} style={{ padding: 10 }}>
           <input
             type="text"
             value={item.question}
