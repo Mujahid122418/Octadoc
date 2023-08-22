@@ -3,7 +3,7 @@ const { populate } = require("../models/template");
 
 exports.addAnswer = async (req, res) => {
   const payload = req.body;
-  
+
   await Answer(payload)
     .save()
     .then((item) => {
@@ -76,7 +76,6 @@ exports.updateAnswer = async (req, res) => {
   })
     .then((updatedPost) => {
       if (updatedPost) {
-        console.log("Updated:", updatedPost);
         res.status(200).send({
           success: true,
           message: "Updated successfully",

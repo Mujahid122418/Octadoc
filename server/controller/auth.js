@@ -251,3 +251,27 @@ const sendTokenResponse = (user, statusCode, res) => {
   });
 };
 // module.exports = router;
+
+exports.AllUser = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
+  const pageSize = parseInt(req.query.pageSize) || 10; // Get the page size or default to 10
+
+  try {
+    const totalDocuments = await User.countDocuments(); // Get the total number of documents
+
+    const totalPages = Math.ceil(totalDocuments / pageSize); // Calculate the total number of pages
+
+    const skip = (page - 1) * pageSize; // Calculate the number of documents to skip
+
+    // Query and retrieve paginated data
+    const data = await User.find().skip(skip).limit(pageSize);
+
+    res.json({
+      data,
+      currentPage: page,
+      totalPages,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

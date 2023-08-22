@@ -106,11 +106,20 @@ const QNAComponent: React.FC<{
   //     // inputRefs[index].current.focus();
   //   }
   // };
-
+  const handelDelete = (e: any) => {
+    console.log("ee", e);
+    const updatedQna = [...qna];
+    let filter = updatedQna.filter((item) => item.index != e);
+    onUpdate(filter);
+    // console.log("filter", filter);
+    // console.log("delete", updatedQna);
+  };
   return (
     <div>
       {qna.map((item: any, questionIndex: any) => (
         <div key={item.index} className="input-cover" style={{ padding: 10 }}>
+       
+          {/* <button onClick={() => handelDelete(item.index)}>delete</button> */}
           <input
             type="text"
             value={item.question}
