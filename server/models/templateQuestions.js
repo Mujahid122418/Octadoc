@@ -1,8 +1,16 @@
 const mongoose = require("mongoose");
 const schema = mongoose.Schema;
-// const question_Type_Schema = new mongoose.Schema({
-//   text: String,
-// });
+const Questions_Schema = new mongoose.Schema({
+  question: { type: String },
+  answers: { type: String },
+  followUp: [
+    {
+      question: String,
+      answers: String,
+      followUp: [],
+    },
+  ],
+});
 const template_Schema = new schema(
   {
     name: {
@@ -18,7 +26,7 @@ const template_Schema = new schema(
       type: String,
     },
     question_type: {
-      type: String, // Defining the array schema
+      type: String,
     },
     order: {
       type: String,
@@ -33,6 +41,21 @@ const template_Schema = new schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "template",
     },
+    question: {
+      type: String,
+    },
+    answers: {
+      type: String,
+    },
+    index: {
+      type: String,
+    },
+    Question: {
+      type: [Questions_Schema],
+    },
+    // followUp: [
+    //   { type: mongoose.Schema.Types.ObjectId, ref: "templateQuestion" },
+    // ], // Use ObjectId reference
   },
   { timestamps: true }
 );
