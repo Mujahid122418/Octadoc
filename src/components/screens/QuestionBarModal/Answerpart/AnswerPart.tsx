@@ -90,7 +90,27 @@ const QNAComponent: React.FC<{
     // console.log("filter", filter);
     // console.log("delete", updatedQna);
   };
-
+  const onChangeQuestion = async (text: any, key: any) => {
+    onUpdate(
+      qna.map((item: any) => {
+        return item.Qindex === key ? { ...item, question: text } : item;
+      })
+    );
+  };
+  const onChangeAnswer = async (text: any, key: any) => {
+    onUpdate(
+      qna.map((item: any) => {
+        return item.Qindex === key ? { ...item, answer: text } : item;
+      })
+    );
+  };
+  const onChangeQuestionType = async (text: any, key: any) => {
+    onUpdate(
+      qna.map((item: any) => {
+        return item.Qindex === key ? { ...item, QuestionType: text } : item;
+      })
+    );
+  };
   return (
     <div>
       {qna.map((item: any, questionIndex: any) => (
@@ -111,12 +131,13 @@ const QNAComponent: React.FC<{
               value={item.question}
               className="question-input"
               placeholder="Question"
-              onChange={(e) => {
-                const value = e.target.value;
-                const updatedQna = [...qna];
-                updatedQna[questionIndex].question = value;
-                onUpdate(updatedQna);
-              }}
+              onChange={(e) => onChangeQuestion(e.target.value, item.Qindex)}
+              // onChange={(e) => {
+              //   const value = e.target.value;
+              //   const updatedQna = [...qna];
+              //   updatedQna[questionIndex].question = value;
+              //   onUpdate(updatedQna);
+              // }}
             />
           </div>
 
@@ -125,12 +146,15 @@ const QNAComponent: React.FC<{
             <select
               className="form-select mt-1"
               value={item.QuestionType}
-              onChange={(e) => {
-                const value = e.target.value;
-                const updatedQna = [...qna];
-                updatedQna[questionIndex].QuestionType = value;
-                onUpdate(updatedQna);
-              }}
+              onChange={(e) =>
+                onChangeQuestionType(e.target.value, item.Qindex)
+              }
+              // onChange={(e) => {
+              //   const value = e.target.value;
+              //   const updatedQna = [...qna];
+              //   updatedQna[questionIndex].QuestionType = value;
+              //   onUpdate(updatedQna);
+              // }}
             >
               <option>Select</option>
               <option>Date Time</option>
@@ -154,15 +178,13 @@ const QNAComponent: React.FC<{
                 className="answer-input"
                 value={item.answer}
                 placeholder="Answer"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const updatedQna = [...qna];
-                  updatedQna[questionIndex].answer = value;
-                  console.log("updatedQna", updatedQna);
-                  console.log("questionIndex", questionIndex);
-
-                  onUpdate(updatedQna);
-                }}
+                onChange={(e) => onChangeAnswer(e.target.value, item.Qindex)}
+                // onChange={(e) => {
+                //   const value = e.target.value;
+                //   const updatedQna = [...qna];
+                //   updatedQna[questionIndex].answer = value;
+                //   onUpdate(updatedQna);
+                // }}
               />
               {/* <IconButton aria-label="delete" onClick={handleAddQuestion}>
                 <AddIcon />
@@ -184,7 +206,7 @@ const QNAComponent: React.FC<{
       {qna.length > 0 ? (
         <Button2 name="Add Question" onClick={handleAddQuestion} />
       ) : (
-        <div>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <IconButton aria-label="delete" onClick={handleAddQuestion}>
             <AddIcon />
           </IconButton>
@@ -213,6 +235,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     EditAnswer,
     EditSelectedQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
+  console.log("EditSelectedQuestion", EditSelectedQuestion);
 
   useEffect(() => {
     let data =
@@ -383,18 +406,18 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     };
     console.log("save", save);
 
-    // dispatch(addQuestionFunAPI(save))
-    //   .unwrap()
-    //   .then((response) => {
-    //     let d1 = {
-    //       page: 1,
-    //       pageSize: 20,
-    //     };
-    //     dispatch(getQuestion(d1));
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error);
-    //   });
+    dispatch(addQuestionFunAPI(save))
+      .unwrap()
+      .then((response) => {
+        let d1 = {
+          page: 1,
+          pageSize: 20,
+        };
+        dispatch(getQuestion(d1));
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
   };
 
   const list = (anchor: Anchor) => (

@@ -47,7 +47,15 @@ const RenderQuestion: React.FC<{
     (state: RootState) => state?.templateQuestion
   );
   const updateTemplateQuestion = async (e: any, e1: any) => {
-    dispatch(EditSelectedQuestionFun(arr));
+    console.log("ee ", e);
+    console.log("ee  1", e1);
+
+    const searchIndex = arr.find(
+      (item: any, i: any) => item.Question[i] === e.Qindex
+    );
+    console.log("searchIndex", searchIndex);
+
+    // dispatch(EditSelectedQuestionFun(arr));
     dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
     // dispatch(addQuestionModelFun(!addQuestionModel));
   };
@@ -77,6 +85,9 @@ const RenderQuestion: React.FC<{
               <IconButton
                 aria-label="delete"
                 onClick={() => updateTemplateQuestion(item, ques)}
+                // onClick={(e) => {
+                //   console.log("test", ques);
+                // }}
               >
                 <EditIcon />
               </IconButton>
