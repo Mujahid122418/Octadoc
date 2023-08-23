@@ -8,18 +8,17 @@ export interface IAuth {
   user: any;
 }
 
-// export const getTemplates = createAsyncThunk(
-//   "template/getTemplates",
-//   async () => {
-//     try {
-//       const response = await axios.get(Baseurl + "/template/template");
-
-//       return response.data?.data;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
+export const getAllUsers = createAsyncThunk(
+  "/auth/allUser",
+  async () => {
+    try {
+      const response = await axios.get(Baseurl + "/auth/allUser");  
+      return response.data?.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 // export const deleteEmployee = createAsyncThunk(
 //   "template/deleteTemplate",
 //   async (id: string) => {

@@ -23,6 +23,7 @@ interface TemplateArray {
   status: string;
   addTemplateModel: Boolean;
   selectedTemplate: any;
+  search : string;
 }
 
 const initialState: TemplateArray = {
@@ -32,6 +33,7 @@ const initialState: TemplateArray = {
   error: "",
   addTemplateModel: true,
   selectedTemplate: {},
+  search :"",
 };
 
 export const templateSlice = createSlice({
@@ -43,6 +45,9 @@ export const templateSlice = createSlice({
     },
     selectTemplateModelFun: (state, action) => {
       state.selectedTemplate = action.payload;
+    },
+    searchDataFun: (state, action) => {
+      state.search = action.payload;
     },
   },
   extraReducers: {
@@ -93,6 +98,6 @@ export const templateSlice = createSlice({
 
 // export const { addTemplate, getTemplate, updateTemplate, deleteTemplate } =
 //   templateSlice.actions;
-export const { addTemplateModelFun, selectTemplateModelFun } =
+export const { addTemplateModelFun, selectTemplateModelFun ,searchDataFun } =
   templateSlice.actions;
 export default templateSlice.reducer;

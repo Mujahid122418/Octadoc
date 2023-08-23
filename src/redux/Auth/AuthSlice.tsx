@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { LoginFun, getMeFun, updateProfile, SignupFun } from "./AuthAPI";
+import { LoginFun, getMeFun, updateProfile, SignupFun , getAllUsers } from "./AuthAPI";
 interface Login {
   user: any;
   isLoading: Boolean;
   error: string;
   status: string;
+  allUsers :any[];
 }
 
 const initialState: Login = {
@@ -13,6 +14,7 @@ const initialState: Login = {
   isLoading: false,
   status: "",
   error: "",
+  allUsers : [],
 };
 
 export const authSlice = createSlice({
@@ -69,6 +71,19 @@ export const authSlice = createSlice({
       state.isLoading = false;
     },
     [updateProfile.rejected.type]: (state, action) => {
+      state.status = "failed";
+      state.isLoading = false;
+    },
+    [getAllUsers.pending.type]: (state, action) => {
+      state.status = "pending";
+      state.isLoading = true;
+    },
+    [getAllUsers.fulfilled.type]: (state,  payload ) => {
+      state.status = "success";
+      state.allUsers = payload.payload;
+      state.isLoading = false;
+    },
+    [getAllUsers.rejected.type]: (state, action) => {
       state.status = "failed";
       state.isLoading = false;
     },

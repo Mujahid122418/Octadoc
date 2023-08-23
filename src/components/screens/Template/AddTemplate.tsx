@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { AppDispatch } from "../../../redux/Store";
 import "./ModalBox.css";
 import { Link } from "react-router-dom";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 
 const AddTemplate: React.FC = () => {
@@ -26,7 +27,11 @@ const AddTemplate: React.FC = () => {
   // form states start
   const [name, setName] = useState("");
   const [description, setdescription] = useState("");
+  const [category_id , setcategory] = useState("");
+  
   const [community, setCommunity] = useState(false);
+ 
+  
   //   form states end
 
   const handleClose = () => {
@@ -49,6 +54,7 @@ const AddTemplate: React.FC = () => {
     let data = {
       template_name: name,
       description: description,
+      category_id: category_id,
       isapprove: community === true ? true : false,
       user_id: user?._id,
     };
@@ -129,6 +135,59 @@ const AddTemplate: React.FC = () => {
                   placeholder="Give us an idea of this template is about. This will help you (and others) find it easily.  "
                   rows={4}
                 ></textarea>
+              </div>
+
+              <div className="position-relative">
+                    <select
+                      className="form-control select-arrow"
+                      id="customSelect"
+                      value={category_id}
+                      onChange={(e) => setcategory(e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option>Addiction Medicine</option>
+                      <option>Anaesthesia</option>
+                      <option>Antenatal</option>
+                      <option>Bariatric Medicine</option>
+                      <option>Cardiology</option>
+                      <option>Children’s Health</option>
+                      <option>Chronic Disease Management</option>
+                      <option>Dermatology</option>
+                      <option>Drugs & Alcohol</option>
+                      <option>Emergency</option>
+                      <option>Endocrinology</option>
+                      <option>ENT</option>
+                      <option>Fertility</option>
+                      <option>Gastroenterology</option>
+                      <option>General Surgery</option>
+                      <option>Genetics</option>
+                      <option>Geriatric Medicine</option>
+                      <option>Haematology</option>
+                      <option>Immunisations</option>
+                      <option>Immunology</option>
+                      <option>Infectious Diseases</option>
+                      <option>Maxillo Facial</option>
+                      <option>Men’s Health</option>
+                      <option>Mental Health</option>
+                      <option>Nephrology</option>
+                      <option>Neurology</option>
+                      <option>Occupational Medicine</option>
+                      <option>Oncology</option>
+                      <option>Ophthalmology</option>
+                      <option>Ortho/MSK</option>
+                      <option>Pain Medicine</option>
+                      <option>Palliative Care</option>
+                      <option>Pathology</option>
+                      <option>Preventative Medicine</option>
+                      <option>Procedures</option>
+                      <option>Respiratory</option>
+                      <option>Rheumatology</option>
+                      <option>Sexual health</option>
+                      <option>Vascular Surgery</option>
+                      <option>Women's Health</option>
+                      <option>Other</option>
+                    </select>
+                    <ArrowDropDownIcon className="mui-select-arrow" />
               </div>
 
               <div className="form-group">

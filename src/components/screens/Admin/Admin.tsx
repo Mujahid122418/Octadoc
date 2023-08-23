@@ -1,78 +1,106 @@
-import * as React from 'react';
-import './Admin.css'
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React, { useEffect } from "react";
+import "./Admin.css";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import type { RootState } from "../../../redux/Store";
+import { AppDispatch } from "../../../redux/Store";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUsers } from "../../../redux/Auth/AuthAPI";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-) {
-  return { name, calories, fat, carbs, protein };
+interface Column {
+  id: string;
+  label: string;
+  minWidth?: number;
+  align?: "right" | "left" | "center";
+  format?: (value: number) => string;
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+const columns: readonly Column[] = [
+  { id: "_id", label: "ID", minWidth: 170 },
+  { id: "name", label: "Name", minWidth: 170 },
+  { id: "email", label: "Email", minWidth: 170 },
+  { id: "gender", label: "Gender", minWidth: 100 },
+  { id: "language", label: "Language", minWidth: 100 },
 ];
 
 export default function Admin() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { allUsers } = useSelector((state: RootState) => state?.auth);
+  console.log("allusers", allUsers);
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
+
   return (
-    <div className="container">
-        <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead className='table-head'>
-          <TableRow >
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Email</StyledTableCell>
-            <StyledTableCell align="right">Gender</StyledTableCell>
-            <StyledTableCell align="right">Language</StyledTableCell>
-            <StyledTableCell align="right">Working</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    </div>
+    <Paper sx={{ width: "95%", overflow: "hidden", margin: "0 auto" }}>
+     <div className="row p-3 user-list-row">
+      <div className="col-6 d-flex align-items-center">
+        <h3 className="mb-0">Users List</h3>
+      </div>
+      <div className="col-6 search-h">
+        <input type="text" placeholder="Serach Here..." />
+      </div>
+     </div>
+      <TableContainer sx={{ maxHeight: 440,}} >
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead className="table-head" >
+            <TableRow sx={{background:'transparent'}} >
+              {columns.map((column) => (
+                <TableCell
+                sx={{background:'transparent',color:'white'}}
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allUsers.map((row) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                <TableCell align="left">{row._id}</TableCell>
+                <TableCell align="left">{row.name}</TableCell>
+                <TableCell align="left">{row.email}</TableCell>
+                <TableCell align="left">{row.gender}</TableCell>
+                <TableCell align="left">{row.language}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+  className="table-fot"
+  rowsPerPageOptions={[10, 25, 100]}
+  component="div"
+  count={allUsers.length}
+  rowsPerPage={rowsPerPage}
+  page={page}
+  onPageChange={handleChangePage}
+  onRowsPerPageChange={handleChangeRowsPerPage}
+/>
+    </Paper>
   );
 }
