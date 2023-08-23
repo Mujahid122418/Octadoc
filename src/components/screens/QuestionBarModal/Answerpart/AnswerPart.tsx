@@ -5,6 +5,8 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import CloseIcon from "@mui/icons-material/Close";
+
+import DeleteIcon from "@mui/icons-material/Delete";
 import "./AnswerBar.css";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -16,11 +18,11 @@ import Button2 from "../../Button2/Button2";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addQuestionFollowupModelFun,
+  addQuestionFun,
   addQuestionModelFun,
 } from "../../../../redux/TemplateQuestion/TemplateQuestion";
 import { toast } from "react-toastify";
 import {
-  addAnswerFunAPI,
   addQuestionFunAPI,
   getQuestion,
   updateAnswerFunAPI,
@@ -44,18 +46,21 @@ interface IAnswerBar {
   setQna: (value: any) => void;
   newFollowUp: any;
   UpdateQuestionsArray: (value: any) => void;
+  QuestionType: any;
 }
 interface FollowUpQuestion {
   question: string;
-  answers: string;
+  answer: string;
   index: string;
   followup: FollowUpQuestion[];
+  QuestionType: string;
 }
 interface QNAItem {
   question: string;
-  answers: string;
+  answer: string;
   index: string;
   followUp: FollowUpQuestion[];
+  QuestionType: string;
 }
 
 const QNAComponent: React.FC<{
@@ -71,41 +76,14 @@ const QNAComponent: React.FC<{
     const updatedQna = [...qna];
     updatedQna.push({
       question: "",
-      answers: "",
+      answer: "",
       index: createUUID(),
       followUp: [],
+      QuestionType: "",
     });
     onUpdate(updatedQna);
   };
 
-  //   const handleAddFollowUp = (questionIndex: number) => {
-  //     const updatedQna = [...qna];
-  //     const followUpUUID = createUUID();
-  //     console.log("updatedQna", updatedQna[questionIndex]);
-
-  //     updatedQna[questionIndex].followUp.length > 0 &&
-  //       updatedQna[questionIndex].followUp.push({
-  //         question: "",
-  //         answers: "",
-  //         index: followUpUUID,
-  //         followup: [],
-  //       });
-  //     console.log("push test", updatedQna);
-
-  //     onUpdate(updatedQna);
-  //   };
-
-  // const inputRefs: React.RefObject<HTMLInputElement>[] = [];
-
-  // // Create refs for each input field
-  // for (let i = 0; i < qna.length; i++) {
-  //   inputRefs[i] = useRef<HTMLInputElement>(null);
-  // }
-  // const focusInput = (index: number) => {
-  //   if (inputRefs[index]?.current) {
-  //     // inputRefs[index].current.focus();
-  //   }
-  // };
   const handelDelete = (e: any) => {
     console.log("ee", e);
     const updatedQna = [...qna];
@@ -118,32 +96,79 @@ const QNAComponent: React.FC<{
     <div>
       {qna.map((item: any, questionIndex: any) => (
         <div key={item.index} className="input-cover" style={{ padding: 10 }}>
-       
+          {/* {console.log("item", item)} */}
           {/* <button onClick={() => handelDelete(item.index)}>delete</button> */}
-          <input
-            type="text"
-            value={item.question}
-            className="question-input"
-            placeholder="Question"
-            onChange={(e) => {
-              const value = e.target.value;
-              const updatedQna = [...qna];
-              updatedQna[questionIndex].question = value;
-              onUpdate(updatedQna);
-            }}
-          />
-          <input
-            type="text"
-            className="answer-input"
-            value={item.answers}
-            placeholder="Answers"
-            onChange={(e) => {
-              const value = e.target.value;
-              const updatedQna = [...qna];
-              updatedQna[questionIndex].answers = value;
-              onUpdate(updatedQna);
-            }}
-          />
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <IconButton
+              aria-label="delete"
+              onClick={() => handelDelete(item.index)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
+          <div>
+            <label htmlFor="">Question*</label>
+            <input
+              type="text"
+              value={item.question}
+              className="question-input"
+              placeholder="Question"
+              onChange={(e) => {
+                const value = e.target.value;
+                const updatedQna = [...qna];
+                updatedQna[questionIndex].question = value;
+                onUpdate(updatedQna);
+              }}
+            />
+          </div>
+
+          <div className="selectt-box mt-3">
+            <label htmlFor="">Type*</label>
+            <select
+              className="form-select mt-1"
+              value={item.QuestionType}
+              onChange={(e) => {
+                const value = e.target.value;
+                const updatedQna = [...qna];
+
+                updatedQna[questionIndex].QuestionType = value;
+                onUpdate(updatedQna);
+              }}
+            >
+              <option>Select</option>
+              <option>Date Time</option>
+              <option>Dosage</option>
+              <option>Free Text</option>
+              <option>Multiple Choice</option>
+              <option>Single Choice</option>
+            </select>
+          </div>
+          <div style={{ paddingTop: 20 }}>
+            <label htmlFor="">Answer*</label>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <input
+                type="text"
+                className="answer-input"
+                value={item.answer}
+                placeholder="Answer"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const updatedQna = [...qna];
+                  updatedQna[questionIndex].answer = value;
+                  onUpdate(updatedQna);
+                }}
+              />
+              {/* <IconButton aria-label="delete" onClick={handleAddQuestion}>
+                <AddIcon />
+              </IconButton> */}
+            </div>
+          </div>
 
           <QNAComponent
             qna={item.followUp}
@@ -155,10 +180,15 @@ const QNAComponent: React.FC<{
           />
         </div>
       ))}
+
       {qna.length > 0 ? (
-        <button onClick={handleAddQuestion}>Add Question </button>
+        <Button2 name="Add Question" onClick={handleAddQuestion} />
       ) : (
-        <button onClick={handleAddQuestion}>Add Followup Question </button>
+        <div>
+          <IconButton aria-label="delete" onClick={handleAddQuestion}>
+            <AddIcon />
+          </IconButton>
+        </div>
       )}
     </div>
   );
@@ -172,57 +202,102 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   setQna,
   newFollowUp,
   UpdateQuestionsArray,
+  QuestionType,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  // const handleDelete = (indexToDelete) => {
-  //   const updatedData = [...qna];
-  //   updatedData.splice(indexToDelete, 1);
-  //   setQna(updatedData);
-  // };
+
   const {
     addQuestionFollowupModel,
-    passQuestion,
+
     addQuestionModel,
     EditAnswer,
   } = useSelector((state: RootState) => state?.templateQuestion);
 
   // handel answer state start
-
+  let template_id =
+    window.location.href.split("/questions/edit/")[1] ||
+    window.location.href.split("/questions/")[1];
   // handel answer state end
-  const handleClickBtnSaveAnswer = (event: any) => {
+  const handleClickBtnSaveAnswer = (event: any, e1: string) => {
     event.preventDefault();
+
+    console.log("updatedQna", template_id);
+
     if (!newAnswer) {
       toast.error("Answer is required");
     } else {
-      dispatch(addQuestionFunAPI(passQuestion))
-        .unwrap()
-        .then((res) => {
-          let { _id, template_id } = res?.data;
+      let data = {
+        question: newQuestion,
+        answer: newAnswer,
+        QuestionType: QuestionType,
+        index: create_UUID(),
+        followUp: [],
+      };
+      const updatedQna = [...qna];
+      updatedQna.push(data);
+      console.log("passQuestion", updatedQna);
+      console.log("qna", qna);
+      var saveMultiple = {
+        template_id: template_id,
+        // question_type: QuestionType,
+        Question: updatedQna,
+      };
+      var saveSingle = {
+        // question_type: QuestionType,
+        question: newQuestion,
+        answer: newAnswer,
+      };
+      if (
+        QuestionType === "Multiple Choice" ||
+        QuestionType === "Single Choice"
+      ) {
+        console.log("save ", saveMultiple);
+        dispatch(addQuestionFunAPI(saveMultiple))
+          .unwrap()
+          .then((response) => {
+            let d1 = {
+              page: 1,
+              pageSize: 20,
+            };
+            dispatch(getQuestion(d1));
+          })
+          .catch((error) => {
+            toast.error(error);
+          });
+      } else {
+        console.log("saveSingle ", saveSingle);
+      }
 
-          let data = {
-            follow_up_question_group_id: _id,
-            text: newAnswer,
-            question_id: _id,
-            template_id: template_id,
-          };
+      // dispatch(addQuestionFunAPI(save));
 
-          dispatch(addAnswerFunAPI(data))
-            .unwrap()
-            .then((response) => {
-              let d1 = {
-                page: 1,
-                pageSize: 20,
-              };
-              dispatch(getQuestion(d1));
-            })
-            .catch((error) => {
-              toast.error(error);
-            });
-        })
-        .catch((e) => {
-          console.log("err ans", e);
-          toast.error("error", e);
-        });
+      // dispatch(addQuestionFunAPI(passQuestion))
+      //   .unwrap()
+      //   .then((res) => {
+      //     let { _id, template_id } = res?.data;
+      //     let data = {
+      //       follow_up_question_group_id: _id,
+      //       text: newAnswer,
+      //       question_id: _id,
+      //       template_id: template_id,
+      //     };
+
+      //     dispatch(addAnswerFunAPI(data))
+      //       .unwrap()
+      //       .then((response) => {
+      //         let d1 = {
+      //           page: 1,
+      //           pageSize: 20,
+      //         };
+      //         dispatch(getQuestion(d1));
+      //       })
+      //       .catch((error) => {
+      //         toast.error(error);
+      //       });
+      //   })
+      //   .catch((e) => {
+      //     console.log("err ans", e);
+      //     toast.error("error", e);
+      //   });
     }
   };
 
@@ -237,10 +312,10 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     }));
   }, [addQuestionFollowupModel]);
 
-  const addQuestionFollowupBtn = () => {
-    dispatch(addQuestionModelFun(!addQuestionModel));
-    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
-  };
+  // const addQuestionFollowupBtn = () => {
+  //   dispatch(addQuestionModelFun(!addQuestionModel));
+  //   dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+  // };
   // update answer
   useEffect(() => {
     if (Object.keys(EditAnswer).length > 0) {
@@ -250,7 +325,6 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   const updateAnswer = () => {
     try {
       let ans = { id: EditAnswer?.id, text: newAnswer };
-      console.log("send", ans);
 
       dispatch(updateAnswerFunAPI(ans))
         .unwrap()
@@ -268,6 +342,29 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       console.log("error", error);
     }
   };
+
+  const SaveFollowupQuestions = () => {
+    console.log("qna", qna);
+    var save = {
+      template_id: template_id,
+      // question_type: QuestionType,
+      Question: qna,
+    };
+
+    dispatch(addQuestionFunAPI(save))
+      .unwrap()
+      .then((response) => {
+        let d1 = {
+          page: 1,
+          pageSize: 20,
+        };
+        dispatch(getQuestion(d1));
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
+  };
+
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
       <IconButton
@@ -302,7 +399,6 @@ const AnswerBar: React.FC<IAnswerBar> = ({
         {/* ===collpase==== */}
         <div className="mt-3">
           <h6 className="coll">No Tip</h6>
-
           <div>
             <div className="coll-body">
               <div className="coll-band">
@@ -321,12 +417,25 @@ const AnswerBar: React.FC<IAnswerBar> = ({
           </div>
         </div>
         {/* ===collpase==== */}
-
+        <div className="save-button mt-2">
+          <Button2
+            name={
+              Object.keys(EditAnswer).length > 0
+                ? "Update Answer"
+                : "Save Answer"
+            }
+            onClick={(e) => {
+              Object.keys(EditAnswer).length > 0
+                ? updateAnswer()
+                : handleClickBtnSaveAnswer(e, "save");
+            }}
+          />
+        </div>
         <div className="label-button mt-4">
           <label htmlFor="">Follow Up Question</label>
 
           <Button2
-            name="Add Follow Up Question"
+            name="+ Add Follow Up Question"
             onClick={() => {
               // addQuestionFollowupBtn();
               UpdateQuestionsArray("answer");
@@ -334,6 +443,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
             icon={<AddIcon />}
           />
         </div>
+
         {qna.length > 0 ? (
           <QNAComponent qna={qna} onUpdate={setQna} />
         ) : (
@@ -341,15 +451,9 @@ const AnswerBar: React.FC<IAnswerBar> = ({
         )}
         <div className="save-button mt-2">
           <Button2
-            name={
-              Object.keys(EditAnswer).length > 0
-                ? "Update Answer "
-                : "Save Answer "
-            }
-            onClick={(e) => {
-              Object.keys(EditAnswer).length > 0
-                ? updateAnswer()
-                : handleClickBtnSaveAnswer(e);
+            name="Save Followup Questions"
+            onClick={() => {
+              SaveFollowupQuestions();
             }}
           />
         </div>
