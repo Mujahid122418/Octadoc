@@ -4,12 +4,14 @@ const Questions_Schema = new mongoose.Schema({
   question: { type: String },
   answers: { type: String },
   QuestionType: { type: String },
+  Qindex: { type: String },
   followUp: [
     {
       question: String,
       answers: String,
       QuestionType: String,
       followUp: [],
+      Qindex: String,
     },
   ],
 });
