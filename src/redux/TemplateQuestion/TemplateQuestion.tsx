@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  addQuestionFunAPI,
-  getQuestion,
-  getSingleQuestionFun,
-} from "./TemplateQuestionAPI";
+import { getQuestion, getSingleQuestionFun } from "./TemplateQuestionAPI";
 
 interface TemplateArray {
   isLoading: Boolean;

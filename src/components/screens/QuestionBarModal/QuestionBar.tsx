@@ -42,14 +42,14 @@ import { create_UUID } from "../../../utils/UUID";
 
 // interface FollowUpQuestion {
 //   question: string;
-//   answers: string;
+//   answer: string;
 //   //followUp: FollowUpQuestion[]; // Use 'followUp' here
 //   followUp: any;
 // }
 
 interface QNAItem {
   question: string;
-  answers: string;
+  answer: string;
   index: Number;
   followUp: any; // Use 'followUp' here
 }
@@ -83,12 +83,13 @@ export default function QuestionBar() {
   // handel states start
 
   const [qna, setQna] = useState<any>([
-    // {
-    //   question: "",
-    //   answers: "",
-    //   index: createUUID(),
-    //   followUp: [],
-    // },
+    {
+      question: "",
+      answer: "",
+      index: createUUID(),
+      QuestionType: "",
+      followUp: [],
+    },
   ]);
 
   const [newQuestion, setNewQuestion] = useState<string>("");
@@ -96,14 +97,15 @@ export default function QuestionBar() {
   const [newFollowUp, setNewFollowUp] = useState<string>("");
   const [QuestionType, setQuestionType] = useState("");
 
-  console.log("test qna", qna);
+  // console.log("test qna", qna);
 
   const UpdateQuestionsArray = (e: any) => {
     if (e === "answer") {
       const updatedQna = [...qna];
       updatedQna.push({
         question: newQuestion,
-        answers: newAnswer,
+        answer: newAnswer,
+        QuestionType: QuestionType,
         index: createUUID(),
         followUp: [],
       });
@@ -113,10 +115,6 @@ export default function QuestionBar() {
     }
   };
 
-  // useEffect(() => {
-  //   console.log("question", question);
-  // }, [question]);
-  // handel states end
   // ===collpase====
   const [expanded, setExpanded] = useState(false);
 
@@ -124,6 +122,9 @@ export default function QuestionBar() {
     setExpanded(!expanded);
   };
   const handleClickSaveBtn = () => {
+    let template_id =
+      window.location.href.split("/questions/edit/")[1] ||
+      window.location.href.split("/questions/")[1];
     if (!newQuestion) {
       toast.error("Please enter Question");
     } else if (!questionType) {
@@ -132,14 +133,27 @@ export default function QuestionBar() {
       questionType === "Single Choice" ||
       questionType === "Multiple Choice"
     ) {
-      toast.error("The answers field is required.");
+      toast.error("The answer field is required.");
     } else {
       try {
         let data = {
           name: newQuestion,
-          template_id: window.location.href.split("/questions/")[1],
-          question_type: questionType,
+          question: newQuestion,
+          answer: newAnswer,
+          template_id: template_id,
+          // question_type: questionType,
+          Question: [
+            {
+              question: newQuestion,
+              answer: newAnswer,
+              index: createUUID(),
+              QuestionType: questionType,
+              followUp: [],
+            },
+          ],
         };
+        console.log("added single", data);
+
         dispatch(addQuestionFunAPI(data))
           .unwrap()
           .then((response) => {
@@ -385,6 +399,7 @@ export default function QuestionBar() {
         setQna={setQna}
         newFollowUp={newFollowUp}
         UpdateQuestionsArray={UpdateQuestionsArray}
+        QuestionType={QuestionType}
       />
     </div>
   );
