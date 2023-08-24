@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Baseurl } from "../../utils/BaseUrl";
-
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export interface IAuth {
@@ -90,6 +90,50 @@ export const updateProfile = createAsyncThunk(
       console.log("ressss", response.data);
       if (response.data?.success) {
         toast.success("Profile Updated Successfully");
+      }
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const checkEmail = createAsyncThunk(
+  "auth/forgotPassword",
+  async (data: any ) => {
+
+    let d = {
+      email : data.email
+    }
+    try {
+      const response = await axios.post(Baseurl + `/auth/forgotPassword`, d);
+      console.log("eeeee",response);
+      
+      if (response?.data?.success) {
+        toast.success("Email send Successfully");
+        
+        data.navigate("/forgot");
+      } else {
+        console.log("error signup api false", response?.data);
+      }
+      return response.data.user;
+    } catch (error) {
+      console.log("error auth api", error);
+      toast.error("Server Error");
+    }
+  }
+);
+
+
+export const updatePassword = createAsyncThunk(
+  "auth/updatepassword",
+  async (data: any) => {
+    try {
+      const response = await axios.put(Baseurl + `/auth/updatepassword`, data);
+      console.log("ressss", response.data);
+      if (response.data?.success) {
+        toast.success("Password Updated Successfully");
+        
       }
       return response.data;
     } catch (error) {

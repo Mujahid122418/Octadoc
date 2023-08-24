@@ -7,6 +7,7 @@ interface Login {
   error: string;
   status: string;
   allUsers :any[];
+  checkEmail:string;
 }
 
 const initialState: Login = {
@@ -15,6 +16,7 @@ const initialState: Login = {
   status: "",
   error: "",
   allUsers : [],
+  checkEmail : "",
 };
 
 export const authSlice = createSlice({

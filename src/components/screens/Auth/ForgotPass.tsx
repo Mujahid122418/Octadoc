@@ -1,12 +1,42 @@
 import { useState } from "react";
 import "./Login.css"; // Import your CSS file if needed
-import { LoginFun } from "../../../redux/Auth/AuthAPI";
+import {  updatePassword } from "../../../redux/Auth/AuthAPI";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 
 export default function ForgotPass() {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const [pass , setpass] = useState('');
+  const[confirm , setconfirm] = useState('');
+
+  const enterData = (e:any) => {
+    e.preventDefault();
+    if(pass === confirm || confirm === pass) {
+    
+        let data = {
+          id : "64d5be60ac617f4687963475",
+          currentPassword : pass ,
+          newPassword : pass , 
+        };
+        console.log('data', data);
+        
+        dispatch(updatePassword(data))
+         
+    }else{
+      toast.error("Your New password and confirm password did't match");
+    }
+
+  }
+
+
+
+ 
 
   return (
     <div className="login-Container" style={{ height: window.innerHeight }}>
@@ -28,14 +58,20 @@ export default function ForgotPass() {
           <div className="login-form">
             <div className="sign-in-htm">
               <div className="group">
-                <label htmlFor="user" className="label">
+               <div className="d-flex align-items-center">
+               <label style={{flex:2}} htmlFor="user" className="label">
                  New Password
                 </label>
+                <p className="mb-1 d-flex w-100" style={{fontSize : 11, color: 'white' , flex : 4 }}>password must be at least 8 characters</p>
+               </div>
                 <input
+                  value={pass}
+                  onChange={(e) => setpass(e.target.value)}
                   id="user"
                   type="Password"
                   className="input"
                 />
+               
               </div>
 
               <div className="group">
@@ -43,6 +79,8 @@ export default function ForgotPass() {
                  Confirm Password
                 </label>
                 <input
+                  value={confirm}
+                  onChange={(e) => setconfirm(e.target.value)}
                   id="user"
                   type="Password"
                   className="input"
@@ -51,7 +89,7 @@ export default function ForgotPass() {
               </div>
 
               <div className="group">
-                <button  className="button">
+                <button  className="button" onClick={(e) => enterData(e)}>
                  Send   
                 </button>
               </div>
