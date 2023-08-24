@@ -22,9 +22,16 @@ import AnswerBar from "../QuestionBarModal/Answerpart/AnswerPart";
 import SimpleBackdrop from "../../../utils/BackDrop";
 import { getQuestion } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { useNavigate } from "react-router-dom";
+
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
 const customRadioStyle = {
   color: "#6049cd", // Your custom color code
 };
+
 const RenderQuestion: React.FC<{
   getQuestions: any;
   // onUpdate: (updatedQna: QNAItem[]) => void;
@@ -34,10 +41,19 @@ const RenderQuestion: React.FC<{
     <div>
       {getQuestions.map((item: any) => (
         <div key={item._id} style={{ padding: 30 }}>
-          <li>
-            <ArrowForwardIosRoundedIcon /> {item?.question}
-          </li>
-
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <li>
+              <ArrowForwardIosRoundedIcon />
+              {item?.question}
+            </li>
+          </div>
           {item?.QuestionType === "Date Time" ? (
             <div className="answer mt-3 mb-2 ms-3">
               <div className="first">

@@ -21,7 +21,6 @@ import SimpleBackdrop from "../../../utils/BackDrop";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Card from "./Card";
 
-
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { template, isLoading } = useSelector(
@@ -29,7 +28,8 @@ const Home: React.FC = () => {
   );
   const { user } = useSelector((state: RootState) => state?.auth);
   const { search } = useSelector((state: RootState) => state?.template);
- 
+  console.log("search", search);
+
   const [category, setcategory] = useState("");
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
       <div className="container">
         <SimpleBackdrop isLoading={!isLoading} />
         <Search />
-        <AddTemplate  />
+        <AddTemplate />
         <div className="card-sec mt-5">
           <div className="row d-flex  justify-content-end ">
             <div className="col-md-6 col-lg-4">
@@ -123,13 +123,10 @@ const Home: React.FC = () => {
           {window.location.pathname === "/" ? (
             <div className="row">
               {template?.length > 0 ? (
-                template.filter((item) => search ? item?.category_id === search : item).length > 0 ? (
+                template.filter((item) =>
+                  category ? item?.category_id === category : item
+                ).length > 0 ? (
                   template
-                  .filter((item) =>
-                    category ? item?.category_id === category : item
-                  ).length  > 0 ? (
-  
-                    template
                     .filter((item) =>
                       category ? item?.category_id === category : item
                     )
@@ -141,14 +138,9 @@ const Home: React.FC = () => {
                         DeleteTemplate={DeleteTemplate}
                       />
                     ))
-  
-                  ):(
-                    <p style={{ textAlign: "center" }}>Category No Found</p>
-                  ) 
                 ) : (
-                  <p style={{ textAlign: "center" }}>Search category No Found</p>
-                  )
-                
+                  <p style={{ textAlign: "center" }}>Category No Found</p>
+                )
               ) : (
                 <p style={{ textAlign: "center" }}>No Record Found</p>
               )}
@@ -157,34 +149,36 @@ const Home: React.FC = () => {
             <div className="row">
               {template?.filter((item) => item?.user_id === user?._id)?.length >
               0 ? (
-                template.filter((item) => search ? item?.category_id === search : item).length > 0 ? (
-                  template.filter((item) =>
-                  item?.isapprove === "true" && category
-                    ? item?.category_id === category
-                    : item
+                template.filter((item) =>
+                  search ? item?.category_id === search : item
                 ).length > 0 ? (
-                  
-                template
-                  .filter((item) =>
-                    item?.user_id === user?._id && category
+                  template.filter((item) =>
+                    item?.isapprove === "true" && category
                       ? item?.category_id === category
-                      : item?.user_id === user?._id
+                      : item
+                  ).length > 0 ? (
+                    template
+                      .filter((item) =>
+                        item?.user_id === user?._id && category
+                          ? item?.category_id === category
+                          : item?.user_id === user?._id
+                      )
+                      ?.map((item, i) => (
+                        <Card
+                          item={item}
+                          key={i}
+                          updateTemplate={updateTemplate}
+                          DeleteTemplate={DeleteTemplate}
+                        />
+                      ))
+                  ) : (
+                    <p style={{ textAlign: "center" }}>category No Found</p>
                   )
-                  ?.map((item, i) => (
-                    <Card
-                      item={item}
-                      key={i}
-                      updateTemplate={updateTemplate}
-                      DeleteTemplate={DeleteTemplate}
-                    />
-                  ))
-                ):(
-                  <p style={{ textAlign: "center" }}>category No Found</p>
-                )
                 ) : (
-                  <p style={{ textAlign: "center" }}>Search category No Found</p>
+                  <p style={{ textAlign: "center" }}>
+                    Search category No Found
+                  </p>
                 )
-                
               ) : (
                 <p style={{ textAlign: "center" }}>No Record Found</p>
               )}
@@ -193,35 +187,36 @@ const Home: React.FC = () => {
             <div className="row">
               {template?.filter((item) => item?.isapprove === "true")?.length >
               0 ? (
-                template.filter((item) => search ? item?.category_id === search : item).length > 0 ? (
-                  template.filter((item) =>
-                  item?.isapprove === "true" && category
-                    ? item?.category_id === category
-                    : item
+                template.filter((item) =>
+                  search ? item?.category_id === search : item
                 ).length > 0 ? (
-                  template
-                    .filter((item) =>
-                      item?.isapprove === "true" && category
-                        ? item?.category_id === category
-                        : item
-                    )
-                    .map((item, i) => (
-                      <Card
-                        item={item}
-                        key={i}
-                        updateTemplate={updateTemplate}
-                        DeleteTemplate={DeleteTemplate}
-                      />
-                    ))
+                  template.filter((item) =>
+                    item?.isapprove === "true" && category
+                      ? item?.category_id === category
+                      : item
+                  ).length > 0 ? (
+                    template
+                      .filter((item) =>
+                        item?.isapprove === "true" && category
+                          ? item?.category_id === category
+                          : item
+                      )
+                      .map((item, i) => (
+                        <Card
+                          item={item}
+                          key={i}
+                          updateTemplate={updateTemplate}
+                          DeleteTemplate={DeleteTemplate}
+                        />
+                      ))
+                  ) : (
+                    <p style={{ textAlign: "center" }}>category no Found</p>
+                  )
                 ) : (
                   <p style={{ textAlign: "center" }}>
-                    category no Found 
+                    Search category No Found
                   </p>
                 )
-                ) : (
-                  <p style={{ textAlign: "center" }}>Search category No Found</p>
-                )
-                
               ) : (
                 <p style={{ textAlign: "center" }}>No Record Found</p>
               )}

@@ -65,7 +65,6 @@ const customRadioStyle = {
 type Anchor = "right";
 
 export default function QuestionBar() {
-  // let url = window.location?.pathname.split("/questions/")[1];
   const dispatch = useDispatch<AppDispatch>();
 
   const {
@@ -86,7 +85,7 @@ export default function QuestionBar() {
     {
       question: "",
       answer: "",
-      index: createUUID(),
+      Qindex: createUUID(),
       QuestionType: "",
       followUp: [],
     },
@@ -106,7 +105,7 @@ export default function QuestionBar() {
         question: newQuestion,
         answer: newAnswer,
         QuestionType: QuestionType,
-        index: createUUID(),
+        Qindex: createUUID(),
         followUp: [],
       });
       setQna(updatedQna);
@@ -146,7 +145,7 @@ export default function QuestionBar() {
             {
               question: newQuestion,
               answer: newAnswer,
-              index: createUUID(),
+              Qindex: createUUID(),
               QuestionType: questionType,
               followUp: [],
             },

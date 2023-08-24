@@ -22,7 +22,7 @@ const initialState: TemplateArray = {
   error: "",
   addQuestionModel: false,
   addQuestionFollowupModel: false,
-  EditSelectedQuestion: {},
+  EditSelectedQuestion: [],
   addQuestion: [],
   questionType: "",
   getQuestions: [],

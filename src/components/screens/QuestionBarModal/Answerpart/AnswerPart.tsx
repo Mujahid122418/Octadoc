@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 
@@ -18,7 +18,6 @@ import Button2 from "../../Button2/Button2";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addQuestionFollowupModelFun,
-  addQuestionFun,
   addQuestionModelFun,
 } from "../../../../redux/TemplateQuestion/TemplateQuestion";
 import { toast } from "react-toastify";
@@ -51,14 +50,14 @@ interface IAnswerBar {
 interface FollowUpQuestion {
   question: string;
   answer: string;
-  index: string;
+  Qindex: string;
   followup: FollowUpQuestion[];
   QuestionType: string;
 }
 interface QNAItem {
   question: string;
   answer: string;
-  index: string;
+  Qindex?: string;
   followUp: FollowUpQuestion[];
   QuestionType: string;
 }
@@ -77,7 +76,7 @@ const QNAComponent: React.FC<{
     updatedQna.push({
       question: "",
       answer: "",
-      index: createUUID(),
+      Qindex: createUUID(),
       followUp: [],
       QuestionType: "",
     });
@@ -85,18 +84,37 @@ const QNAComponent: React.FC<{
   };
 
   const handelDelete = (e: any) => {
-    console.log("ee", e);
     const updatedQna = [...qna];
-    let filter = updatedQna.filter((item) => item.index != e);
+    let filter = updatedQna.filter((item) => item.index !== e);
     onUpdate(filter);
     // console.log("filter", filter);
     // console.log("delete", updatedQna);
+  };
+  const onChangeQuestion = async (text: any, key: any) => {
+    onUpdate(
+      qna.map((item: any) => {
+        return item.Qindex === key ? { ...item, question: text } : item;
+      })
+    );
+  };
+  const onChangeAnswer = async (text: any, key: any) => {
+    onUpdate(
+      qna.map((item: any) => {
+        return item.Qindex === key ? { ...item, answer: text } : item;
+      })
+    );
+  };
+  const onChangeQuestionType = async (text: any, key: any) => {
+    onUpdate(
+      qna.map((item: any) => {
+        return item.Qindex === key ? { ...item, QuestionType: text } : item;
+      })
+    );
   };
   return (
     <div>
       {qna.map((item: any, questionIndex: any) => (
         <div key={item.index} className="input-cover" style={{ padding: 10 }}>
-          {/* {console.log("item", item)} */}
           {/* <button onClick={() => handelDelete(item.index)}>delete</button> */}
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <IconButton
@@ -113,12 +131,13 @@ const QNAComponent: React.FC<{
               value={item.question}
               className="question-input"
               placeholder="Question"
-              onChange={(e) => {
-                const value = e.target.value;
-                const updatedQna = [...qna];
-                updatedQna[questionIndex].question = value;
-                onUpdate(updatedQna);
-              }}
+              onChange={(e) => onChangeQuestion(e.target.value, item.Qindex)}
+              // onChange={(e) => {
+              //   const value = e.target.value;
+              //   const updatedQna = [...qna];
+              //   updatedQna[questionIndex].question = value;
+              //   onUpdate(updatedQna);
+              // }}
             />
           </div>
 
@@ -127,13 +146,15 @@ const QNAComponent: React.FC<{
             <select
               className="form-select mt-1"
               value={item.QuestionType}
-              onChange={(e) => {
-                const value = e.target.value;
-                const updatedQna = [...qna];
-
-                updatedQna[questionIndex].QuestionType = value;
-                onUpdate(updatedQna);
-              }}
+              onChange={(e) =>
+                onChangeQuestionType(e.target.value, item.Qindex)
+              }
+              // onChange={(e) => {
+              //   const value = e.target.value;
+              //   const updatedQna = [...qna];
+              //   updatedQna[questionIndex].QuestionType = value;
+              //   onUpdate(updatedQna);
+              // }}
             >
               <option>Select</option>
               <option>Date Time</option>
@@ -144,7 +165,7 @@ const QNAComponent: React.FC<{
             </select>
           </div>
           <div style={{ paddingTop: 20 }}>
-            <label htmlFor="">Answer*</label>
+            <label htmlFor=""> Answer*</label>
             <div
               style={{
                 display: "flex",
@@ -157,12 +178,13 @@ const QNAComponent: React.FC<{
                 className="answer-input"
                 value={item.answer}
                 placeholder="Answer"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const updatedQna = [...qna];
-                  updatedQna[questionIndex].answer = value;
-                  onUpdate(updatedQna);
-                }}
+                onChange={(e) => onChangeAnswer(e.target.value, item.Qindex)}
+                // onChange={(e) => {
+                //   const value = e.target.value;
+                //   const updatedQna = [...qna];
+                //   updatedQna[questionIndex].answer = value;
+                //   onUpdate(updatedQna);
+                // }}
               />
               {/* <IconButton aria-label="delete" onClick={handleAddQuestion}>
                 <AddIcon />
@@ -184,7 +206,7 @@ const QNAComponent: React.FC<{
       {qna.length > 0 ? (
         <Button2 name="Add Question" onClick={handleAddQuestion} />
       ) : (
-        <div>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <IconButton aria-label="delete" onClick={handleAddQuestion}>
             <AddIcon />
           </IconButton>
@@ -211,7 +233,39 @@ const AnswerBar: React.FC<IAnswerBar> = ({
 
     addQuestionModel,
     EditAnswer,
+    EditSelectedQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
+  console.log("EditSelectedQuestion", EditSelectedQuestion);
+
+  useEffect(() => {
+    let data =
+      EditSelectedQuestion.length > 0 ? EditSelectedQuestion[0].Question : [];
+    let newData: QNAItem[] = [];
+    if (data.length > 0) {
+      // console.log("data edit", data);
+      data.map((item: any) => {
+        newData.push({
+          question: item.question,
+          answer: item.answer,
+          QuestionType: item.QuestionType,
+          followUp: item.followUp,
+          Qindex: item.Qindex,
+        });
+      });
+    }
+    // console.log("newData ", newData);
+    setQna(newData);
+    // let newData = {
+    //   question: newQuestion,
+    //   answer: newAnswer,
+    //   Qindex: createUUID(),
+    //   QuestionType: questionType,
+    //   followUp: [],
+    // };
+    // setQna(
+    //   EditSelectedQuestion.length > 0 ? EditSelectedQuestion[0].Question : []
+    // );
+  }, [EditSelectedQuestion]);
 
   // handel answer state start
   let template_id =
@@ -235,8 +289,8 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       };
       const updatedQna = [...qna];
       updatedQna.push(data);
-      console.log("passQuestion", updatedQna);
-      console.log("qna", qna);
+      // console.log("passQuestion", updatedQna);
+      // console.log("qna", qna);
       var saveMultiple = {
         template_id: template_id,
         // question_type: QuestionType,
@@ -350,6 +404,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       // question_type: QuestionType,
       Question: qna,
     };
+    console.log("save", save);
 
     dispatch(addQuestionFunAPI(save))
       .unwrap()
