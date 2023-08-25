@@ -28,7 +28,6 @@ const Home: React.FC = () => {
   );
   const { user } = useSelector((state: RootState) => state?.auth);
   const { search } = useSelector((state: RootState) => state?.template);
-  console.log("search", search);
 
   const [category, setcategory] = useState("");
 
@@ -125,7 +124,9 @@ const Home: React.FC = () => {
               {template?.length > 0 ? (
                 template.filter((item) =>
                   category ? item?.category_id === category : item
-                ).length > 0 ? (
+                ).length > 0 ?
+                
+                (
                   template
                     .filter((item) =>
                       category ? item?.category_id === category : item
@@ -150,7 +151,9 @@ const Home: React.FC = () => {
               {template?.filter((item) => item?.user_id === user?._id)?.length >
               0 ? (
                 template.filter((item) =>
-                  search ? item?.category_id === search : item
+
+                search.toLowerCase() === "" ? item : item?.category_id.toLowerCase().includes(search.toLowerCase())
+                  
                 ).length > 0 ? (
                   template.filter((item) =>
                     item?.isapprove === "true" && category
@@ -188,7 +191,7 @@ const Home: React.FC = () => {
               {template?.filter((item) => item?.isapprove === "true")?.length >
               0 ? (
                 template.filter((item) =>
-                  search ? item?.category_id === search : item
+                search.toLowerCase() === "" ? item : item?.category_id.toLowerCase().includes(search.toLowerCase())
                 ).length > 0 ? (
                   template.filter((item) =>
                     item?.isapprove === "true" && category

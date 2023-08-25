@@ -1,0 +1,41 @@
+.user-list-row h3{
+    color: var(--color);
+    }
+    .heading{
+        color: var(--color);
+    }
+    .search-h{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .search-h input{
+      width: 300px !important;
+      border: 2px solid var(--color);
+      border-radius: 10px;
+      padding: 7px 10px !important;
+    }
+    .search-h input::placeholder {
+      color: var(--color);
+    }
+    .table-head{
+        background: var(--theme-color) !important ;
+    }
+    .MuiToolbar-gutters {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .table-fot{
+        background:var(--theme-color) !important ;
+        color: var(--white) !important;
+    }
+      /* Target the pagination buttons specifically */
+      .table-fot .MuiTablePagination-actions button {
+        color: white !important; /* Color for the arrow buttons */
+    
+      }
+    
+      .table-fot .MuiTablePagination-selectIcon svg {
+        fill: white !important; /* Color for the multiselect arrow icons */
+      }

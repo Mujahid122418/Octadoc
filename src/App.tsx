@@ -13,6 +13,8 @@ import ShowTemplateQuestion from "./components/screens/TemplateQuestion/ShowTemp
 import SendMail from "./components/screens/Auth/SendMail";
 import ForgotPass from "./components/screens/Auth/ForgotPass";
 import Admin from "./components/screens/Admin/Admin";
+import OTP from "./components/screens/Auth/OTP";
+import Category from "./components/screens/Admin/Category/Category";
 
 
 function App() {
@@ -97,9 +99,21 @@ function App() {
           }
         />
 
+      <Route
+          path="/category"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <Category/>
+            </div>
+          }
+        />
+
         <Route path="/login" element={<Login />} />
         <Route path="/SendMail" element={<SendMail />} />
         <Route path="/forgot" element={<ForgotPass />} />
+        <Route path="/otp" element={<OTP />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

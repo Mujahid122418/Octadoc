@@ -4,9 +4,6 @@ import { Baseurl } from "../../utils/BaseUrl";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export interface IAuth {
-  user: any;
-}
 
 export const getAllUsers = createAsyncThunk(
   "/auth/allUser",
@@ -107,12 +104,12 @@ export const checkEmail = createAsyncThunk(
     }
     try {
       const response = await axios.post(Baseurl + `/auth/forgotPassword`, d);
-      console.log("eeeee",response);
+      // console.log("e",response?.data);
       
       if (response?.data?.success) {
-        toast.success("Email send Successfully");
-        
-        data.navigate("/forgot");
+        toast.success("OTP Code Send On Your Gmail Successfully");
+        localStorage.setItem("user-id", response?.data?.user?._id);
+        data.navigate("/otp");
       } else {
         console.log("error signup api false", response?.data);
       }
@@ -141,3 +138,33 @@ export const updatePassword = createAsyncThunk(
     }
   }
 );
+
+
+export const sendOtp = createAsyncThunk(
+  "auth/resetpassword",
+  async (data: any ) => {
+
+
+    let d = {
+      user_id : data._id,
+      otp : data.otp
+    }
+    try {
+      const response = await axios.put(Baseurl + `/auth/resetpassword/${d?.user_id}`, d);
+    
+      if (response?.data?.success) {
+        toast.success("OTP Code Send On Your Gmail Successfully");
+        data.navigate("/forgot");
+      } else {
+        console.log("error signup api false", response?.data);
+        toast.error("OTP is incorrect");
+
+      }
+      return response.data.user;
+    } catch (error) {
+      console.log("error auth api", error);
+      toast.error("Server Error");
+    }
+  }
+);
+

@@ -14,13 +14,13 @@ export default function ForgotPass() {
 
   const [pass , setpass] = useState('');
   const[confirm , setconfirm] = useState('');
-
+  let user_id = localStorage.getItem("user-id");
   const enterData = (e:any) => {
     e.preventDefault();
     if(pass === confirm || confirm === pass) {
     
         let data = {
-          id : "64d5be60ac617f4687963475",
+          id : user_id,
           currentPassword : pass ,
           newPassword : pass , 
         };
