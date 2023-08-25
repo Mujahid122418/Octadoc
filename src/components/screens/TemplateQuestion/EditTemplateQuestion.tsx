@@ -28,10 +28,46 @@ import {
 import {
   EditSelectedQuestionFun,
   addQuestionModelFun,
-  addQuestionFollowupModelFun,
+  editQuestionFollowupModelFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestion";
 import QuestionBar from "../QuestionBarModal/QuestionBar";
+import EditQuestionBar from "../QuestionBarModal/EditQuestionBar";
+// interface QuestionItem {
+//   question: string;
+//   QuestionType: string;
+//   Qindex: string;
+//   followUp: QuestionItem[];
+//   _id: string;
+// }
 
+// interface DataItem {
+//   _id: string;
+//   template_id: string;
+//   Question: QuestionItem[];
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+interface Question {
+  question: string;
+  QuestionType: string;
+  Qindex: string;
+  followUp: Question[];
+  _id: string;
+}
+
+interface DataItem {
+  _id: string;
+  name: string;
+  template_id: string;
+  question: string;
+  Question: Question[];
+  createdAt: string;
+  updatedAt: string;
+  Qindex: string;
+
+  __v: number;
+}
 const customRadioStyle = {
   color: "#6049cd", // Your custom color code
 };
@@ -43,22 +79,31 @@ const RenderQuestion: React.FC<{
   // onDelete: (updatedQna: QNAItem[]) => void;
 }> = ({ getQuestions, arr }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, addQuestionModel, addQuestionFollowupModel } = useSelector(
+  const { isLoading } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
-  const updateTemplateQuestion = async (e: any, e1: any) => {
-    console.log("ee ", e);
-    console.log("ee  1", e1);
 
-    const searchIndex = arr.find(
-      (item: any, i: any) => item.Question[i] === e.Qindex
-    );
-    console.log("searchIndex", searchIndex);
+  const findParent = (
+    arr: any,
+    text: string,
+    parent: DataItem | null = null
+  ): DataItem | null => {
+    for (const item of arr) {
+      // console.log("item check", text, item);
+      if (item?.Qindex === text) {
+        return parent;
+      }
+      if (item.Question && item.Question.length > 0) {
+        const found = findParent(item?.Question, text, item);
 
-    // dispatch(EditSelectedQuestionFun(arr));
-    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
-    // dispatch(addQuestionModelFun(!addQuestionModel));
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
   };
+
   return (
     <div>
       {getQuestions.map((item: any, i: Number, ques: any) => (
@@ -74,32 +119,6 @@ const RenderQuestion: React.FC<{
             <li>
               <ArrowForwardIosRoundedIcon /> {item?.question}
             </li>
-            <Stack
-              direction="row"
-              spacing={1}
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              <IconButton
-                aria-label="delete"
-                onClick={() => updateTemplateQuestion(item, ques)}
-                // onClick={(e) => {
-                //   console.log("test", ques);
-                // }}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                aria-label="delete"
-                // onClick={() =>
-                //    DeleteTemplateQuestion(item?._id)
-                // }
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Stack>
           </div>
           {item?.QuestionType === "Date Time" ? (
             <div className="answer mt-3 mb-2 ms-3">
@@ -195,9 +214,8 @@ const RenderQuestion: React.FC<{
               </div>
             </div>
           ) : null}
-          {/* {question.followUp.length > 0 && ( */}
-          <RenderQuestion getQuestions={item.followUp} arr={arr} />
-          {/* )} */}
+
+          <RenderQuestion getQuestions={item.followUp} arr={getQuestions} />
         </div>
       ))}
     </div>
@@ -207,9 +225,12 @@ const RenderQuestion: React.FC<{
 const EditTemplateQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [section, setSection] = useState([1]);
-  const { isLoading, getQuestions, addQuestionModel } = useSelector(
-    (state: RootState) => state?.templateQuestion
-  );
+  const {
+    isLoading,
+    getQuestions,
+
+    editQuestionFollowupModel,
+  } = useSelector((state: RootState) => state?.templateQuestion);
 
   let tem_id = window.location.href.split("/questions/edit/")[1];
   useEffect(() => {
@@ -237,13 +258,17 @@ const EditTemplateQuestion = () => {
         console.log("delete question", e);
       });
   };
-
+  const updateTemplateQuestion = async (e: any) => {
+    console.log("eee", e.Question);
+    dispatch(EditSelectedQuestionFun(e.Question));
+    dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
+  };
   const SectionDetails = section.map((item, index) => {
     return (
       <>
         <div className="container-xxl" key={index}>
           <div className="questions-box mb-5">
-            <h3 className="text-white">Questions</h3>
+            <h3 className="text-white">Edit Questions</h3>
             <div className="question-head">
               <HelpOutlineIcon /> <h5 className="mb-0 ms-1">Section Name</h5>
             </div>
@@ -258,6 +283,30 @@ const EditTemplateQuestion = () => {
                     .map((item: any, i: Number, ques: any) => {
                       return (
                         <div key={item._id}>
+                          <Stack
+                            direction="row"
+                            spacing={1}
+                            style={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <IconButton
+                              aria-label="delete"
+                              onClick={() => updateTemplateQuestion(item)}
+                              // onClick={(e) => {
+                              //   console.log("test", item);
+                              // }}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton
+                              aria-label="delete"
+                              onClick={() => DeleteTemplateQuestion(item?._id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Stack>
                           <RenderQuestion
                             getQuestions={item.Question}
                             arr={ques}
@@ -272,6 +321,7 @@ const EditTemplateQuestion = () => {
             </div>
           </div>
           <QuestionBar />
+          <EditQuestionBar />
         </div>
       </>
     );

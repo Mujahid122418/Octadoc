@@ -23,11 +23,7 @@ import SimpleBackdrop from "../../../utils/BackDrop";
 import { getQuestion } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { useNavigate } from "react-router-dom";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
-import IconButton from "@mui/material/IconButton";
-import Stack from "@mui/material/Stack";
+import EditQuestionBar from "../QuestionBarModal/EditQuestionBar";
 const customRadioStyle = {
   color: "#6049cd", // Your custom color code
 };
@@ -161,11 +157,11 @@ const ShowTemplateQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [section, setSection] = useState([1]);
-  const {
-    isLoading,
-
-    getQuestions,
-  } = useSelector((state: RootState) => state?.templateQuestion);
+  const { isLoading, addQuestionModel, getQuestions } = useSelector(
+    (state: RootState) => state?.templateQuestion
+  );
+  let data = useSelector((state: RootState) => state?.templateQuestion);
+  console.log("data show all ", data);
 
   let tem_id = window.location.href.split("/questions/")[1];
   useEffect(() => {
@@ -178,7 +174,7 @@ const ShowTemplateQuestion = () => {
 
   const AddQuestionModel = () => {
     try {
-      dispatch(addQuestionModelFun(true));
+      dispatch(addQuestionModelFun(!addQuestionModel));
     } catch (error) {}
   };
   const AddSection = async (e: any) => {
@@ -237,7 +233,7 @@ const ShowTemplateQuestion = () => {
             </div>
             <div className="question-footer">
               <Button2
-                name="Add Question"
+                name="Add Question "
                 onClick={AddQuestionModel}
                 icon={<HelpCenterIcon />}
               />
@@ -248,6 +244,7 @@ const ShowTemplateQuestion = () => {
               />
 
               <QuestionBar />
+              <EditQuestionBar />
               {/* <AnswerBar /> */}
             </div>
           </div>

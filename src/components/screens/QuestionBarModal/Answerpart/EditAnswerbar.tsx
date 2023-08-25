@@ -17,8 +17,8 @@ import AddIcon from "@mui/icons-material/Add";
 import Button2 from "../../Button2/Button2";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addQuestionFollowupModelFun,
-  addQuestionModelFun,
+  editQuestionFollowupModelFun,
+  editQuestionModelFun,
 } from "../../../../redux/TemplateQuestion/TemplateQuestion";
 import { toast } from "react-toastify";
 import {
@@ -231,7 +231,7 @@ const QNAComponent: React.FC<{
       ))}
 
       {qna.length > 0 ? (
-        <Button2 name="Add Question" onClick={handleAddQuestion} />
+        <Button2 name="Edit Question" onClick={handleAddQuestion} />
       ) : (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <IconButton aria-label="delete" onClick={handleAddQuestion}>
@@ -243,7 +243,7 @@ const QNAComponent: React.FC<{
   );
 };
 
-const AnswerBar: React.FC<IAnswerBar> = ({
+const EditAnswerBar: React.FC<IAnswerBar> = ({
   newAnswer,
   setNewAnswer,
   newQuestion,
@@ -256,9 +256,9 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const {
-    addQuestionFollowupModel,
+    editQuestionFollowupModel,
 
-    addQuestionModel,
+    editQuestionModel,
     EditAnswer,
     EditSelectedQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
@@ -379,9 +379,9 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   useEffect(() => {
     setState((state) => ({
       ...state,
-      right: addQuestionFollowupModel,
+      right: editQuestionFollowupModel,
     }));
-  }, [addQuestionFollowupModel]);
+  }, [editQuestionFollowupModel]);
 
   // update answer
   useEffect(() => {
@@ -438,14 +438,14 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       <IconButton
         sx={{ ml: "auto" }}
         onClick={() => {
-          dispatch(addQuestionModelFun(!addQuestionModel));
-          dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+          dispatch(editQuestionModelFun(!editQuestionModel));
+          dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
         }}
       >
         <CloseIcon />
       </IconButton>
       <List className="p-3 qu-bar">
-        <h2 className="mb-1">Add Answer to</h2>
+        <h2 className="mb-1">Edit Answer to</h2>
 
         <label htmlFor="">Answer</label>
         <input
@@ -525,8 +525,10 @@ const AnswerBar: React.FC<IAnswerBar> = ({
           <Button2
             name="Close"
             onClick={() => {
-              dispatch(addQuestionModelFun(!addQuestionModel));
-              dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+              dispatch(editQuestionModelFun(!editQuestionModel));
+              dispatch(
+                editQuestionFollowupModelFun(!editQuestionFollowupModel)
+              );
             }}
           />
         </div>
@@ -554,4 +556,4 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     </div>
   );
 };
-export default AnswerBar;
+export default EditAnswerBar;

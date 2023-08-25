@@ -150,48 +150,46 @@ exports.singleQuestion = async (req, res) => {
     // Find data based on the query
     // { _id: req?.params.id }
 
-    const data1 = await TemplateQuestions.find({
-      Question: { $elemMatch: { $eq: "one" } },
-    })
+    const data1 = await TemplateQuestions.findOne({ _id: req.params.id })
       .lean()
       .skip(skip)
       .limit(pageSize);
 
-    let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
+    // let ans = await Answer.findOne({ _id: req.params.id }).lean();
 
-    const data = await data1.map((objA) => {
-      const matchingObjB = ans.find(
-        (objB) => objB?.question_id.toString() === objA._id.toString()
-      );
-      if (
-        matchingObjB &&
-        Object.keys(matchingObjB).length > 0 &&
-        matchingObjB !== null &&
-        matchingObjB !== undefined
-      ) {
-        let {
-          follow_up_question_group_id,
-          text,
-          question_id,
-          template_id,
-          _id,
-        } = matchingObjB;
+    // const data = await data1.map((objA) => {
+    //   const matchingObjB = ans.find(
+    //     (objB) => objB?.question_id.toString() === objA._id.toString()
+    //   );
+    //   if (
+    //     matchingObjB &&
+    //     Object.keys(matchingObjB).length > 0 &&
+    //     matchingObjB !== null &&
+    //     matchingObjB !== undefined
+    //   ) {
+    //     let {
+    //       follow_up_question_group_id,
+    //       text,
+    //       question_id,
+    //       template_id,
+    //       _id,
+    //     } = matchingObjB;
 
-        let send = {
-          follow_up_question_group_id,
-          text,
-          question_id,
-          template_id,
-          ans_id: _id,
-        };
+    //     let send = {
+    //       follow_up_question_group_id,
+    //       text,
+    //       question_id,
+    //       template_id,
+    //       ans_id: _id,
+    //     };
 
-        return { ...objA, ...send };
-      } else {
-        return { ...objA };
-      }
-    });
+    //     return { ...objA, ...send };
+    //   } else {
+    //     return { ...objA };
+    //   }
+    // });
     res.json({
-      data,
+      data1,
       currentPage: page,
       totalPages,
     });

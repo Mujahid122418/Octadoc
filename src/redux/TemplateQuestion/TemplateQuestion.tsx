@@ -7,6 +7,8 @@ interface TemplateArray {
   status: string;
   addQuestionModel: Boolean;
   addQuestionFollowupModel: Boolean;
+  editQuestionModel: Boolean;
+  editQuestionFollowupModel: Boolean;
   EditSelectedQuestion: any;
   addQuestion: any;
   questionType: string;
@@ -22,6 +24,8 @@ const initialState: TemplateArray = {
   error: "",
   addQuestionModel: false,
   addQuestionFollowupModel: false,
+  editQuestionModel: false,
+  editQuestionFollowupModel: false,
   EditSelectedQuestion: [],
   addQuestion: [],
   questionType: "",
@@ -40,6 +44,12 @@ export const templateQuestionSlice = createSlice({
     },
     addQuestionFollowupModelFun: (state, action) => {
       state.addQuestionFollowupModel = action.payload;
+    },
+    editQuestionModelFun: (state, action) => {
+      state.editQuestionModel = action.payload;
+    },
+    editQuestionFollowupModelFun: (state, action) => {
+      state.editQuestionFollowupModel = action.payload;
     },
     addQuestionFun: (state, action) => {
       state.addQuestion = action.payload;
@@ -93,5 +103,7 @@ export const {
   passQuestionFun,
   EditSelectedQuestionFun,
   EditAnswerFun,
+  editQuestionModelFun,
+  editQuestionFollowupModelFun,
 } = templateQuestionSlice.actions;
 export default templateQuestionSlice.reducer;

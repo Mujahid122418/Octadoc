@@ -16,8 +16,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
 
 import {
-  addQuestionModelFun,
-  addQuestionFollowupModelFun,
+  editQuestionModelFun,
+  editQuestionFollowupModelFun,
   questionTypeFun,
   passQuestionFun,
   EditAnswerFun,
@@ -39,6 +39,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import { create_UUID } from "../../../utils/UUID";
+import EditAnswerBar from "./Answerpart/EditAnswerbar";
 
 // interface FollowUpQuestion {
 //   question: string;
@@ -64,13 +65,14 @@ const customRadioStyle = {
 
 type Anchor = "right";
 
-export default function QuestionBar() {
+export default function EditQuestionBar() {
   const dispatch = useDispatch<AppDispatch>();
 
   const {
-    addQuestionModel,
+    editQuestionModel,
+    editQuestionFollowupModel,
     questionType,
-    addQuestionFollowupModel,
+
     EditSelectedQuestion,
     getSingleQuestion,
     isLoading,
@@ -178,15 +180,15 @@ export default function QuestionBar() {
     };
 
     dispatch(passQuestionFun(pass));
-    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
-    dispatch(addQuestionModelFun(!addQuestionModel));
+    dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
+    dispatch(editQuestionModelFun(!editQuestionModel));
   };
   useEffect(() => {
     setState((state) => ({
       ...state,
-      right: addQuestionModel,
+      right: editQuestionModel,
     }));
-  }, [addQuestionModel]);
+  }, [editQuestionModel]);
 
   const handleInputClick = (event: React.MouseEvent<HTMLInputElement>) => {
     if (event.target === event.currentTarget) {
@@ -216,19 +218,19 @@ export default function QuestionBar() {
       ans: e.text,
     };
     dispatch(EditAnswerFun(ans));
-    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+    dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
   };
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
       <IconButton
         sx={{ ml: "auto" }}
-        onClick={() => dispatch(addQuestionModelFun(!addQuestionModel))}
+        onClick={() => dispatch(editQuestionModelFun(!editQuestionModel))}
       >
         <CloseIcon />
       </IconButton>
       <List className="p-3 qu-bar">
-        <h2 className="mb-1">Add New Question</h2>
+        <h2 className="mb-1">Edit Question </h2>
         <p>Section Name</p>
         <label htmlFor="">Question</label>
         <input
@@ -370,7 +372,7 @@ export default function QuestionBar() {
         <div className="close-button mt-2">
           <Button2
             name="Close"
-            onClick={() => dispatch(addQuestionModelFun(!addQuestionModel))}
+            onClick={() => dispatch(editQuestionModelFun(!editQuestionModel))}
           />
         </div>
       </List>
@@ -386,6 +388,16 @@ export default function QuestionBar() {
         {list(anchor)}
       </Drawer>
       <AnswerBar
+        newAnswer={newAnswer}
+        setNewAnswer={setNewAnswer}
+        newQuestion={newQuestion}
+        qna={qna}
+        setQna={setQna}
+        newFollowUp={newFollowUp}
+        UpdateQuestionsArray={UpdateQuestionsArray}
+        QuestionType={QuestionType}
+      />
+      <EditAnswerBar
         newAnswer={newAnswer}
         setNewAnswer={setNewAnswer}
         newQuestion={newQuestion}
