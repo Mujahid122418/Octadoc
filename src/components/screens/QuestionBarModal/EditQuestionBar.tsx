@@ -32,7 +32,7 @@ import {
   getSingleQuestionFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { toast } from "react-toastify";
-import AnswerBar from "./Answerpart/AnswerPart";
+
 import SimpleBackdrop from "../../../utils/BackDrop";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -47,13 +47,6 @@ import EditAnswerBar from "./Answerpart/EditAnswerbar";
 //   //followUp: FollowUpQuestion[]; // Use 'followUp' here
 //   followUp: any;
 // }
-
-interface QNAItem {
-  question: string;
-  answer: string;
-  index: Number;
-  followUp: any; // Use 'followUp' here
-}
 
 interface StateType {
   // Define your state properties here
@@ -95,25 +88,21 @@ export default function EditQuestionBar() {
 
   const [newQuestion, setNewQuestion] = useState<string>("");
   const [newAnswer, setNewAnswer] = useState<string>("");
-  const [newFollowUp, setNewFollowUp] = useState<string>("");
+
   const [QuestionType, setQuestionType] = useState("");
 
-  // console.log("test qna", qna);
-
   const UpdateQuestionsArray = (e: any) => {
-    if (e === "answer") {
-      const updatedQna = [...qna];
-      updatedQna.push({
-        question: newQuestion,
-        answer: newAnswer,
-        QuestionType: QuestionType,
-        Qindex: createUUID(),
-        followUp: [],
-      });
-      setQna(updatedQna);
-      setNewQuestion("");
-      setNewAnswer("");
-    }
+    const updatedQna = [...qna];
+    updatedQna.push({
+      question: newQuestion,
+      answer: newAnswer,
+      QuestionType: QuestionType,
+      Qindex: createUUID(),
+      followUp: [],
+    });
+    setQna(updatedQna);
+    setNewQuestion("");
+    setNewAnswer("");
   };
 
   // ===collpase====
@@ -138,11 +127,8 @@ export default function EditQuestionBar() {
     } else {
       try {
         let data = {
-          // name: newQuestion,
-          // question: newQuestion,
-          // answer: newAnswer,
           template_id: template_id,
-          // question_type: questionType,
+
           Question: [
             {
               question: newQuestion,
@@ -199,8 +185,6 @@ export default function EditQuestionBar() {
 
   useEffect(() => {
     if (Object.keys(EditSelectedQuestion).length > 0) {
-      console.log("EditSelectedQuestion ==>", EditSelectedQuestion);
-
       dispatch(getSingleQuestionFun(EditSelectedQuestion?._id));
     }
   }, [EditSelectedQuestion]);
@@ -212,7 +196,6 @@ export default function EditQuestionBar() {
     }
   }, [getSingleQuestion]);
   const EditAnsewer = (e: any) => {
-    console.log("ans id", e);
     let ans = {
       id: e.ans_id,
       ans: e.text,
@@ -387,23 +370,13 @@ export default function EditQuestionBar() {
       <Drawer anchor={anchor} open={state[anchor]}>
         {list(anchor)}
       </Drawer>
-      <AnswerBar
-        newAnswer={newAnswer}
-        setNewAnswer={setNewAnswer}
-        newQuestion={newQuestion}
-        qna={qna}
-        setQna={setQna}
-        newFollowUp={newFollowUp}
-        UpdateQuestionsArray={UpdateQuestionsArray}
-        QuestionType={QuestionType}
-      />
+
       <EditAnswerBar
         newAnswer={newAnswer}
         setNewAnswer={setNewAnswer}
         newQuestion={newQuestion}
         qna={qna}
         setQna={setQna}
-        newFollowUp={newFollowUp}
         UpdateQuestionsArray={UpdateQuestionsArray}
         QuestionType={QuestionType}
       />

@@ -16,6 +16,7 @@ const question = require("./routes/templateQuestion");
 const section = require("./routes/section");
 const template = require("./routes/template");
 const answer = require("./routes/answer");
+const category = require("./routes/category");
 
 const errorHandler = require("./utils/errorMiddleware");
 app.use(cors());
@@ -30,6 +31,7 @@ app.use("/question", question);
 app.use("/section", section);
 app.use("/template", template);
 app.use("/answer", answer);
+app.use("/category", category);
 
 app.get("/m", function (req, res) {
   console.log("process.env.NODE_ENV", process.env.NODE_ENV, port);

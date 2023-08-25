@@ -40,20 +40,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import { create_UUID } from "../../../utils/UUID";
 
-// interface FollowUpQuestion {
-//   question: string;
-//   answer: string;
-//   //followUp: FollowUpQuestion[]; // Use 'followUp' here
-//   followUp: any;
-// }
-
-interface QNAItem {
-  question: string;
-  answer: string;
-  index: Number;
-  followUp: any; // Use 'followUp' here
-}
-
 interface StateType {
   // Define your state properties here
   right: any; // Change 'any' to the appropriate type
@@ -93,25 +79,19 @@ export default function QuestionBar() {
 
   const [newQuestion, setNewQuestion] = useState<string>("");
   const [newAnswer, setNewAnswer] = useState<string>("");
-  const [newFollowUp, setNewFollowUp] = useState<string>("");
+
   const [QuestionType, setQuestionType] = useState("");
 
-  // console.log("test qna", qna);
-
-  const UpdateQuestionsArray = (e: any) => {
-    if (e === "answer") {
-      const updatedQna = [...qna];
-      updatedQna.push({
-        question: newQuestion,
-        answer: newAnswer,
-        QuestionType: QuestionType,
-        Qindex: createUUID(),
-        followUp: [],
-      });
-      setQna(updatedQna);
-      setNewQuestion("");
-      setNewAnswer("");
-    }
+  const UpdateQuestionsArray = () => {
+    const updatedQna = [...qna];
+    updatedQna.push({
+      question: newQuestion,
+      answer: newAnswer,
+      QuestionType: QuestionType,
+      Qindex: createUUID(),
+      followUp: [],
+    });
+    setQna(updatedQna);
   };
 
   // ===collpase====
@@ -203,12 +183,6 @@ export default function QuestionBar() {
     }
   }, [EditSelectedQuestion]);
 
-  useEffect(() => {
-    if (getSingleQuestion && getSingleQuestion.length > 0) {
-      setNewQuestion(getSingleQuestion[0].name);
-      setQuestionType(getSingleQuestion[0].question_type);
-    }
-  }, [getSingleQuestion]);
   const EditAnsewer = (e: any) => {
     console.log("ans id", e);
     let ans = {
@@ -308,7 +282,7 @@ export default function QuestionBar() {
                 name="Add Answer"
                 onClick={() => {
                   addQuestionFollowupBtn();
-                  UpdateQuestionsArray("question");
+                  // UpdateQuestionsArray();
                 }}
                 icon={<AddIcon />}
               />
@@ -391,7 +365,6 @@ export default function QuestionBar() {
         newQuestion={newQuestion}
         qna={qna}
         setQna={setQna}
-        newFollowUp={newFollowUp}
         UpdateQuestionsArray={UpdateQuestionsArray}
         QuestionType={QuestionType}
       />

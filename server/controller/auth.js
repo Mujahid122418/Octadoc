@@ -214,6 +214,8 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     countryofTraining,
     yearsofPractice,
     workingHours,
+    role,
+    status,
   } = req.body;
   const fieldsToUpdate = {
     name: name,
@@ -224,6 +226,8 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     countryofTraining: countryofTraining,
     workingHours: workingHours,
     yearsofPractice: yearsofPractice,
+    role: role,
+    status: status,
   };
   console.log("fieldsToUpdate", id, fieldsToUpdate);
   const user = await User.findByIdAndUpdate(id, fieldsToUpdate, {

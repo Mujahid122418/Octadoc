@@ -1,9 +1,9 @@
-const Section = require("../models/section");
+const Category = require("../models/category");
 
-exports.addSection = async (req, res) => {
+exports.addCategory = async (req, res) => {
   const payload = req.body;
 
-  await Section(payload)
+  await Category(payload)
     .save()
     .then((item) => {
       res.json({ success: true, data: item });
@@ -14,19 +14,19 @@ exports.addSection = async (req, res) => {
 };
 
 // Route to get paginated data
-exports.getSection = async (req, res) => {
+exports.getCategory = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
   const pageSize = parseInt(req.query.pageSize) || 10; // Get the page size or default to 10
 
   try {
-    const totalDocuments = await Section.countDocuments(); // Get the total number of documents
+    const totalDocuments = await Category.countDocuments(); // Get the total number of documents
 
     const totalPages = Math.ceil(totalDocuments / pageSize); // Calculate the total number of pages
 
     const skip = (page - 1) * pageSize; // Calculate the number of documents to skip
 
     // Query and retrieve paginated data
-    const data = await Section.find().skip(skip).limit(pageSize);
+    const data = await Category.find().skip(skip).limit(pageSize);
 
     res.json({
       data,
@@ -38,8 +38,8 @@ exports.getSection = async (req, res) => {
   }
 };
 
-exports.deleteSection = async (req, res) => {
-  await Section.findByIdAndDelete(req.params?.id)
+exports.deleteCategory = async (req, res) => {
+  await Category.findByIdAndDelete(req.params?.id)
     .then((deletedPost) => {
       if (deletedPost) {
         res.status(200).send({
@@ -61,8 +61,8 @@ exports.deleteSection = async (req, res) => {
     });
 };
 
-exports.updateSection = async (req, res) => {
-  await Section.findByIdAndUpdate(req.params?.id, req.body, {
+exports.updateCategory = async (req, res) => {
+  await Category.findByIdAndUpdate(req.params?.id, req.body, {
     new: true,
     runValidators: true,
   })

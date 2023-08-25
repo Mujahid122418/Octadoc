@@ -160,8 +160,6 @@ const ShowTemplateQuestion = () => {
   const { isLoading, addQuestionModel, getQuestions } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
-  let data = useSelector((state: RootState) => state?.templateQuestion);
-  console.log("data show all ", data);
 
   let tem_id = window.location.href.split("/questions/")[1];
   useEffect(() => {
@@ -177,6 +175,7 @@ const ShowTemplateQuestion = () => {
       dispatch(addQuestionModelFun(!addQuestionModel));
     } catch (error) {}
   };
+  const CopyModel = () => {};
   const AddSection = async (e: any) => {
     console.log("ee", e);
 
@@ -202,7 +201,7 @@ const ShowTemplateQuestion = () => {
               marginBottom: 2,
             }}
           >
-            <Button2 name="Copy" onClick={AddQuestionModel} />
+            <Button2 name="Copy" onClick={CopyModel} />
 
             <Button2 name="Edit" onClick={() => EditSection(item)} />
           </div>
@@ -213,7 +212,6 @@ const ShowTemplateQuestion = () => {
             </div>
             <div className="question-body">
               <ul className="mt-4 mb-4">
-                {console.log("getQuestions", getQuestions)}
                 {getQuestions?.filter(
                   (item: any) => item?.template_id === tem_id
                 ).length > 0 ? (
@@ -245,7 +243,6 @@ const ShowTemplateQuestion = () => {
 
               <QuestionBar />
               <EditQuestionBar />
-              {/* <AnswerBar /> */}
             </div>
           </div>
         </div>

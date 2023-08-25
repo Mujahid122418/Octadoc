@@ -43,7 +43,7 @@ interface IAnswerBar {
   newQuestion: string;
   qna: any;
   setQna: (value: any) => void;
-  newFollowUp: any;
+
   UpdateQuestionsArray: (value: any) => void;
   QuestionType: any;
 }
@@ -97,43 +97,6 @@ const QNAComponent: React.FC<{
     );
   };
 
-  // const onChangeAnswer = async (text: any, key: any) => {
-
-  //   onUpdate(
-  //     qna.map((item: any) => {
-  //       return item.Qindex === key ? { ...item, answer: text } : item;
-  //     })
-  //   );
-  // };
-  const updateNestedArray = (qna: any, newValue: any, targetIndex: any) => {
-    console.log("index", targetIndex);
-
-    return qna.map((item: any) => {
-      if (item.Qindex === targetIndex) {
-        // If the target item is found, update its value
-        return { ...item, answer: newValue };
-      } else if (item.followUp && item.followUp.length > 0) {
-        // If there are nested items, recursively update them
-        const updatedFollowUp = updateNestedArray(
-          item.followUp,
-          targetIndex,
-          newValue
-        );
-        console.log("second item", { ...item, followUp: updatedFollowUp });
-        return { ...item, followUp: updatedFollowUp };
-      } else {
-        console.log("else item", item);
-
-        return item;
-      }
-    });
-  };
-  const onChangeAnswer = async (text: any, key: any) => {
-    const updatedQna = updateNestedArray(qna, key, text);
-    console.log(" updatedQna ans", updatedQna);
-
-    onUpdate(updatedQna);
-  };
   const onChangeQuestionType = async (text: any, key: any) => {
     onUpdate(
       qna.map((item: any) => {
@@ -145,7 +108,6 @@ const QNAComponent: React.FC<{
     <div>
       {qna.map((item: any, questionIndex: any) => (
         <div key={item.index} className="input-cover" style={{ padding: 10 }}>
-          {/* <button onClick={() => handelDelete(item.index)}>delete</button> */}
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <IconButton
               aria-label="delete"
@@ -162,12 +124,6 @@ const QNAComponent: React.FC<{
               className="question-input"
               placeholder="Question"
               onChange={(e) => onChangeQuestion(e.target.value, item.Qindex)}
-              // onChange={(e) => {
-              //   const value = e.target.value;
-              //   const updatedQna = [...qna];
-              //   updatedQna[questionIndex].question = value;
-              //   onUpdate(updatedQna);
-              // }}
             />
           </div>
 
@@ -179,12 +135,6 @@ const QNAComponent: React.FC<{
               onChange={(e) =>
                 onChangeQuestionType(e.target.value, item.Qindex)
               }
-              // onChange={(e) => {
-              //   const value = e.target.value;
-              //   const updatedQna = [...qna];
-              //   updatedQna[questionIndex].QuestionType = value;
-              //   onUpdate(updatedQna);
-              // }}
             >
               <option>Select</option>
               <option>Date Time</option>
@@ -208,13 +158,12 @@ const QNAComponent: React.FC<{
                 className="answer-input"
                 value={item.answer}
                 placeholder="Answer"
-                onChange={(e) => onChangeAnswer(e.target.value, item.Qindex)}
-                // onChange={(e) => {
-                //   const value = e.target.value;
-                //   const updatedQna = [...qna];
-                //   updatedQna[questionIndex].answer = value;
-                //   onUpdate(updatedQna);
-                // }}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const updatedQna = [...qna];
+                  updatedQna[questionIndex].answer = value;
+                  onUpdate(updatedQna);
+                }}
               />
             </div>
           </div>
@@ -249,7 +198,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   newQuestion,
   qna,
   setQna,
-  newFollowUp,
+
   UpdateQuestionsArray,
   QuestionType,
 }) => {
@@ -262,14 +211,13 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     EditAnswer,
     EditSelectedQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
-  // console.log("EditSelectedQuestion", EditSelectedQuestion);
 
   useEffect(() => {
     // let data =
     //   EditSelectedQuestion.length > 0 ? EditSelectedQuestion[0].Question : [];
     // console.log("data edit", data);
     setQna(EditSelectedQuestion);
-    let newData: QNAItem[] = [];
+
     // if (data.length > 0) {
 
     // EditSelectedQuestion.map((item: any) => {
@@ -293,6 +241,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   // handel answer state end
   const handleClickBtnSaveAnswer = (event: any, e1: string) => {
     event.preventDefault();
+    console.log("new ", newQuestion);
 
     if (!newAnswer) {
       toast.error("Answer is required");
@@ -306,17 +255,16 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       };
       const updatedQna = [...qna];
       updatedQna.push(data);
-      // console.log("passQuestion", updatedQna);
-      // console.log("qna", qna);
+
       var saveMultiple = {
         template_id: template_id,
-        // question_type: QuestionType,
-        followUp: updatedQna,
+
+        Question: updatedQna,
       };
       var saveSingle = {
-        // question_type: QuestionType,
-        question: newQuestion,
-        answer: newAnswer,
+        template_id: template_id,
+        Question: updatedQna,
+        newQuestion: newQuestion,
       };
       if (
         QuestionType === "Multiple Choice" ||
@@ -336,39 +284,8 @@ const AnswerBar: React.FC<IAnswerBar> = ({
             toast.error(error);
           });
       } else {
-        console.log("saveSingle ", saveSingle);
+        console.log(" saveSingle ", saveSingle);
       }
-
-      // dispatch(addQuestionFunAPI(save));
-
-      // dispatch(addQuestionFunAPI(passQuestion))
-      //   .unwrap()
-      //   .then((res) => {
-      //     let { _id, template_id } = res?.data;
-      //     let data = {
-      //       follow_up_question_group_id: _id,
-      //       text: newAnswer,
-      //       question_id: _id,
-      //       template_id: template_id,
-      //     };
-
-      //     dispatch(addAnswerFunAPI(data))
-      //       .unwrap()
-      //       .then((response) => {
-      //         let d1 = {
-      //           page: 1,
-      //           pageSize: 20,
-      //         };
-      //         dispatch(getQuestion(d1));
-      //       })
-      //       .catch((error) => {
-      //         toast.error(error);
-      //       });
-      //   })
-      //   .catch((e) => {
-      //     console.log("err ans", e);
-      //     toast.error("error", e);
-      //   });
     }
   };
 
@@ -483,15 +400,9 @@ const AnswerBar: React.FC<IAnswerBar> = ({
         {/* ===collpase==== */}
         <div className="save-button mt-2">
           <Button2
-            name={
-              Object.keys(EditAnswer).length > 0
-                ? "Update Answer"
-                : "Save Answer"
-            }
+            name={"  Save Answer"}
             onClick={(e) => {
-              Object.keys(EditAnswer).length > 0
-                ? updateAnswer()
-                : handleClickBtnSaveAnswer(e, "save");
+              handleClickBtnSaveAnswer(e, "save");
             }}
           />
         </div>
@@ -499,7 +410,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
           <label htmlFor="">Follow Up Question</label>
 
           <Button2
-            name="+ Add Follow Up Question"
+            name="Add Follow Up Question"
             onClick={() => {
               // addQuestionFollowupBtn();
               UpdateQuestionsArray("answer");
@@ -543,7 +454,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
         anchor={anchor}
         open={state[anchor]}
         PaperProps={{
-          className: "responsive-sidebar", 
+          className: "responsive-sidebar",
         }}
       >
         {list(anchor)}

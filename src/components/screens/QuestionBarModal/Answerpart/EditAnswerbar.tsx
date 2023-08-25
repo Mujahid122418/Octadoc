@@ -43,7 +43,7 @@ interface IAnswerBar {
   newQuestion: string;
   qna: any;
   setQna: (value: any) => void;
-  newFollowUp: any;
+
   UpdateQuestionsArray: (value: any) => void;
   QuestionType: any;
 }
@@ -249,7 +249,6 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
   newQuestion,
   qna,
   setQna,
-  newFollowUp,
   UpdateQuestionsArray,
   QuestionType,
 }) => {
@@ -265,25 +264,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
   // console.log("EditSelectedQuestion", EditSelectedQuestion);
 
   useEffect(() => {
-    // let data =
-    //   EditSelectedQuestion.length > 0 ? EditSelectedQuestion[0].Question : [];
-    // console.log("data edit", data);
     setQna(EditSelectedQuestion);
-    let newData: QNAItem[] = [];
-    // if (data.length > 0) {
-
-    // EditSelectedQuestion.map((item: any) => {
-    //   newData.push({
-    //     question: item.question,
-    //     answer: item.answer,
-    //     QuestionType: item.QuestionType,
-    //     followUp: item.followUp,
-    //     Qindex: item.Qindex,
-    //   });
-    // });
-    //  }
-
-    // setQna(newData);
   }, [EditSelectedQuestion]);
 
   // handel answer state start
@@ -338,37 +319,6 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       } else {
         console.log("saveSingle ", saveSingle);
       }
-
-      // dispatch(addQuestionFunAPI(save));
-
-      // dispatch(addQuestionFunAPI(passQuestion))
-      //   .unwrap()
-      //   .then((res) => {
-      //     let { _id, template_id } = res?.data;
-      //     let data = {
-      //       follow_up_question_group_id: _id,
-      //       text: newAnswer,
-      //       question_id: _id,
-      //       template_id: template_id,
-      //     };
-
-      //     dispatch(addAnswerFunAPI(data))
-      //       .unwrap()
-      //       .then((response) => {
-      //         let d1 = {
-      //           page: 1,
-      //           pageSize: 20,
-      //         };
-      //         dispatch(getQuestion(d1));
-      //       })
-      //       .catch((error) => {
-      //         toast.error(error);
-      //       });
-      //   })
-      //   .catch((e) => {
-      //     console.log("err ans", e);
-      //     toast.error("error", e);
-      //   });
     }
   };
 
@@ -417,20 +367,20 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       // question_type: QuestionType,
       Question: qna,
     };
-    console.log("save", save);
+    console.log("edit save ", save);
 
-    dispatch(addQuestionFunAPI(save))
-      .unwrap()
-      .then((response) => {
-        let d1 = {
-          page: 1,
-          pageSize: 20,
-        };
-        dispatch(getQuestion(d1));
-      })
-      .catch((error) => {
-        toast.error(error);
-      });
+    // dispatch(addQuestionFunAPI(save))
+    //   .unwrap()
+    //   .then((response) => {
+    //     let d1 = {
+    //       page: 1,
+    //       pageSize: 20,
+    //     };
+    //     dispatch(getQuestion(d1));
+    //   })
+    //   .catch((error) => {
+    //     toast.error(error);
+    //   });
   };
 
   const list = (anchor: Anchor) => (
@@ -513,9 +463,10 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
         ) : (
           <textarea disabled name="" id="" cols={30} rows={5} />
         )}
+
         <div className="save-button mt-2">
           <Button2
-            name="Save Followup Questions"
+            name="Update Followup Questions"
             onClick={() => {
               SaveFollowupQuestions();
             }}
