@@ -434,7 +434,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   };
 
   const list = (anchor: Anchor) => (
-    <Box sx={{ width: 550 }} role="presentation">
+    <Box sx={{ width: 600 }} role="presentation">
       <IconButton
         sx={{ ml: "auto" }}
         onClick={() => {
@@ -543,10 +543,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
         anchor={anchor}
         open={state[anchor]}
         PaperProps={{
-          className: "responsive-sidebar", // Use the custom class for responsive behavior
-          sx: {
-            width: 550, // Set the width for larger screens
-          },
+          className: "responsive-sidebar", 
         }}
       >
         {list(anchor)}

@@ -1,14 +1,28 @@
 import { useState } from "react";
 import "./Login.css"; // Import your CSS file if needed
-import { LoginFun } from "../../../redux/Auth/AuthAPI";
+import { checkEmail } from "../../../redux/Auth/AuthAPI";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
 import { Link, useNavigate } from "react-router-dom";
 
 
 export default function SendMail() {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate(); 
 
   const [email, setEmail] = useState("");
+  
+  const handleSendClick = (e : any) => {
+    e.preventDefault();
+    
+      let data = {
+        email: email,
+        navigate:navigate
+      };
+      dispatch(checkEmail(data))
+ 
+  };
+
 
   return (
     <div className="login-Container" style={{ height: window.innerHeight }}>
@@ -45,10 +59,10 @@ export default function SendMail() {
 
               <div className="group">
                
-                <button  className="button">
-                 <Link to='/forgot' className="link">
+                <button  className="button" onClick={(e) => handleSendClick(e)}>
+                 {/* <Link to='/forgot' className="link"> */}
                  Send
-                 </Link>
+                 {/* </Link> */}
                 </button>
               </div>
             </div>

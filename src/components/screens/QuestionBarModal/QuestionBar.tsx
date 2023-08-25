@@ -220,7 +220,7 @@ export default function QuestionBar() {
   };
 
   const list = (anchor: Anchor) => (
-    <Box sx={{ width: 550 }} role="presentation">
+    <Box sx={{ width: 600 }} role="presentation">
       <IconButton
         sx={{ ml: "auto" }}
         onClick={() => dispatch(addQuestionModelFun(!addQuestionModel))}
