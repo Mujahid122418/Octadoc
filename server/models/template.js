@@ -10,8 +10,8 @@ const template_Schema = new schema(
       type: String,
     },
     category_id: {
-      type: String,
-      default: "1",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "category",
     },
     template_type: {
       type: String,

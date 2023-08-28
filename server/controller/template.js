@@ -29,6 +29,7 @@ exports.getTemplate = async (req, res) => {
 
     // Query and retrieve paginated data
     const data = await Template.find().skip(skip).limit(pageSize);
+    // .populate("category");
 
     res.json({
       data,

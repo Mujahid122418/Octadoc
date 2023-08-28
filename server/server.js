@@ -37,10 +37,12 @@ app.get("/m", function (req, res) {
   console.log("process.env.NODE_ENV", process.env.NODE_ENV, port);
   res.send("Hello World");
 });
+//Routes go here
+app.all("*", (req, res) => {
+  res.json({ "every thing": "is awesome" });
+});
 app.listen(port, () => {
-  console.log(
-    `server is running in ${process.env.NODE_ENV} on localhost:${port}`.green
-  );
+  console.log(`server is running  on localhost:${port}`);
 });
 process.on("unhandel", (err, promise) => {
   console.log("err", err);
