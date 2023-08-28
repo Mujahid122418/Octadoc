@@ -54,7 +54,13 @@ export default function Category() {
   };
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(100);
+
+
+ let dataa = {
+  pagesize: rowsPerPage.toString(),
+ }
+  
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -68,13 +74,13 @@ export default function Category() {
   };
 
   useEffect(() => {
-    dispatch(getcategories());
-  }, []);
+    dispatch(getcategories(dataa));
+  }, [rowsPerPage]);
 
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     dispatch(addcategory(data)).then(() => {
-      dispatch(getcategories());
+      dispatch(getcategories(dataa));
     });
     setcategory("");
   };
@@ -91,7 +97,7 @@ const updateCategory = () => {
             id : selectedcategory,
             category: category
         }
-        dispatch(updatecategory(data)).then(()=> dispatch(getcategories()))
+        dispatch(updatecategory(data)).then(()=> dispatch(getcategories(dataa)))
     
 }
   return (
@@ -167,7 +173,7 @@ const updateCategory = () => {
                           className="btn btn-danger p-1"
                           onClick={() =>
                             dispatch(deleteCategory(category?._id)).then(() =>
-                              dispatch(getcategories())
+                              dispatch(getcategories(dataa))
                             )
                           }
                         >

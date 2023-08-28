@@ -20,16 +20,37 @@ import {
 import SimpleBackdrop from "../../../utils/BackDrop";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Card from "./Card";
+import { getcategories } from "../../../redux/Admin/CategoryAPI";
+
+
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { template, isLoading } = useSelector(
     (state: RootState) => state?.template
   );
+
+  console.log("temp",template);
+  
   const { user } = useSelector((state: RootState) => state?.auth);
   const { search } = useSelector((state: RootState) => state?.template);
+  const { allcategory } = useSelector((state: RootState) => state?.category);
+
 
   const [category, setcategory] = useState("");
+
+  const show = 1000 ;
+
+const data = {
+  pagesize:  show ,
+} 
+
+  useEffect(() => {
+    dispatch(getcategories(data))
+  }, [category])
+  
+
+
 
   useEffect(() => {
     dispatch(getTemplates());
@@ -72,47 +93,9 @@ const Home: React.FC = () => {
                   onChange={(e) => setcategory(e.target.value)}
                 >
                   <option value="">Select</option>
-                  <option>Addiction Medicine</option>
-                  <option>Anaesthesia</option>
-                  <option>Antenatal</option>
-                  <option>Bariatric Medicine</option>
-                  <option>Cardiology</option>
-                  <option>Children’s Health</option>
-                  <option>Chronic Disease Management</option>
-                  <option>Dermatology</option>
-                  <option>Drugs & Alcohol</option>
-                  <option>Emergency</option>
-                  <option>Endocrinology</option>
-                  <option>ENT</option>
-                  <option>Fertility</option>
-                  <option>Gastroenterology</option>
-                  <option>General Surgery</option>
-                  <option>Genetics</option>
-                  <option>Geriatric Medicine</option>
-                  <option>Haematology</option>
-                  <option>Immunisations</option>
-                  <option>Immunology</option>
-                  <option>Infectious Diseases</option>
-                  <option>Maxillo Facial</option>
-                  <option>Men’s Health</option>
-                  <option>Mental Health</option>
-                  <option>Nephrology</option>
-                  <option>Neurology</option>
-                  <option>Occupational Medicine</option>
-                  <option>Oncology</option>
-                  <option>Ophthalmology</option>
-                  <option>Ortho/MSK</option>
-                  <option>Pain Medicine</option>
-                  <option>Palliative Care</option>
-                  <option>Pathology</option>
-                  <option>Preventative Medicine</option>
-                  <option>Procedures</option>
-                  <option>Respiratory</option>
-                  <option>Rheumatology</option>
-                  <option>Sexual health</option>
-                  <option>Vascular Surgery</option>
-                  <option>Women's Health</option>
-                  <option>Other</option>
+                  {allcategory.map((category) => (  
+                  <option key={category._id} value={category._id} >{category.category}</option>
+                  ))}
                 </select>
                 <ArrowDropDownIcon className="mui-select-arrow" />
               </div>
@@ -134,7 +117,7 @@ const Home: React.FC = () => {
                     ?.map((item, i) => (
                       <Card
                         item={item}
-                        key={i}
+                        key={item?.category_id}
                         updateTemplate={updateTemplate}
                         DeleteTemplate={DeleteTemplate}
                       />
@@ -151,7 +134,7 @@ const Home: React.FC = () => {
               {template?.filter((item) => item?.user_id === user?._id)?.length >
               0 ? (
                 template.filter((item) =>
-
+                
                 search.toLowerCase() === "" ? item : item?.category_id.toLowerCase().includes(search.toLowerCase())
                   
                 ).length > 0 ? (
@@ -169,7 +152,7 @@ const Home: React.FC = () => {
                       ?.map((item, i) => (
                         <Card
                           item={item}
-                          key={i}
+                          key={item?.category_id}
                           updateTemplate={updateTemplate}
                           DeleteTemplate={DeleteTemplate}
                         />
@@ -207,7 +190,7 @@ const Home: React.FC = () => {
                       .map((item, i) => (
                         <Card
                           item={item}
-                          key={i}
+                          key={item?.category_id}
                           updateTemplate={updateTemplate}
                           DeleteTemplate={DeleteTemplate}
                         />

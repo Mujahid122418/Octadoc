@@ -6,6 +6,13 @@
 }
 
 /* ======= card sec ===-== */
+.cat-name{
+background: var(--theme-color);
+border-radius: 5px !important;
+padding: 3px 10px !important;
+color: white;
+font-size: 12px !important;
+}
 .card-sec{
     border: 2px solid var(--color);
     border-radius: 20px;

@@ -34,10 +34,13 @@ export const addcategory = createAsyncThunk(
 
 export const getcategories = createAsyncThunk(
     "/category/category",
-    async () => {
+    async (page: any) => {
+      console.log("page" ,  page.pagesize.toString() );
+      
       try {
-        const response = await axios.get(Baseurl + "/category/category");  
-     
+        const response = await axios.get(Baseurl + `/category/category?page=1&pageSize=${page.pagesize}`);  
+        console.log("",response);
+        
         return response.data?.data;
         
       } catch (error) {

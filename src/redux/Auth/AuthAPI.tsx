@@ -168,3 +168,25 @@ export const sendOtp = createAsyncThunk(
   }
 );
 
+
+// =========update role ========
+
+
+export const updaterole = createAsyncThunk(
+  "auth/updatedetails",
+  async (data: any) => {
+    console.log('update data',data);
+    
+    try {
+      const response = await axios.put(Baseurl + `/auth/updatedetails`, data);
+      console.log("ressss", response.data);
+      if (response.data?.success) {
+        toast.success("Updated Successfully");
+        
+      }
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
