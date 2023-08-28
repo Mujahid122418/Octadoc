@@ -91,7 +91,7 @@ const QNAComponent: React.FC<{
   };
   const onChangeQuestion = async (text: any, key: any) => {
     onUpdate(
-      qna.map((item: any) => {
+      qna?.map((item: any) => {
         return item.Qindex === key ? { ...item, question: text } : item;
       })
     );

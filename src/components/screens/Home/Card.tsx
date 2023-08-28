@@ -20,6 +20,7 @@ interface ICard {
 
 const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
   const { user } = useSelector((state: RootState) => state?.auth);
+console.log("itemsss",item);
 
   return (
     <div className="col-lg-4 col-md-6 mt-4">
@@ -37,8 +38,9 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
 
             <div className="text">
               <center>
-                <h6>{item?.template_name}</h6>
-                <p>
+                <h6 className="mb-0">{item?.template_name}</h6>
+                <span className="cat-name">category name</span>
+                <p className="mt-2">
                   By <b>{item?.template_type}</b>
                 </p>
               </center>

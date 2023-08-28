@@ -57,75 +57,77 @@ const App: React.FC = () => {
 
   return (
     <div>
-      {qna.map((item, questionIndex) => (
-        <div key={item.index}>
-          <input
-            type="text"
-            value={item.question}
-            placeholder="Question"
-            onChange={(e) => {
-              const value = e.target.value;
-              setQna((prevQna) => {
-                const updatedQna = [...prevQna];
-                updatedQna[questionIndex].question = value;
-                return updatedQna;
-              });
-            }}
-          />
-          <input
-            type="text"
-            value={item.answers}
-            placeholder="Answers"
-            onChange={(e) => {
-              const value = e.target.value;
-              setQna((prevQna) => {
-                const updatedQna = [...prevQna];
-                updatedQna[questionIndex].answers = value;
-                return updatedQna;
-              });
-            }}
-          />
-          <button onClick={() => handleAddFollowUp(questionIndex)}>
-            Add Follow-up
-          </button>
-          <div>
-            {item.followUp.map((followUp, followUpIndex) => (
-              <div key={followUp.index}>
-                <input
-                  type="text"
-                  value={followUp.question}
-                  placeholder="Follow-up Question"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setQna((prevQna) => {
-                      const updatedQna = [...prevQna];
-                      updatedQna[questionIndex].followUp[
-                        followUpIndex
-                      ].question = value;
-                      return updatedQna;
-                    });
-                  }}
-                />
-                <input
-                  type="text"
-                  value={followUp.answers}
-                  placeholder="Follow-up Answers"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setQna((prevQna) => {
-                      const updatedQna = [...prevQna];
-                      updatedQna[questionIndex].followUp[
-                        followUpIndex
-                      ].answers = value;
-                      return updatedQna;
-                    });
-                  }}
-                />
-              </div>
-            ))}
+      {qna.length > 0 &&
+        qna?.map((item, questionIndex) => (
+          <div key={item.index}>
+            <input
+              type="text"
+              value={item.question}
+              placeholder="Question"
+              onChange={(e) => {
+                const value = e.target.value;
+                setQna((prevQna) => {
+                  const updatedQna = [...prevQna];
+                  updatedQna[questionIndex].question = value;
+                  return updatedQna;
+                });
+              }}
+            />
+            <input
+              type="text"
+              value={item.answers}
+              placeholder="Answers"
+              onChange={(e) => {
+                const value = e.target.value;
+                setQna((prevQna) => {
+                  const updatedQna = [...prevQna];
+                  updatedQna[questionIndex].answers = value;
+                  return updatedQna;
+                });
+              }}
+            />
+            <button onClick={() => handleAddFollowUp(questionIndex)}>
+              Add Follow-up
+            </button>
+            <div>
+              {item?.followUp.length > 0 &&
+                item?.followUp?.map((followUp, followUpIndex) => (
+                  <div key={followUp.index}>
+                    <input
+                      type="text"
+                      value={followUp.question}
+                      placeholder="Follow-up Question"
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setQna((prevQna) => {
+                          const updatedQna = [...prevQna];
+                          updatedQna[questionIndex].followUp[
+                            followUpIndex
+                          ].question = value;
+                          return updatedQna;
+                        });
+                      }}
+                    />
+                    <input
+                      type="text"
+                      value={followUp.answers}
+                      placeholder="Follow-up Answers"
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setQna((prevQna) => {
+                          const updatedQna = [...prevQna];
+                          updatedQna[questionIndex].followUp[
+                            followUpIndex
+                          ].answers = value;
+                          return updatedQna;
+                        });
+                      }}
+                    />
+                  </div>
+                ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
       <button onClick={handleAddQuestion}>Add Question</button>
     </div>
   );

@@ -19,7 +19,7 @@ const answer = require("./routes/answer");
 const category = require("./routes/category");
 
 const errorHandler = require("./utils/errorMiddleware");
-app.use(cors());
+
 app.use(errorHandler);
 app.use(express.json());
 app.use(cookieParser());
@@ -33,10 +33,16 @@ app.use("/template", template);
 app.use("/answer", answer);
 app.use("/category", category);
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.get("/m", function (req, res) {
   console.log("process.env.NODE_ENV", process.env.NODE_ENV, port);
   res.send("Hello World");
 });
+
 //Routes go here
 app.all("*", (req, res) => {
   res.json({ "every thing": "is awesome" });

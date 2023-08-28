@@ -35,7 +35,7 @@ const RenderQuestion: React.FC<{
 }> = ({ getQuestions }) => {
   return (
     <div>
-      {getQuestions.map((item: any) => (
+      {getQuestions?.map((item: any) => (
         <div key={item._id} style={{ padding: 30 }}>
           <div
             style={{
@@ -190,7 +190,7 @@ const ShowTemplateQuestion = () => {
   //   let filter = section.filter((item) => item !== e);
   //   setSection(filter);
   // };
-  const SectionDetails = section.map((item, index) => {
+  const SectionDetails = section?.map((item, index) => {
     return (
       <>
         <div className="container-xxl" key={index}>

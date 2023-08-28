@@ -22,7 +22,11 @@ const initialState: Login = {
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    handelUpdateUser: (state, action) => {
+      state.allUsers = action.payload;
+    },
+  },
   extraReducers: {
     [LoginFun.pending.type]: (state, action) => {
       state.status = "pending";
@@ -94,7 +98,7 @@ export const authSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 
-// export const { addTemplate, getTemplate, updateTemplate, deleteTemplate } =
-//   templateSlice.actions;
+export const { handelUpdateUser,  } =
+authSlice.actions;
 
 export default authSlice.reducer;

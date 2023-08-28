@@ -106,7 +106,7 @@ const RenderQuestion: React.FC<{
 
   return (
     <div>
-      {getQuestions.map((item: any, i: Number, ques: any) => (
+      {getQuestions?.map((item: any, i: Number, ques: any) => (
         <div key={item._id} style={{ padding: 30 }}>
           <div
             style={{

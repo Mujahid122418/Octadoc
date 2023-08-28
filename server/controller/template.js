@@ -28,8 +28,10 @@ exports.getTemplate = async (req, res) => {
     const skip = (page - 1) * pageSize; // Calculate the number of documents to skip
 
     // Query and retrieve paginated data
-    const data = await Template.find().skip(skip).limit(pageSize);
-    // .populate("category");
+    const data = await Template.find()
+      .populate("category_id")
+      .skip(skip)
+      .limit(pageSize);
 
     res.json({
       data,

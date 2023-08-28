@@ -39,38 +39,40 @@ exports.getQuestion = async (req, res) => {
     //   ans: ans,
     // };
     // console.log("d is d", d);
-    const data = await data1.map((objA) => {
-      const matchingObjB = ans.find(
-        (objB) => objB?.question_id.toString() === objA._id.toString()
-      );
+    const data =
+      (await data1.length) > 0 &&
+      data1.map((objA) => {
+        const matchingObjB = ans?.find(
+          (objB) => objB?.question_id.toString() === objA._id.toString()
+        );
 
-      if (
-        matchingObjB &&
-        Object.keys(matchingObjB).length > 0 &&
-        matchingObjB !== null &&
-        matchingObjB !== undefined
-      ) {
-        let {
-          follow_up_question_group_id,
-          text,
-          question_id,
-          template_id,
-          _id,
-        } = matchingObjB;
+        if (
+          matchingObjB &&
+          Object.keys(matchingObjB).length > 0 &&
+          matchingObjB !== null &&
+          matchingObjB !== undefined
+        ) {
+          let {
+            follow_up_question_group_id,
+            text,
+            question_id,
+            template_id,
+            _id,
+          } = matchingObjB;
 
-        let send = {
-          follow_up_question_group_id,
-          text,
-          question_id,
-          template_id,
-          ans_id: _id,
-        };
+          let send = {
+            follow_up_question_group_id,
+            text,
+            question_id,
+            template_id,
+            ans_id: _id,
+          };
 
-        return { ...objA, ...send };
-      } else {
-        return { ...objA };
-      }
-    });
+          return { ...objA, ...send };
+        } else {
+          return { ...objA };
+        }
+      });
 
     res.json({
       data,
