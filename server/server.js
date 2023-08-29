@@ -23,7 +23,7 @@ const errorHandler = require("./utils/errorMiddleware");
 app.use(errorHandler);
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(cors())
 // app.use("/api", bootCamp);
 // app.use("/course", course);
 app.use("/auth", auth);
@@ -33,10 +33,10 @@ app.use("/template", template);
 app.use("/answer", answer);
 app.use("/category", category);
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   next();
+// });
 
 app.get("/m", function (req, res) {
   console.log("process.env.NODE_ENV", process.env.NODE_ENV, port);
