@@ -19,7 +19,7 @@ const answer = require("./routes/answer");
 const category = require("./routes/category");
 
 const errorHandler = require("./utils/errorMiddleware");
-
+app.use(cors());
 app.use(errorHandler);
 app.use(express.json());
 app.use(cookieParser());
@@ -47,6 +47,21 @@ app.get("/m", function (req, res) {
 app.all("*", (req, res) => {
   res.json({ "every thing": "is awesome" });
 });
+const corsOptions = {
+  origin: "https://gp-scribe.netlify.app", // Replace with your client's domain
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Allow cookies and authentication headers
+};
+// Set the SameSite attribute for cookies
+app.use((req, res, next) => {
+  res.header(
+    "Set-Cookie",
+    "your-cookie-name=value; SameSite=strict-origin-when-cross-origin"
+  );
+  next();
+});
+app.use(cors(corsOptions));
+
 app.listen(port, () => {
   console.log(`server is running  on localhost:${port}`);
 });
