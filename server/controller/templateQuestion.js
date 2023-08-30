@@ -27,13 +27,14 @@ exports.getQuestion = async (req, res) => {
     const skip = (page - 1) * pageSize; // Calculate the number of documents to skip
 
     // Query and retrieve paginated data
-    const data1 = await TemplateQuestions.find()
+    const data1 = await TemplateQuestions.find({})
+      // .populate("answers")
       .lean()
-      // .populate("template_id")
       .skip(skip)
       .limit(pageSize);
 
     let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
+
     // let d = {
     //   ques: data1,
     //   ans: ans,
@@ -60,7 +61,7 @@ exports.getQuestion = async (req, res) => {
             _id,
           } = matchingObjB;
 
-          let send = {
+          let answer = {
             follow_up_question_group_id,
             text,
             question_id,
@@ -68,7 +69,7 @@ exports.getQuestion = async (req, res) => {
             ans_id: _id,
           };
 
-          return { ...objA, ...send };
+          return { ...objA, answer };
         } else {
           return { ...objA };
         }
@@ -81,6 +82,7 @@ exports.getQuestion = async (req, res) => {
       count: totalDocuments,
     });
   } catch (error) {
+    console.log("error", error);
     res.status(500).json({ error: "An error occurred" });
   }
 };

@@ -38,7 +38,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
             <div className="text">
               <center>
                 <h6 className="mb-0">{item?.template_name}</h6>
-                <span className="cat-name">category name</span>
+                <span className="cat-name">{item?.category_id?.category}</span>
                 <p className="mt-2">
                   By <b>{item?.template_type}</b>
                 </p>

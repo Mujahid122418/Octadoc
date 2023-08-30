@@ -117,19 +117,10 @@ export default function QuestionBar() {
       try {
         let data = {
           // name: newQuestion,
-          // question: newQuestion,
+          question: newQuestion,
           // answer: newAnswer,
           template_id: template_id,
-          // question_type: questionType,
-          Question: [
-            {
-              question: newQuestion,
-              answer: newAnswer,
-              Qindex: createUUID(),
-              QuestionType: questionType,
-              followUp: [],
-            },
-          ],
+          question_type: questionType,
         };
         console.log("added single", data);
         dispatch(addQuestionFunAPI(data))

@@ -239,12 +239,12 @@ const ShowTemplateQuestion = () => {
   const [value, setValue] = useState(0);
 
   const tabs = [
-    { label: 'Alice', num: 0 },
-    { label: 'Bob', num: 1 },
-    { label: 'Charlie', num: 2 },
-    { label: 'Maria', num: 3 },
-    { label: 'oxfod', num: 4 },
-    { label: 'Numal', num: 5 }
+    { label: "Alice", num: 0 },
+    { label: "Bob", num: 1 },
+    { label: "Charlie", num: 2 },
+    { label: "Maria", num: 3 },
+    { label: "oxfod", num: 4 },
+    { label: "Numal", num: 5 },
   ];
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -257,121 +257,132 @@ const ShowTemplateQuestion = () => {
       <>
         {/* ======= tabs ====== */}
 
-     <div className="container">
-     <Box
-          sx={{
-            flexGrow: 1,
-            bgcolor: "background.paper",
-            display: "flex",
-            width: "100%",
-          }}
-        >
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            aria-label="Vertical tabs example"
-            sx={{ borderRight: 1, border:'none'  ,minWidth: "250px",}}
+        <div className="container">
+          <Box
+            sx={{
+              flexGrow: 1,
+              bgcolor: "background.paper",
+              display: "flex",
+              width: "100%",
+            }}
           >
-            { tabs ? tabs.map((item , index) => (
-              <Tab key={index} label={item.label} {...a11yProps(item.num)}  sx={{
-                marginTop: "20px",
-                borderRadius: "10px",
-                backgroundColor: "#EDE3FF",
-                width: "90%",
-     "&.Mui-selected": {
-       backgroundColor: "#9d62f5",  
-       width:'100%',
-       color: "white",           
-       borderBottomColor: "#9d62f5", 
-       borderBottomWidth: "2px",   
-       borderRadius: "0px",  
-       clipPath: 'polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)',
-     }
-   }} />
-            )) : ( <p>you did not have any tabs</p> )
-             }
-
-          </Tabs>
-
-
-          <div  style={{ width: "100%" ,}}>
-          <TabPanel   value={value} index={0}>
-            <div  key={index}>
-             
-              <div className="questions-box" >
-                <div className=" d-flex justify-content-between">
-                <h3 className="text-white">Questions</h3>
-                <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: 2,
-                  backgroundColor: "white",
-                  padding : '5px',
-                  borderRadius : '10px',
-                }}
-              >
-                <Button2 name="Copy" onClick={CopyModel} />
-
-                <Button2  name="Edit" onClick={() => EditSection(item)} />
-              </div>
-                </div>
-                <div className="question-head">
-                  <HelpOutlineIcon />{" "}
-                  <h5 className="mb-0 ms-1">Section Name</h5>
-                </div>
-                <div className="question-body">
-                  <ul className="mt-4 mb-4">
-                    {getQuestions?.filter(
-                      (item: any) => item?.template_id === tem_id
-                    ).length > 0 ? (
-                      getQuestions
-                        ?.filter((item: any) => item?.template_id === tem_id)
-                        .map((item: any, i: Number) => {
-                          return (
-                            <div key={item._id}>
-                              <RenderQuestion getQuestions={item.Question} />
-                            </div>
-                          );
-                        })
-                    ) : (
-                      <p style={{ textAlign: "center" }}>No Record Found</p>
-                    )}
-                  </ul>
-                </div>
-                <div className="question-footer">
-                  <Button2
-                    name="Add Question "
-                    onClick={AddQuestionModel}
-                    icon={<HelpCenterIcon />}
+            <Tabs
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderRight: 1, border: "none", minWidth: "250px" }}
+            >
+              {tabs ? (
+                tabs.map((item, index) => (
+                  <Tab
+                    key={index}
+                    label={item.label}
+                    {...a11yProps(item.num)}
+                    sx={{
+                      marginTop: "20px",
+                      borderRadius: "10px",
+                      backgroundColor: "#EDE3FF",
+                      width: "90%",
+                      "&.Mui-selected": {
+                        backgroundColor: "#9d62f5",
+                        width: "100%",
+                        color: "white",
+                        borderBottomColor: "#9d62f5",
+                        borderBottomWidth: "2px",
+                        borderRadius: "0px",
+                        clipPath:
+                          "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
+                      },
+                    }}
                   />
-                  <Button2
-                    name="Add Section"
-                    onClick={() => AddSection(item)}
-                    icon={<HighlightAltIcon />}
-                  />
+                ))
+              ) : (
+                <p>you did not have any tabs</p>
+              )}
+            </Tabs>
 
-                  <QuestionBar />
-                  <EditQuestionBar />
+            <div style={{ width: "100%" }}>
+              <TabPanel value={value} index={0}>
+                <div key={index}>
+                  <div className="questions-box">
+                    <div className="d-flex justify-content-between ">
+                      <h3 className="text-white">Questions </h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginBottom: 2,
+                          backgroundColor: "white",
+                          padding: "5px",
+                          borderRadius: "10px",
+                        }}
+                      >
+                        <Button2 name="Copy" onClick={CopyModel} />
+                        <Button2
+                          name="Edit"
+                          onClick={() => EditSection(item)}
+                        />
+                      </div>
+                    </div>
+                    <div className="question-head">
+                      <HelpOutlineIcon />{" "}
+                      <h5 className="mb-0 ms-1">Section Name </h5>
+                    </div>
+                    <div className="question-body">
+                      <ul className="mt-4 mb-4">
+                        {getQuestions?.filter(
+                          (item: any) => item?.template_id === tem_id
+                        ).length > 0 ? (
+                          getQuestions
+                            ?.filter(
+                              (item: any) => item?.template_id === tem_id
+                            )
+                            .map((item: any, i: Number) => {
+                              return (
+                                <div key={item._id}>
+                                  <RenderQuestion
+                                    getQuestions={item.Question}
+                                  />
+                                </div>
+                              );
+                            })
+                        ) : (
+                          <p style={{ textAlign: "center" }}>No Record Found</p>
+                        )}
+                      </ul>
+                    </div>
+                    <div className="question-footer">
+                      <Button2
+                        name="Add Question "
+                        onClick={AddQuestionModel}
+                        icon={<HelpCenterIcon />}
+                      />
+                      <Button2
+                        name="Add Section"
+                        onClick={() => AddSection(item)}
+                        icon={<HighlightAltIcon />}
+                      />
+
+                      <QuestionBar />
+                      <EditQuestionBar />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                Item Two
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                Item Three
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                Item Four
+              </TabPanel>
             </div>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            Item Two
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            Item Three
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            Item Four
-          </TabPanel>
-
-          </div>
-        </Box>
-     </div>
+          </Box>
+        </div>
 
         {/* =====tabs end ====== */}
       </>
