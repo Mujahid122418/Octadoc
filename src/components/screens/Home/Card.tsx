@@ -20,7 +20,6 @@ interface ICard {
 
 const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
   const { user } = useSelector((state: RootState) => state?.auth);
-console.log("itemsss",item?.category_id?.category);
 
   return (
     <div className="col-lg-4 col-md-6 mt-4">
@@ -39,7 +38,7 @@ console.log("itemsss",item?.category_id?.category);
             <div className="text">
               <center>
                 <h6 className="mb-0">{item?.template_name}</h6>
-                <span className="cat-name">{item?.category_id?.category}</span>
+                <span className="cat-name">category name</span>
                 <p className="mt-2">
                   By <b>{item?.template_type}</b>
                 </p>
@@ -58,29 +57,30 @@ console.log("itemsss",item?.category_id?.category);
         <center>
           <p className="btm-text">{item?.description}</p>
         </center>
-        {item?.user_id === user?._id && (
-          <Stack
-            direction="row"
-            spacing={1}
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
+
+        <Stack
+          direction="row"
+          spacing={1}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <IconButton
+            disabled={item?.user_id === user?._id ? false : true}
+            aria-label="delete"
+            onClick={() => updateTemplate(item)}
           >
-            <IconButton
-              aria-label="delete"
-              onClick={() => updateTemplate(item)}
-            >
-              <EditIcon />
-            </IconButton>
-            <IconButton
-              aria-label="delete"
-              onClick={() => DeleteTemplate(item?._id)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Stack>
-        )}
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            disabled={item?.user_id === user?._id ? false : true}
+            aria-label="delete"
+            onClick={() => DeleteTemplate(item?._id)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Stack>
       </div>
     </div>
   );

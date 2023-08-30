@@ -24,21 +24,21 @@ const Header = () => {
   const open = Boolean(anchorEl);
   const { user } = useSelector((state: RootState) => state?.auth);
 
-  // const init = async () => {
-  //   let token = await localStorage.getItem("token");
-  //   let user = await localStorage.getItem("user");
-  //   if (token && user) {
-  //     let data = {
-  //       id: user,
-  //     };
-  //     dispatch(getMeFun(data));
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // };
-  // useEffect(() => {
-  //   init();
-  // }, []);
+  const init = async () => {
+    let token = await localStorage.getItem("token");
+    let user = await localStorage.getItem("user");
+    if (token && user) {
+      let data = {
+        id: user,
+      };
+      dispatch(getMeFun(data));
+    } else {
+      navigate("/login");
+    }
+  };
+  useEffect(() => {
+    init();
+  }, []);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

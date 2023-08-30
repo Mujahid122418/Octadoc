@@ -43,7 +43,7 @@ const AddTemplate: React.FC = () => {
   const [description, setdescription] = useState("");
   const [category_id, setcategory] = useState("");
 
-  const [community, setCommunity] = useState(false);
+  const [community, setCommunity] = useState<boolean>(false);
 
   //   form states end
 
@@ -53,9 +53,11 @@ const AddTemplate: React.FC = () => {
   };
 
   useEffect(() => {
-    setName(selectedTemplate?.template_name);
-    setdescription(selectedTemplate?.description);
-    setCommunity(selectedTemplate?.isapprove);
+    if (Object.keys(selectedTemplate).length > 0) {
+      setName(selectedTemplate?.template_name);
+      setdescription(selectedTemplate?.description);
+      setCommunity(JSON.parse(selectedTemplate?.isapprove));
+    }
   }, [selectedTemplate]);
   useEffect(() => {
     // let v = addTemplateModel
@@ -64,27 +66,33 @@ const AddTemplate: React.FC = () => {
 
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    let data = {
-      template_name: name,
-      description: description,
-      category_id: category_id,
-      isapprove: community === true ? true : false,
-      user_id: user?._id,
-    };
-    console.log("send data", data);
+    if (!name) {
+      toast.error("Please enter name");
+    } else if (!description) {
+      toast.error("Please enter description");
+    } else if (!category_id) {
+      toast.error("Please enter category ");
+    } else {
+      let data = {
+        template_name: name,
+        description: description,
+        category_id: category_id,
+        isapprove: community === true ? true : false,
+        user_id: user?._id,
+      };
 
-    dispatch(addTemplate(data))
-      .unwrap()
-      .then((response) => {
-        console.log("respoce", response);
-
-        toast.success("Template Added successfully");
-        dispatch(getTemplates());
-        dispatch(addTemplateModelFun(true));
-      })
-      .catch((error) => {
-        toast.error(error);
-      });
+      dispatch(addTemplate(data))
+        .then((response) => {
+          dispatch(getTemplates());
+          dispatch(addTemplateModelFun(true));
+          setName("");
+          setdescription("");
+          setcategory("");
+        })
+        .catch((error) => {
+          toast.error(error);
+        });
+    }
   };
   const handleClickBtnUpdate = async (
     event: React.MouseEvent<HTMLButtonElement>
@@ -175,7 +183,7 @@ const AddTemplate: React.FC = () => {
                   Comunity Template
                   <div className="">
                     <input
-                      // value={community}
+                      checked={community}
                       onChange={(e) => setCommunity(e.target.checked)}
                       className="form-check-input"
                       type="checkbox"
