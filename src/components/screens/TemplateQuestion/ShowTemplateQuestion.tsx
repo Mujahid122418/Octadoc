@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
 import { addQuestionModelFun } from "../../../redux/TemplateQuestion/TemplateQuestion";
 
-import SimpleBackdrop from "../../../utils/BackDrop";
 import { getQuestion } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { useNavigate } from "react-router-dom";
 import EditQuestionBar from "../QuestionBarModal/EditQuestionBar";
@@ -380,7 +379,6 @@ const ShowTemplateQuestion = () => {
 
   return (
     <div>
-      <SimpleBackdrop isLoading={!isLoading} />
       <div>{SectionDetails}</div>
     </div>
   );

@@ -33,7 +33,7 @@ import {
 } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { toast } from "react-toastify";
 
-import SimpleBackdrop from "../../../utils/BackDrop";
+
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -366,7 +366,7 @@ export default function EditQuestionBar() {
 
   return (
     <div>
-      <SimpleBackdrop isLoading={!isLoading} />
+      
       <Drawer anchor={anchor} open={state[anchor]}>
         {list(anchor)}
       </Drawer>

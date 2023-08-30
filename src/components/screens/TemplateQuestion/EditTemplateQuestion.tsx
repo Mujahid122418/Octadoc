@@ -17,7 +17,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import IconButton from "@mui/material/IconButton";
 
-import SimpleBackdrop from "../../../utils/BackDrop";
 
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
@@ -329,7 +328,6 @@ const EditTemplateQuestion = () => {
 
   return (
     <div>
-      <SimpleBackdrop isLoading={!isLoading} />
       <div>{SectionDetails}</div>
     </div>
   );

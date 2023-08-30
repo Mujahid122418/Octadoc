@@ -1,17 +1,21 @@
 import { useState } from "react";
 import "./Login.css"; // Import your CSS file if needed
 import {  updatePassword } from "../../../redux/Auth/AuthAPI";
-import { useDispatch } from "react-redux";
+
 import { AppDispatch } from "../../../redux/Store";
 import {  useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { useDispatch , useSelector } from "react-redux";
+import type { RootState } from "../../../redux/Store";
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 export default function ForgotPass() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
+  const  { isLoading }  = useSelector((state: RootState) => state?.auth); 
+  console.log("isloading" , isLoading);
+  
   const [pass , setpass] = useState('');
   const[confirm , setconfirm] = useState('');
   let user_id = localStorage.getItem("user-id");
@@ -89,8 +93,11 @@ export default function ForgotPass() {
               </div>
 
               <div className="group">
-                <button  className="button" onClick={(e) => enterData(e)}>
-                 Send   
+                <button  disabled={isLoading ? true: false} className="button" onClick={(e) => enterData(e)}>
+                {!isLoading ?
+                 <span> Send </span>
+                   : <CircularProgress sx={{color:'white'}} size={16} />
+                } 
                 </button>
               </div>
             </div>

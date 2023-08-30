@@ -1,14 +1,21 @@
 import { useState } from "react";
 import "./Login.css"; // Import your CSS file if needed
 import { checkEmail } from "../../../redux/Auth/AuthAPI";
-import { useDispatch } from "react-redux";
+
 import { AppDispatch } from "../../../redux/Store";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch , useSelector } from "react-redux";
+import type { RootState } from "../../../redux/Store";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 export default function SendMail() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate(); 
+
+  const  { isLoading }  = useSelector((state: RootState) => state?.auth);
+  
 
   const [email, setEmail] = useState("");
   
@@ -59,10 +66,11 @@ export default function SendMail() {
 
               <div className="group">
                
-                <button  className="button" onClick={(e) => handleSendClick(e)}>
-                 {/* <Link to='/forgot' className="link"> */}
-                 Send
-                 {/* </Link> */}
+                <button disabled={isLoading ? true: false}  className="button" onClick={(e) => handleSendClick(e)}>
+                {!isLoading ?
+                 <span> Send </span>
+                   : <CircularProgress sx={{color:'white'}} size={16} />
+                }
                 </button>
               </div>
             </div>

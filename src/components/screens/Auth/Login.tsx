@@ -1,14 +1,20 @@
 import { useState } from "react";
 import "./Login.css"; // Import your CSS file if needed
 import { LoginFun, SignupFun } from "../../../redux/Auth/AuthAPI";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
+import type { RootState } from "../../../redux/Store";
 import { AppDispatch } from "../../../redux/Store";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Login() {
   const navigate = useNavigate(); // Use useNavigate hook to access
   const dispatch = useDispatch<AppDispatch>();
+
+  const  { isLoading }  = useSelector((state: RootState) => state?.auth);
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -132,8 +138,11 @@ export default function Login() {
               <div className="group">
                 {/* <input type="submit" className="button" value="Sign In" /> */}
 
-                <button onClick={(e) => handelLogin(e)} className="button">
-                  Sign In
+                <button disabled={isLoading ? true: false} onClick={(e) => handelLogin(e)} className="button">
+                  {!isLoading ?
+                 <span> Sign In </span>
+                   : <CircularProgress sx={{color:'white'}} size={16} />
+                }
                 </button>
               </div>
               <div className="hr"></div>
@@ -196,11 +205,14 @@ export default function Login() {
               <div className="group">
                 <button
                   onClick={(e) => handelSignup(e)}
-                  // type="submit"
+                  disabled={isLoading ? true: false}
                   className="button"
-                  // value="Sign Up"
+                  
                 >
-                  Sign Up
+                {!isLoading ?
+                 <span> Sign In </span>
+                   : <CircularProgress sx={{color:'white'}} size={16} />
+                }
                 </button>
               </div>
               <div className="hr"></div>

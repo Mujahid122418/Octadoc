@@ -16,7 +16,7 @@ import {
   addTemplateModelFun,
   selectTemplateModelFun,
 } from "../../../redux/Template/TemplateSlice";
-import SimpleBackdrop from "../../../utils/BackDrop";
+
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Card from "./Card";
 import { getcategories } from "../../../redux/Admin/CategoryAPI";
@@ -103,7 +103,7 @@ const Home: React.FC = () => {
   return (
     <div className="home">
       <div className="container">
-        <SimpleBackdrop isLoading={!isLoading} />
+        
         <Search />
         <AddTemplate />
         <div className="card-sec mt-5">
