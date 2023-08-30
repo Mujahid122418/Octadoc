@@ -15,6 +15,7 @@ import "./ModalBox.css";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 import { getcategories } from "../../../redux/Admin/CategoryAPI";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const AddTemplate: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,6 +37,9 @@ const AddTemplate: React.FC = () => {
   const { user } = useSelector((state: RootState) => state?.auth);
 
   const { allcategory } = useSelector((state: RootState) => state?.category);
+  const  {isLoading}  = useSelector((state: RootState) => state?.template);
+
+  
 
   const [open, setOpen] = React.useState<boolean>(false);
   // form states start
@@ -198,7 +202,15 @@ const AddTemplate: React.FC = () => {
             {Object.keys(selectedTemplate).length > 0 ? (
               <Button2 name="Update" onClick={handleClickBtnUpdate} />
             ) : (
-              <Button2 name="Submit" onClick={handleClickBtn} />
+             isLoading  ? 
+             <LoadingButton
+             loading
+             variant="outlined"
+             disabled
+             sx={{padding:"5px 30px"}}
+             
+           ><span>Submit</span></LoadingButton>
+            : <Button2 name="Submit" onClick={handleClickBtn} />
             )}
           </div>
         </Box>

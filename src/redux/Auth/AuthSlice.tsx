@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { LoginFun, getMeFun, updateProfile, SignupFun , getAllUsers } from "./AuthAPI";
+import { LoginFun, getMeFun, updateProfile, SignupFun , getAllUsers , checkEmail ,sendOtp , updatePassword } from "./AuthAPI";
 interface Login {
   user: any;
   isLoading: Boolean;
@@ -41,6 +41,32 @@ export const authSlice = createSlice({
       state.status = "failed";
       state.isLoading = false;
     },
+    [checkEmail.pending.type]: (state, action) => {
+      state.status = "pending";
+      state.isLoading = true;
+    },
+    [checkEmail.fulfilled.type]: (state, { payload }) => {
+      state.status = "success";
+      state.user = payload;
+      state.isLoading = false;
+    },
+    [checkEmail.rejected.type]: (state, action) => {
+      state.status = "failed";
+      state.isLoading = false;
+    },
+    [sendOtp.pending.type]: (state, action) => {
+      state.status = "pending";
+      state.isLoading = true;
+    },
+    [sendOtp.fulfilled.type]: (state, { payload }) => {
+      state.status = "success";
+      state.user = payload;
+      state.isLoading = false;
+    },
+    [sendOtp.rejected.type]: (state, action) => {
+      state.status = "failed";
+      state.isLoading = false;
+    },
     [SignupFun.pending.type]: (state, action) => {
       state.status = "pending";
       state.isLoading = true;
@@ -77,6 +103,19 @@ export const authSlice = createSlice({
       state.isLoading = false;
     },
     [updateProfile.rejected.type]: (state, action) => {
+      state.status = "failed";
+      state.isLoading = false;
+    },
+    [updatePassword.pending.type]: (state, action) => {
+      state.status = "pending";
+      state.isLoading = true;
+    },
+    [updatePassword.fulfilled.type]: (state, { payload }) => {
+      state.status = "success";
+      state.user = payload;
+      state.isLoading = false;
+    },
+    [updatePassword.rejected.type]: (state, action) => {
       state.status = "failed";
       state.isLoading = false;
     },
