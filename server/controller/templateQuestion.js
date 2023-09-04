@@ -41,10 +41,10 @@ exports.getQuestion = async (req, res) => {
     // };
     // console.log("d is d", d);
     const data =
-      (await data1.length) > 0 &&
+      (await data1?.length) > 0 &&
       data1.map((objA) => {
         const matchingObjB = ans?.find(
-          (objB) => objB?.question_id.toString() === objA._id.toString()
+          (objB) => objB?.question_id.toString() === objA._id?.toString()
         );
 
         if (
@@ -76,7 +76,7 @@ exports.getQuestion = async (req, res) => {
       });
 
     res.json({
-      data,
+      data: data === false ? [] : data,
       currentPage: page,
       totalPages,
       count: totalDocuments,

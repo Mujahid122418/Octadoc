@@ -34,7 +34,6 @@ import {
 import { toast } from "react-toastify";
 import AnswerBar from "./Answerpart/AnswerPart";
 
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
@@ -82,17 +81,17 @@ export default function QuestionBar() {
 
   const [QuestionType, setQuestionType] = useState("");
 
-  const UpdateQuestionsArray = () => {
-    const updatedQna = [...qna];
-    updatedQna.push({
-      question: newQuestion,
-      answer: newAnswer,
-      QuestionType: QuestionType,
-      Qindex: createUUID(),
-      followUp: [],
-    });
-    setQna(updatedQna);
-  };
+  // const UpdateQuestionsArray = () => {
+  //   const updatedQna = [...qna];
+  //   updatedQna.push({
+  //     question: newQuestion,
+  //     answer: newAnswer,
+  //     QuestionType: QuestionType,
+  //     Qindex: createUUID(),
+  //     followUp: [],
+  //   });
+  //   setQna(updatedQna);
+  // };
 
   // ===collpase====
   const [expanded, setExpanded] = useState(false);
@@ -168,8 +167,6 @@ export default function QuestionBar() {
 
   useEffect(() => {
     if (Object.keys(EditSelectedQuestion).length > 0) {
-      console.log("EditSelectedQuestion ==>", EditSelectedQuestion);
-
       dispatch(getSingleQuestionFun(EditSelectedQuestion?._id));
     }
   }, [EditSelectedQuestion]);
@@ -330,7 +327,19 @@ export default function QuestionBar() {
 
         {/* test value end  */}
         <div className="save-button mt-2">
-          <Button2 name="Save Question" onClick={handleClickSaveBtn} />
+          {isLoading ? (
+            <Button2
+              name="Loading ..."
+              onClick={() => console.log("loading...")}
+              isLoading={isLoading}
+            />
+          ) : (
+            <Button2
+              name="Save Question"
+              onClick={handleClickSaveBtn}
+              isLoading={isLoading}
+            />
+          )}
         </div>
         <div className="close-button mt-2">
           <Button2
@@ -346,17 +355,18 @@ export default function QuestionBar() {
 
   return (
     <div>
-     
       <Drawer anchor={anchor} open={state[anchor]}>
         {list(anchor)}
       </Drawer>
       <AnswerBar
         newAnswer={newAnswer}
         setNewAnswer={setNewAnswer}
+        setQuestionType={setQuestionType}
+        setNewQuestion={setNewQuestion}
         newQuestion={newQuestion}
         qna={qna}
         setQna={setQna}
-        UpdateQuestionsArray={UpdateQuestionsArray}
+        // UpdateQuestionsArray={UpdateQuestionsArray}
         QuestionType={QuestionType}
       />
     </div>
