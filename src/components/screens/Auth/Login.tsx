@@ -140,7 +140,7 @@ export default function Login() {
 
                 <button disabled={isLoading ? true: false} onClick={(e) => handelLogin(e)} className="button">
                   {!isLoading ?
-                 <span> Sign In </span>
+                 <span className="btn-clr"> Sign In </span>
                    : <CircularProgress sx={{color:'white'}} size={16} />
                 }
                 </button>
@@ -210,7 +210,7 @@ export default function Login() {
                   
                 >
                 {!isLoading ?
-                 <span> Sign In </span>
+                 <span className="btn-clr"> Sign In </span>
                    : <CircularProgress sx={{color:'white'}} size={16} />
                 }
                 </button>

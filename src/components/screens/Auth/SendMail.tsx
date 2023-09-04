@@ -68,7 +68,7 @@ export default function SendMail() {
                
                 <button disabled={isLoading ? true: false}  className="button" onClick={(e) => handleSendClick(e)}>
                 {!isLoading ?
-                 <span> Send </span>
+                 <span className="btn-clr"> Send </span>
                    : <CircularProgress sx={{color:'white'}} size={16} />
                 }
                 </button>

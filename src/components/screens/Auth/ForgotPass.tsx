@@ -95,7 +95,7 @@ export default function ForgotPass() {
               <div className="group">
                 <button  disabled={isLoading ? true: false} className="button" onClick={(e) => enterData(e)}>
                 {!isLoading ?
-                 <span> Send </span>
+                 <span className="btn-clr"> Send </span>
                    : <CircularProgress sx={{color:'white'}} size={16} />
                 } 
                 </button>

@@ -30,11 +30,15 @@ import { Margin } from "@mui/icons-material";
 
 // ===== tabs =====
 
+ const tabscolor = "#F2EBEF" ;
+ const activetab = "#9F496E" ;
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -282,10 +286,10 @@ const ShowTemplateQuestion = () => {
                     sx={{
                       marginTop: "20px",
                       borderRadius: "10px",
-                      backgroundColor: "#EDE3FF",
+                      backgroundColor: tabscolor,
                       width: "90%",
                       "&.Mui-selected": {
-                        backgroundColor: "#9d62f5",
+                        backgroundColor: activetab,
                         width: "100%",
                         color: "white",
                         borderBottomColor: "#9d62f5",

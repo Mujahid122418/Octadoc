@@ -6,6 +6,9 @@
    box-shadow: var(--box-shadow);
 }
 
+a:hover{
+ color: var(--color) !important;
+}
 .modal-dialog {
     max-width: 800px;
 }

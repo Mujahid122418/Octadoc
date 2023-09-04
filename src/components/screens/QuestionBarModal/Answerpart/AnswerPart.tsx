@@ -33,7 +33,7 @@ interface StateType {
   right: any; // Change 'any' to the appropriate type
 }
 const customRadioStyle = {
-  color: "#6049cd",
+  color: "#9F496E",
 };
 
 type Anchor = "right";
