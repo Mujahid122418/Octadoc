@@ -10,6 +10,15 @@ const answer_Schema = new schema(
     text: {
       type: String,
     },
+    answer: {
+      type: String,
+    },
+    question: {
+      type: String,
+    },
+    question_type: {
+      type: String,
+    },
     output: {
       type: String,
     },

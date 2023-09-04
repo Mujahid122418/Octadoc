@@ -28,18 +28,12 @@ exports.getQuestion = async (req, res) => {
 
     // Query and retrieve paginated data
     const data1 = await TemplateQuestions.find({})
-      // .populate("answers")
       .lean()
       .skip(skip)
       .limit(pageSize);
 
     let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
 
-    // let d = {
-    //   ques: data1,
-    //   ans: ans,
-    // };
-    // console.log("d is d", d);
     const data =
       (await data1?.length) > 0 &&
       data1.map((objA) => {
@@ -59,17 +53,24 @@ exports.getQuestion = async (req, res) => {
             question_id,
             template_id,
             _id,
+            answer,
+            question,
+            question_type,
           } = matchingObjB;
 
-          let answer = {
+          let answerD = {
             follow_up_question_group_id,
             text,
             question_id,
             template_id,
             ans_id: _id,
+
+            answer,
+            question,
+            question_type,
           };
 
-          return { ...objA, answer };
+          return { ...objA, answerD };
         } else {
           return { ...objA };
         }
@@ -81,6 +82,36 @@ exports.getQuestion = async (req, res) => {
       totalPages,
       count: totalDocuments,
     });
+
+    let data3 = await TemplateQuestions.aggregate([
+      {
+        $lookup: {
+          from: "templatequestion",
+          localField: "question_id",
+          foreignField: "_id",
+          as: "answer",
+        },
+      },
+      {
+        $match: {
+          matchingDocuments: { $ne: [] }, // Match only documents where there is a match in collectionB
+        },
+      },
+      // {
+      //   $project: {
+      //     _id: 1,
+      //     text: 1,
+      //     output: 1,
+      //     order: 1,
+      //     "question.question_type": 1,
+      //     "question.template_id": 1,
+      //     "question.question": 1,
+      //     "question.createdAt": 1,
+      //     "question.updatedAt": 1,
+      //   },
+      // },
+    ]);
+    console.log("data", data3);
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: "An error occurred" });
