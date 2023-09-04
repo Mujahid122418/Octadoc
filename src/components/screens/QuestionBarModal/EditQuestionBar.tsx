@@ -33,8 +33,6 @@ import {
 } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { toast } from "react-toastify";
 
-
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
@@ -366,7 +364,6 @@ export default function EditQuestionBar() {
 
   return (
     <div>
-      
       <Drawer anchor={anchor} open={state[anchor]}>
         {list(anchor)}
       </Drawer>

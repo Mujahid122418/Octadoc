@@ -25,6 +25,7 @@ import {
   addQuestionFunAPI,
   getQuestion,
   updateAnswerFunAPI,
+  addAnswerFunAPI,
 } from "../../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { create_UUID } from "../../../../utils/UUID";
 
@@ -40,11 +41,12 @@ type Anchor = "right";
 interface IAnswerBar {
   newAnswer: string;
   setNewAnswer: (value: any) => void;
+  setQuestionType: (value: any) => void;
+  setNewQuestion: (value: any) => void;
   newQuestion: string;
   qna: any;
   setQna: (value: any) => void;
-
-  UpdateQuestionsArray: (value: any) => void;
+  // UpdateQuestionsArray: (value: any) => void;
   QuestionType: any;
 }
 interface FollowUpQuestion {
@@ -195,18 +197,21 @@ const QNAComponent: React.FC<{
 const AnswerBar: React.FC<IAnswerBar> = ({
   newAnswer,
   setNewAnswer,
+  setQuestionType,
+  setNewQuestion,
   newQuestion,
   qna,
   setQna,
 
-  UpdateQuestionsArray,
+  // UpdateQuestionsArray,
+
   QuestionType,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const {
     addQuestionFollowupModel,
-
+    isLoading,
     addQuestionModel,
     EditAnswer,
     EditSelectedQuestion,
@@ -241,51 +246,39 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   // handel answer state end
   const handleClickBtnSaveAnswer = (event: any, e1: string) => {
     event.preventDefault();
-    console.log("new ", newQuestion);
 
     if (!newAnswer) {
       toast.error("Answer is required");
     } else {
       let data = {
+        template_id: template_id,
         question: newQuestion,
         answer: newAnswer,
-        QuestionType: QuestionType,
-        index: create_UUID(),
-        followUp: [],
+        question_type: QuestionType,
       };
-      const updatedQna = [...qna];
-      updatedQna.push(data);
 
-      var saveMultiple = {
-        template_id: template_id,
+      console.log("save ans", data);
+      dispatch(addQuestionFunAPI(data))
+        .unwrap()
+        .then((response) => {
+          console.log("res", response.data);
 
-        Question: updatedQna,
-      };
-      var saveSingle = {
-        template_id: template_id,
-        Question: updatedQna,
-        newQuestion: newQuestion,
-      };
-      if (
-        QuestionType === "Multiple Choice" ||
-        QuestionType === "Single Choice"
-      ) {
-        console.log("save ", saveMultiple);
-        dispatch(addQuestionFunAPI(saveMultiple))
-          .unwrap()
-          .then((response) => {
-            let d1 = {
-              page: 1,
-              pageSize: 20,
-            };
-            dispatch(getQuestion(d1));
-          })
-          .catch((error) => {
-            toast.error(error);
-          });
-      } else {
-        console.log(" saveSingle ", saveSingle);
-      }
+          let data1 = {
+            template_id: template_id,
+            question: newQuestion,
+            answer: newAnswer,
+            question_type: QuestionType,
+            follow_up_question_group_id: "",
+            question_id: "",
+          };
+          console.log("res  dat1 1", data);
+
+          // dispatch(addAnswerFunAPI(data1))
+          // dispatch(getQuestion(d1));
+        })
+        .catch((error) => {
+          toast.error(error);
+        });
     }
   };
 
@@ -306,50 +299,49 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       setNewAnswer(EditAnswer?.ans);
     }
   }, [EditAnswer]);
-  const updateAnswer = () => {
-    try {
-      let ans = { id: EditAnswer?.id, text: newAnswer };
 
-      dispatch(updateAnswerFunAPI(ans))
-        .unwrap()
-        .then((response) => {
+  const SaveFollowupQuestions = () => {
+    let data = {
+      template_id: template_id,
+      question: newQuestion,
+      answer: newAnswer,
+      question_type: QuestionType,
+    };
+
+    console.log("save ans", data);
+    dispatch(addQuestionFunAPI(data))
+      .unwrap()
+      .then((response) => {
+        let { _id } = response.data;
+        let data1 = {
+          template_id: template_id,
+          question: newQuestion,
+          answer: newAnswer,
+          question_type: QuestionType,
+          follow_up_question_group_id: _id,
+          question_id: _id,
+        };
+
+        dispatch(addAnswerFunAPI(data1)).then(() => {
           let d1 = {
             page: 1,
             pageSize: 20,
           };
           dispatch(getQuestion(d1));
-        })
-        .catch((error) => {
-          toast.error(error);
+          setNewAnswer("");
+          setNewQuestion("");
+          setQuestionType("");
         });
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
-  const SaveFollowupQuestions = () => {
-    console.log("qna", qna);
-    var save = {
-      template_id: template_id,
-      // question_type: QuestionType,
-      Question: qna,
-    };
-    console.log("save", save);
-
-    dispatch(addQuestionFunAPI(save))
-      .unwrap()
-      .then((response) => {
-        let d1 = {
-          page: 1,
-          pageSize: 20,
-        };
-        dispatch(getQuestion(d1));
+        // dispatch(getQuestion(d1));
       })
       .catch((error) => {
         toast.error(error);
       });
   };
-
+  const AddModelFollowUpBtn = () => {
+    dispatch(addQuestionModelFun(!addQuestionModel));
+    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+  };
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 600 }} role="presentation">
       <IconButton
@@ -412,8 +404,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
           <Button2
             name="Add Follow Up Question"
             onClick={() => {
-              // addQuestionFollowupBtn();
-              UpdateQuestionsArray("answer");
+              AddModelFollowUpBtn();
             }}
             icon={<AddIcon />}
           />
@@ -425,12 +416,20 @@ const AnswerBar: React.FC<IAnswerBar> = ({
           <textarea disabled name="" id="" cols={30} rows={5} />
         )}
         <div className="save-button mt-2">
-          <Button2
-            name="Save Followup Questions"
-            onClick={() => {
-              SaveFollowupQuestions();
-            }}
-          />
+          {isLoading ? (
+            <Button2
+              name="Loading ..."
+              onClick={() => console.log("loading...")}
+              isLoading={isLoading}
+            />
+          ) : (
+            <Button2
+              name="Save Followup Questions "
+              onClick={() => {
+                SaveFollowupQuestions();
+              }}
+            />
+          )}
         </div>
         <div className="close-button mt-2">
           <Button2

@@ -17,7 +17,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import IconButton from "@mui/material/IconButton";
 
-
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import {
@@ -274,7 +273,8 @@ const EditTemplateQuestion = () => {
             <div className="question-body">
               <ul className="mt-4 mb-4">
                 {/* ==== one question/ans complete==== */}
-                {getQuestions?.filter(
+                {getQuestions.length > 0 &&
+                getQuestions?.filter(
                   (item: any) => item?.template_id === tem_id
                 ).length > 0 ? (
                   getQuestions

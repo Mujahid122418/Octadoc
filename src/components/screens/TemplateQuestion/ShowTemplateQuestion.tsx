@@ -81,123 +81,127 @@ const RenderQuestion: React.FC<{
   return (
     <>
       <div>
-        {getQuestions?.map((item: any) => (
-          <div key={item._id} style={{ padding: 30 }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <li>
-                <ArrowForwardIosRoundedIcon />
-                {item?.question}
-              </li>
-            </div>
-            {item?.QuestionType === "Date Time" ? (
-              <div className="answer mt-3 mb-2 ms-3">
-                <div className="first">
-                  <label>When did this start?</label>
-                  <input type="date" className="date-input" />
-                </div>
-                <h6 className="mx-3 mb-0">OR</h6>
-                <div className="time">
-                  <label htmlFor="">How long age?</label>
-                  <div className="time-in">
-                    <input type="text" />
-                    <select
-                      className="ms-2"
-                      aria-label="Default select example"
-                    >
-                      <option selected>Hours</option>
-                      <option value="1">days</option>
-                      <option value="2">Weeks</option>
-                      <option value="3">Months</option>
-                      <option value="3">Years</option>
-                    </select>
+        {getQuestions?.length > 0 ? (
+          getQuestions?.map((item: any) => (
+            <div key={item._id} style={{ padding: 30 }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <li>
+                  <ArrowForwardIosRoundedIcon />
+                  {item?.question}
+                </li>
+              </div>
+              {item?.QuestionType === "Date Time" ? (
+                <div className="answer mt-3 mb-2 ms-3">
+                  <div className="first">
+                    <label>When did this start?</label>
+                    <input type="date" className="date-input" />
+                  </div>
+                  <h6 className="mx-3 mb-0">OR</h6>
+                  <div className="time">
+                    <label htmlFor="">How long age?</label>
+                    <div className="time-in">
+                      <input type="text" />
+                      <select
+                        className="ms-2"
+                        aria-label="Default select example"
+                      >
+                        <option selected>Hours</option>
+                        <option value="1">days</option>
+                        <option value="2">Weeks</option>
+                        <option value="3">Months</option>
+                        <option value="3">Years</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : item?.QuestionType === "Dosage" ? (
-              <div className="answer mt-3 mb-2 ms-3">
-                <div className="first">
-                  <label>When did this start?</label>
-                  <input type="text" />
-                  <b className="mg"> mg</b>
-                </div>
+              ) : item?.QuestionType === "Dosage" ? (
+                <div className="answer mt-3 mb-2 ms-3">
+                  <div className="first">
+                    <label>When did this start?</label>
+                    <input type="text" />
+                    <b className="mg"> mg</b>
+                  </div>
 
-                <FormControl>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-form-control-label-placement"
-                    name="position"
-                    defaultValue="top"
-                    sx={{
-                      border: "1px solid #6049cd",
-                      borderRadius: "20px",
-                      marginLeft: "20px",
-                    }}
-                  >
-                    <FormControlLabel
-                      value="top"
-                      control={<Radio style={customRadioStyle} />}
-                      label="OD"
-                      labelPlacement="top"
-                    />
-                    <FormControlLabel
-                      value="start"
-                      control={<Radio style={customRadioStyle} />}
-                      label="BD"
-                      labelPlacement="top"
-                    />
-                    <FormControlLabel
-                      value="bottom"
-                      control={<Radio style={customRadioStyle} />}
-                      label="TDS"
-                      labelPlacement="top"
-                    />
-                    <FormControlLabel
-                      value="end"
-                      control={<Radio style={customRadioStyle} />}
-                      label="QDS"
-                      labelPlacement="top"
-                    />
-                  </RadioGroup>
-                </FormControl>
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-form-control-label-placement"
+                      name="position"
+                      defaultValue="top"
+                      sx={{
+                        border: "1px solid #6049cd",
+                        borderRadius: "20px",
+                        marginLeft: "20px",
+                      }}
+                    >
+                      <FormControlLabel
+                        value="top"
+                        control={<Radio style={customRadioStyle} />}
+                        label="OD"
+                        labelPlacement="top"
+                      />
+                      <FormControlLabel
+                        value="start"
+                        control={<Radio style={customRadioStyle} />}
+                        label="BD"
+                        labelPlacement="top"
+                      />
+                      <FormControlLabel
+                        value="bottom"
+                        control={<Radio style={customRadioStyle} />}
+                        label="TDS"
+                        labelPlacement="top"
+                      />
+                      <FormControlLabel
+                        value="end"
+                        control={<Radio style={customRadioStyle} />}
+                        label="QDS"
+                        labelPlacement="top"
+                      />
+                    </RadioGroup>
+                  </FormControl>
 
-                <FormControlLabel
-                  value="end"
-                  control={<Radio style={customRadioStyle} />}
-                  label="PRN"
-                  labelPlacement="start"
-                />
-              </div>
-            ) : item?.QuestionType === "Free Text" ? (
-              <div className="answer mt-3 mb-2 ms-3">
-                <div className="first">
-                  <input type="text" placeholder="Free Text" />
-                </div>
-              </div>
-            ) : item?.QuestionType === "Multiple Choice" ||
-              item?.QuestionType === "Single Choice" ? (
-              <div className="answer mt-3 mb-2 ms-3">
-                <div className="first">
-                  <input
-                    disabled
-                    value={item.text}
-                    type="text"
-                    placeholder="Free Text"
+                  <FormControlLabel
+                    value="end"
+                    control={<Radio style={customRadioStyle} />}
+                    label="PRN"
+                    labelPlacement="start"
                   />
                 </div>
-              </div>
-            ) : null}
-            {/* {question.followUp.length > 0 && ( */}
-            <RenderQuestion getQuestions={item.followUp} />
-            {/* )} */}
-          </div>
-        ))}
+              ) : item?.QuestionType === "Free Text" ? (
+                <div className="answer mt-3 mb-2 ms-3">
+                  <div className="first">
+                    <input type="text" placeholder="Free Text" />
+                  </div>
+                </div>
+              ) : item?.QuestionType === "Multiple Choice" ||
+                item?.QuestionType === "Single Choice" ? (
+                <div className="answer mt-3 mb-2 ms-3">
+                  <div className="first">
+                    <input
+                      disabled
+                      value={item.text}
+                      type="text"
+                      placeholder="Free Text"
+                    />
+                  </div>
+                </div>
+              ) : null}
+              {/* {question.followUp.length > 0 && ( */}
+              {/* <RenderQuestion getQuestions={item.followUp} /> */}
+              {/* )} */}
+            </div>
+          ))
+        ) : (
+          <p>No Question Found</p>
+        )}
       </div>
     </>
   );
@@ -345,9 +349,136 @@ const ShowTemplateQuestion = () => {
                             .map((item: any, i: Number) => {
                               return (
                                 <div key={item._id}>
-                                  <RenderQuestion
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <li>
+                                      <ArrowForwardIosRoundedIcon />
+                                      {item?.question}
+                                    </li>
+                                  </div>
+                                  {item?.question_type === "Date Time" ? (
+                                    <div className="answer mt-3 mb-2 ms-3">
+                                      <div className="first">
+                                        <label>When did this start?</label>
+                                        <input
+                                          type="date"
+                                          className="date-input"
+                                        />
+                                      </div>
+                                      <h6 className="mx-3 mb-0">OR</h6>
+                                      <div className="time">
+                                        <label htmlFor="">How long age?</label>
+                                        <div className="time-in">
+                                          <input type="text" />
+                                          <select
+                                            className="ms-2"
+                                            aria-label="Default select example"
+                                          >
+                                            <option selected>Hours</option>
+                                            <option value="1">days</option>
+                                            <option value="2">Weeks</option>
+                                            <option value="3">Months</option>
+                                            <option value="3">Years</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ) : item?.question_type === "Dosage" ? (
+                                    <div className="answer mt-3 mb-2 ms-3">
+                                      <div className="first">
+                                        <label>When did this start?</label>
+                                        <input type="text" />
+                                        <b className="mg"> mg</b>
+                                      </div>
+
+                                      <FormControl>
+                                        <RadioGroup
+                                          row
+                                          aria-labelledby="demo-form-control-label-placement"
+                                          name="position"
+                                          defaultValue="top"
+                                          sx={{
+                                            border: "1px solid #6049cd",
+                                            borderRadius: "20px",
+                                            marginLeft: "20px",
+                                          }}
+                                        >
+                                          <FormControlLabel
+                                            value="top"
+                                            control={
+                                              <Radio style={customRadioStyle} />
+                                            }
+                                            label="OD"
+                                            labelPlacement="top"
+                                          />
+                                          <FormControlLabel
+                                            value="start"
+                                            control={
+                                              <Radio style={customRadioStyle} />
+                                            }
+                                            label="BD"
+                                            labelPlacement="top"
+                                          />
+                                          <FormControlLabel
+                                            value="bottom"
+                                            control={
+                                              <Radio style={customRadioStyle} />
+                                            }
+                                            label="TDS"
+                                            labelPlacement="top"
+                                          />
+                                          <FormControlLabel
+                                            value="end"
+                                            control={
+                                              <Radio style={customRadioStyle} />
+                                            }
+                                            label="QDS"
+                                            labelPlacement="top"
+                                          />
+                                        </RadioGroup>
+                                      </FormControl>
+
+                                      <FormControlLabel
+                                        value="end"
+                                        control={
+                                          <Radio style={customRadioStyle} />
+                                        }
+                                        label="PRN"
+                                        labelPlacement="start"
+                                      />
+                                    </div>
+                                  ) : item?.question_type === "Free Text" ? (
+                                    <div className="answer mt-3 mb-2 ms-3">
+                                      <div className="first">
+                                        <input
+                                          type="text"
+                                          placeholder="Free Text"
+                                        />
+                                      </div>
+                                    </div>
+                                  ) : item?.question_type ===
+                                      "Multiple Choice" ||
+                                    item?.question_type === "Single Choice" ? (
+                                    <div className="answer mt-3 mb-2 ms-3">
+                                      <div className="first">
+                                        <input
+                                          disabled
+                                          value={item.text}
+                                          type="text"
+                                          placeholder="Free Text"
+                                        />
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                  {/* <RenderQuestion
                                     getQuestions={item.Question}
-                                  />
+                                  /> */}
                                 </div>
                               );
                             })

@@ -17,13 +17,14 @@ const section = require("./routes/section");
 const template = require("./routes/template");
 const answer = require("./routes/answer");
 const category = require("./routes/category");
+const followup = require("./routes/followup");
 
 const errorHandler = require("./utils/errorMiddleware");
 app.use(cors());
 app.use(errorHandler);
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors())
+app.use(cors());
 // app.use("/api", bootCamp);
 // app.use("/course", course);
 app.use("/auth", auth);
@@ -32,6 +33,7 @@ app.use("/section", section);
 app.use("/template", template);
 app.use("/answer", answer);
 app.use("/category", category);
+app.use("/followup", followup);
 
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
