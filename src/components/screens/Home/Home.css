@@ -22,6 +22,8 @@ font-size: 12px !important;
  padding: 20px;
  border-radius: 20px; 
  background-color: var(--rgba);
+position: relative;
+margin-top: 20px !important;
 
 }
 .card-head{
@@ -59,9 +61,23 @@ font-size: 12px !important;
     color: var(--white);
 }
 .btm-text{
-    margin-top: 20px;
+
     font-weight: var(--lower-weight);
-    font-size: var(--smaller-font);
+    font-size:12px !important;
     color: var(--color);
+}
+.action{
+    position: absolute !important;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.action-btn{
+    background-color: var(--color) !important;
+    color: white !important;
+    border: 4px solid white !important;
+}
+.card-heading{
+    font-weight: bold !important;
+    color: var(--color) !important;
 }
 
