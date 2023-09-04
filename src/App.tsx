@@ -18,7 +18,8 @@ import Category from "./components/screens/Admin/Category/Category";
 
 function App() {
   return (
-    <BrowserRouter>
+    <div className="body">
+      <BrowserRouter >
       <Routes>
         <Route
           path="/"
@@ -116,6 +117,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
+    </div>
   );
 }
 

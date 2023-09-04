@@ -26,23 +26,24 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
       <div className="card-box">
         <Link to={`/questions/${item?._id}`}>
           <div className="card-head">
-            <div className="icon-box">
+            
+
+            <div className="text">
+              
+                <h6 className="mb-0">{item?.template_name}</h6>
+                <p className="mt-2">
+                  By <b>{item?.template_type}Ahmad</b> <span className="cat-name">category name</span>
+                </p>
+             
+            </div>
+            <div className="d-flex">
+            <div className="icon-box me-1">
               <IconButton>
                 <ViewStreamIcon />
               </IconButton>
               <div className="band">
                 <p>12</p>
               </div>
-            </div>
-
-            <div className="text">
-              <center>
-                <h6 className="mb-0">{item?.template_name}</h6>
-                <span className="cat-name">category name</span>
-                <p className="mt-2">
-                  By <b>{item?.template_type}</b>
-                </p>
-              </center>
             </div>
             <div className="icon-box">
               <IconButton>
@@ -52,21 +53,21 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
                 <p>2</p>
               </div>
             </div>
+            </div>
           </div>
         </Link>
-        <center>
-          <p className="btm-text">{item?.description}</p>
-        </center>
-
+          <p className="btm-text">{item?.description} Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
         <Stack
           direction="row"
           spacing={1}
+          className="action"
           style={{
             display: "flex",
             justifyContent: "flex-end",
           }}
         >
           <IconButton
+          className="action-btn"
             disabled={item?.user_id === user?._id ? false : true}
             aria-label="delete"
             onClick={() => updateTemplate(item)}
@@ -76,6 +77,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
           <IconButton
             disabled={item?.user_id === user?._id ? false : true}
             aria-label="delete"
+            className="action-btn"
             onClick={() => DeleteTemplate(item?._id)}
           >
             <DeleteIcon />
