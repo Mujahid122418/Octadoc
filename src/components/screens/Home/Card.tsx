@@ -45,6 +45,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
                 <p>12</p>
               </div>
             </div>
+
             <div className="icon-box">
               <IconButton>
                 <QuestionMarkIcon />

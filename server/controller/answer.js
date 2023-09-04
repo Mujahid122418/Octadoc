@@ -28,6 +28,7 @@ exports.getAnswer = async (req, res) => {
 
     // Query and retrieve paginated data
     const data = await Answer.find()
+      .populate("question_id")
 
       .skip(skip)
       .limit(pageSize)

@@ -4,7 +4,8 @@ const schema = mongoose.Schema;
 const answer_Schema = new schema(
   {
     follow_up_question_group_id: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "templatequestion",
     },
     text: {
       type: String,
@@ -17,7 +18,7 @@ const answer_Schema = new schema(
     },
     question_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "templateQuestion",
+      ref: "templatequestion",
     },
     template_id: {
       type: String,

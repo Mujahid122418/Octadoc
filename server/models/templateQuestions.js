@@ -48,20 +48,20 @@ const template_Schema = new schema(
     question: {
       type: String,
     },
-    answers: {
-      type: String,
-    },
+    // answers: {
+    //   type: String,
+    // },
     index: {
       type: String,
     },
-    Question: {
-      type: [Questions_Schema],
-    },
+    // Question: {
+    //   type: [Questions_Schema],
+    // },
     // followUp: [
-    //   { type: mongoose.Schema.Types.ObjectId, ref: "templateQuestion" },
+    //   { type: mongoose.Schema.Types.ObjectId, ref: "templatequestion" },
     // ], // Use ObjectId reference
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("templateQuestion", template_Schema);
+module.exports = mongoose.model("templatequestion", template_Schema);
