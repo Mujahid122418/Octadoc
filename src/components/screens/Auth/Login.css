@@ -98,6 +98,10 @@ a{color:inherit;text-decoration:none}
 	color:#fff;
 	border-color:var(--white);
 }
+.btn-clr{
+	color: var(--color) !important;
+	font-weight: bold !important;
+}
 .login-form{
 	min-height:345px;
 	position:relative;
