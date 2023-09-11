@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const schema = mongoose.Schema;
-
+const ans_Schema = new mongoose.Schema({
+  answer: { type: String },
+});
 const answer_Schema = new schema(
   {
     follow_up_question_group_id: {
@@ -11,7 +13,7 @@ const answer_Schema = new schema(
       type: String,
     },
     answer: {
-      type: String,
+      type: [ans_Schema],
     },
     question: {
       type: String,

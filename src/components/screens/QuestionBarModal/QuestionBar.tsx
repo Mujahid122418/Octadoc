@@ -29,23 +29,17 @@ import AddIcon from "@mui/icons-material/Add";
 import {
   addQuestionFunAPI,
   getQuestion,
-  getSingleQuestionFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { toast } from "react-toastify";
 import AnswerBar from "./Answerpart/AnswerPart";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import Stack from "@mui/material/Stack";
 import { create_UUID } from "../../../utils/UUID";
+import { customRadioStyle } from "./EditQuestionBar";
 
 interface StateType {
   // Define your state properties here
   right: any; // Change 'any' to the appropriate type
 }
-const customRadioStyle = {
-  color: "#9F496E", // Your custom color code
-};
 
 type Anchor = "right";
 
@@ -59,8 +53,10 @@ export default function QuestionBar() {
     EditSelectedQuestion,
     getSingleQuestion,
     isLoading,
+    getQuestions,
   } = useSelector((state: RootState) => state?.templateQuestion);
-  // console.log("getSingleQuestion", getSingleQuestion);
+  const { activeSection } = useSelector((state: RootState) => state?.section);
+
   const createUUID = (): string => {
     return create_UUID();
   };
@@ -75,23 +71,17 @@ export default function QuestionBar() {
       followUp: [],
     },
   ]);
-
+  useEffect(() => {
+    let data = {
+      page: 1,
+      pageSize: 20,
+    };
+    dispatch(getQuestion(data));
+  }, []);
   const [newQuestion, setNewQuestion] = useState<string>("");
   const [newAnswer, setNewAnswer] = useState<string>("");
 
   const [QuestionType, setQuestionType] = useState("");
-
-  // const UpdateQuestionsArray = () => {
-  //   const updatedQna = [...qna];
-  //   updatedQna.push({
-  //     question: newQuestion,
-  //     answer: newAnswer,
-  //     QuestionType: QuestionType,
-  //     Qindex: createUUID(),
-  //     followUp: [],
-  //   });
-  //   setQna(updatedQna);
-  // };
 
   // ===collpase====
   const [expanded, setExpanded] = useState(false);
@@ -112,6 +102,8 @@ export default function QuestionBar() {
       questionType === "Multiple Choice"
     ) {
       toast.error("The answer field is required.");
+    } else if (!activeSection) {
+      toast.error("Please Select Active Section.");
     } else {
       try {
         let data = {
@@ -119,15 +111,19 @@ export default function QuestionBar() {
           question: newQuestion,
           // answer: newAnswer,
           template_id: template_id,
+          section_id: activeSection,
           question_type: questionType,
         };
-        console.log("added single", data);
+
         dispatch(addQuestionFunAPI(data))
           .unwrap()
           .then((response) => {
-            console.log("respoce", response);
-
+            // console.log("respoce", response);
             dispatch(getQuestion(data));
+            dispatch(addQuestionFollowupModelFun(false));
+            dispatch(addQuestionModelFun(false));
+
+            setNewQuestion("");
           })
           .catch((error) => {
             toast.error(error);
@@ -164,12 +160,6 @@ export default function QuestionBar() {
     }
   };
   // handel qdit question
-
-  useEffect(() => {
-    if (Object.keys(EditSelectedQuestion).length > 0) {
-      dispatch(getSingleQuestionFun(EditSelectedQuestion?._id));
-    }
-  }, [EditSelectedQuestion]);
 
   const EditAnsewer = (e: any) => {
     console.log("ans id", e);
@@ -234,7 +224,7 @@ export default function QuestionBar() {
           <label htmlFor="">Type*</label>
           <select
             className="form-select mt-1"
-            value={QuestionType}
+            value={questionType}
             onChange={(e) => {
               dispatch(questionTypeFun(e.target.value));
               setQuestionType(e.target.value);
@@ -267,7 +257,7 @@ export default function QuestionBar() {
             <div className="label-button">
               <label htmlFor="">Answer </label>
               <Button2
-                name="Add Answer"
+                name="Add "
                 onClick={() => {
                   addQuestionFollowupBtn();
                   // UpdateQuestionsArray();
@@ -275,57 +265,62 @@ export default function QuestionBar() {
                 icon={<AddIcon />}
               />
             </div>
-            <div style={{ padding: 5 }}>
-              {getSingleQuestion?.length > 0 ? (
-                getSingleQuestion.map((item: any) => {
-                  return (
-                    <div
-                      style={{
-                        border: "1px black solid",
-                        borderRadius: 5,
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        padding: 10,
-                      }}
-                    >
-                      <div> {item?.text}</div>
-                      <Stack
-                        direction="row"
-                        spacing={1}
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                        }}
-                      >
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => EditAnsewer(item)}
-                          size="small"
+            {/* <div
+              style={{
+                padding: 5,
+                border: "1px black solid",
+                marginTop: 5,
+                borderRadius: 8,
+              }}
+            >
+              {
+                getQuestions?.length > 0
+                  ? getQuestions.map((item: any) => {
+                      return (
+                        <div
+                          style={{
+                            borderRadius: 5,
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            padding: 10,
+                          }}
                         >
-                          <EditIcon sx={{ width: 15, height: 15 }} />
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          // onClick={() => DeleteTemplate(item?._id)}
-                        >
-                          <DeleteIcon sx={{ width: 15, height: 15 }} />
-                        </IconButton>
-                      </Stack>
-                    </div>
-                  );
-                })
-              ) : (
-                <textarea name="" id="" cols={30} rows={5} />
-              )}
-            </div>
-            {/* <textarea name="" id="" cols={30} rows={5} /> */}
+                          <div> {item?.question}</div>
+                          <Stack
+                            direction="row"
+                            spacing={1}
+                            style={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <IconButton
+                              aria-label="delete"
+                              // onClick={() => EditAnsewer(item)}
+                              size="small"
+                            >
+                              <EditIcon sx={{ width: 15, height: 15 }} />
+                            </IconButton>
+                            <IconButton
+                              aria-label="delete"
+                              size="small"
+                              // onClick={() => DeleteTemplate(item?._id)}
+                            >
+                              <DeleteIcon sx={{ width: 15, height: 15 }} />
+                            </IconButton>
+                          </Stack>
+                        </div>
+                      );
+                    })
+                  : null
+                // <textarea name="" id="" cols={30} rows={5} />
+              }
+            </div> */}
+            <textarea name="" id="" cols={30} rows={5} />
           </div>
         ) : null}
-        {/* test value  start */}
 
-        {/* test value end  */}
         <div className="save-button mt-2">
           {isLoading ? (
             <Button2
@@ -367,7 +362,7 @@ export default function QuestionBar() {
         qna={qna}
         setQna={setQna}
         // UpdateQuestionsArray={UpdateQuestionsArray}
-        QuestionType={QuestionType}
+        QuestionType={questionType}
       />
     </div>
   );

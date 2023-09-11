@@ -28,8 +28,11 @@ import Button2 from "../Button2/Button2";
 import AddIcon from "@mui/icons-material/Add";
 import {
   addQuestionFunAPI,
+  DeleteAnswer,
+  getAnswers,
   getQuestion,
   getSingleQuestionFun,
+  UpdateQuestionFunAPI,
 } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { toast } from "react-toastify";
 
@@ -39,21 +42,13 @@ import Stack from "@mui/material/Stack";
 import { create_UUID } from "../../../utils/UUID";
 import EditAnswerBar from "./Answerpart/EditAnswerbar";
 
-// interface FollowUpQuestion {
-//   question: string;
-//   answer: string;
-//   //followUp: FollowUpQuestion[]; // Use 'followUp' here
-//   followUp: any;
-// }
-
 interface StateType {
   // Define your state properties here
   right: any; // Change 'any' to the appropriate type
 }
-const customRadioStyle = {
-  color: "#6049cd", // Your custom color code
+export const customRadioStyle = {
+  color: "#9F496E", // Your custom color code
 };
-
 type Anchor = "right";
 
 export default function EditQuestionBar() {
@@ -67,8 +62,11 @@ export default function EditQuestionBar() {
     EditSelectedQuestion,
     getSingleQuestion,
     isLoading,
+    getQuestions,
+    getAnswer,
+    parent_id,
   } = useSelector((state: RootState) => state?.templateQuestion);
-  // console.log("getSingleQuestion", getSingleQuestion);
+
   const createUUID = (): string => {
     return create_UUID();
   };
@@ -90,17 +88,17 @@ export default function EditQuestionBar() {
   const [QuestionType, setQuestionType] = useState("");
 
   const UpdateQuestionsArray = (e: any) => {
-    const updatedQna = [...qna];
-    updatedQna.push({
-      question: newQuestion,
-      answer: newAnswer,
-      QuestionType: QuestionType,
-      Qindex: createUUID(),
-      followUp: [],
-    });
-    setQna(updatedQna);
-    setNewQuestion("");
-    setNewAnswer("");
+    // const updatedQna = [...qna];
+    // updatedQna.push({
+    //   question: newQuestion,
+    //   answer: newAnswer,
+    //   QuestionType: QuestionType,
+    //   Qindex: createUUID(),
+    //   followUp: [],
+    // });
+    // setQna(updatedQna);
+    // setNewQuestion("");
+    // setNewAnswer("");
   };
 
   // ===collpase====
@@ -115,34 +113,26 @@ export default function EditQuestionBar() {
       window.location.href.split("/questions/")[1];
     if (!newQuestion) {
       toast.error("Please enter Question");
-    } else if (!questionType) {
-      toast.error("Please Select Question type");
-    } else if (
-      questionType === "Single Choice" ||
-      questionType === "Multiple Choice"
-    ) {
-      toast.error("The answer field is required.");
-    } else {
+    }
+    // else if (
+    //   questionType === "Single Choice" ||
+    //   questionType === "Multiple Choice"
+    // ) {
+    //   toast.error("The answer field is required.");
+    // }
+    else {
       try {
         let data = {
+          id: EditSelectedQuestion?._id,
+          question: newQuestion,
           template_id: template_id,
-
-          Question: [
-            {
-              question: newQuestion,
-              answer: newAnswer,
-              Qindex: createUUID(),
-              QuestionType: questionType,
-              followUp: [],
-            },
-          ],
+          question_type: questionType,
         };
-        console.log("added single", data);
-        dispatch(addQuestionFunAPI(data))
+
+        dispatch(UpdateQuestionFunAPI(data))
           .unwrap()
           .then((response) => {
             console.log("respoce", response);
-
             dispatch(getQuestion(data));
           })
           .catch((error) => {
@@ -151,6 +141,7 @@ export default function EditQuestionBar() {
       } catch (error) {}
     }
   };
+
   // ===collpase end====
 
   const [state, setState] = React.useState<StateType>({
@@ -167,6 +158,7 @@ export default function EditQuestionBar() {
     dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
     dispatch(editQuestionModelFun(!editQuestionModel));
   };
+
   useEffect(() => {
     setState((state) => ({
       ...state,
@@ -184,24 +176,48 @@ export default function EditQuestionBar() {
   useEffect(() => {
     if (Object.keys(EditSelectedQuestion).length > 0) {
       dispatch(getSingleQuestionFun(EditSelectedQuestion?._id));
+      // setNewQuestion(EditSelectedQuestion?.question);
+      // setNewAnswer(EditSelectedQuestion?.answerD?.answer);
+      // setQuestionType(EditSelectedQuestion?.question_type);
     }
   }, [EditSelectedQuestion]);
 
   useEffect(() => {
-    if (getSingleQuestion && getSingleQuestion.length > 0) {
-      setNewQuestion(getSingleQuestion[0].name);
-      setQuestionType(getSingleQuestion[0].question_type);
+    if (getSingleQuestion) {
+      setNewQuestion(getSingleQuestion?.question);
+      setQuestionType(getSingleQuestion?.question_type);
+      setNewAnswer(getSingleQuestion?.answerD?.answer);
     }
   }, [getSingleQuestion]);
-  const EditAnsewer = (e: any) => {
-    let ans = {
-      id: e.ans_id,
-      ans: e.text,
+  // get all answers start
+  useEffect(() => {
+    let data = {
+      page: 1,
+      pageSize: 20,
     };
-    dispatch(EditAnswerFun(ans));
-    dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
-  };
+    dispatch(getAnswers(data));
+  }, []);
+  // get all answers end
 
+  // const EditAnsewer = (e: any) => {
+  //   let ans = {
+  //     id: e.ans_id,
+  //     ans: e.text,
+  //   };
+  //   dispatch(EditAnswerFun(ans));
+  //   dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
+  // };
+  const DeleteAns = async (e: any) => {
+    try {
+      dispatch(DeleteAnswer(e)).then(() => {
+        let data = {
+          page: 1,
+          pageSize: 20,
+        };
+        dispatch(getAnswers(data));
+      });
+    } catch (error) {}
+  };
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
       <IconButton
@@ -296,47 +312,62 @@ export default function EditQuestionBar() {
                 icon={<AddIcon />}
               />
             </div>
-            <div style={{ padding: 5 }}>
-              {getSingleQuestion?.length > 0 ? (
-                getSingleQuestion.map((item: any) => {
-                  return (
-                    <div
-                      style={{
-                        border: "1px black solid",
-                        borderRadius: 5,
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        padding: 10,
-                      }}
-                    >
-                      <div> {item?.text}</div>
-                      <Stack
-                        direction="row"
-                        spacing={1}
+            <div
+              style={{
+                // padding: 5,
+                border: "1px black solid",
+                marginTop: 5,
+                borderRadius: 8,
+              }}
+            >
+              {getAnswer?.length > 0 ? (
+                getAnswer
+                  .filter(
+                    (item: any) =>
+                      item.follow_up_question_group_id === parent_id
+                  )
+                  .map((item: any) => {
+                    return (
+                      <div
                         style={{
+                          borderRadius: 5,
                           display: "flex",
-                          justifyContent: "flex-end",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          padding: 10,
+                          borderBottom: "0.25px solid rgb(211, 211, 211)",
                         }}
                       >
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => EditAnsewer(item)}
-                          size="small"
+                        {item.answer.map((e: any) => {
+                          return <div> {e.answer}</div>;
+                        })}
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
                         >
-                          <EditIcon sx={{ width: 15, height: 15 }} />
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          // onClick={() => DeleteTemplate(item?._id)}
-                        >
-                          <DeleteIcon sx={{ width: 15, height: 15 }} />
-                        </IconButton>
-                      </Stack>
-                    </div>
-                  );
-                })
+                          {/* <IconButton
+                            aria-label="delete"
+                            // onClick={() => EditAnsewer(item)}
+                            size="small"
+                          >
+                            <EditIcon sx={{ width: 15, height: 15 }} />
+                          </IconButton> */}
+                          <IconButton
+                            aria-label="delete"
+                            size="small"
+                            onClick={() => DeleteAns(item?._id)}
+                            // onClick={() => console.log("del", item?._id)}
+                          >
+                            <DeleteIcon sx={{ width: 15, height: 15 }} />
+                          </IconButton>
+                        </Stack>
+                      </div>
+                    );
+                  })
               ) : (
                 <textarea name="" id="" cols={30} rows={5} />
               )}
@@ -348,7 +379,7 @@ export default function EditQuestionBar() {
 
         {/* test value end  */}
         <div className="save-button mt-2">
-          <Button2 name="Save Question" onClick={handleClickSaveBtn} />
+          <Button2 name="Update Question" onClick={handleClickSaveBtn} />
         </div>
         <div className="close-button mt-2">
           <Button2

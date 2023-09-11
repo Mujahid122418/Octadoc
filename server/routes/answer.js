@@ -4,6 +4,7 @@ const {
   getAnswer,
   deleteAnswer,
   updateAnswer,
+  addAnswer_Against_Question,
 } = require("../controller/answer");
 
 const router = express.Router();
@@ -14,5 +15,5 @@ router.post("/answer", addAnswer);
 router.get("/answer", getAnswer);
 router.delete("/answer/:id", deleteAnswer);
 router.put("/answer/:id", updateAnswer);
-
+router.post("/Qanswer", addAnswer_Against_Question);
 module.exports = router;

@@ -1,6 +1,6 @@
 const Answer = require("../models/answer");
 const TemplateQuestions = require("../models/templateQuestions");
-
+const FollowUp = require("../models/followup");
 exports.addQuestion = async (req, res) => {
   const payload = req.body;
 
@@ -82,36 +82,6 @@ exports.getQuestion = async (req, res) => {
       totalPages,
       count: totalDocuments,
     });
-
-    let data3 = await TemplateQuestions.aggregate([
-      {
-        $lookup: {
-          from: "templatequestion",
-          localField: "question_id",
-          foreignField: "_id",
-          as: "answer",
-        },
-      },
-      {
-        $match: {
-          matchingDocuments: { $ne: [] }, // Match only documents where there is a match in collectionB
-        },
-      },
-      // {
-      //   $project: {
-      //     _id: 1,
-      //     text: 1,
-      //     output: 1,
-      //     order: 1,
-      //     "question.question_type": 1,
-      //     "question.template_id": 1,
-      //     "question.question": 1,
-      //     "question.createdAt": 1,
-      //     "question.updatedAt": 1,
-      //   },
-      // },
-    ]);
-    console.log("data", data3);
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: "An error occurred" });
@@ -119,6 +89,7 @@ exports.getQuestion = async (req, res) => {
 };
 
 exports.deleteQuestion = async (req, res) => {
+  await FollowUp.deleteMany({ question_id: req.params?.id });
   await Answer.deleteMany({ question_id: req.params?.id });
   await TemplateQuestions.findByIdAndDelete(req.params?.id)
     .then((deletedPost) => {
@@ -189,44 +160,57 @@ exports.singleQuestion = async (req, res) => {
       .lean()
       .skip(skip)
       .limit(pageSize);
+    console.log("data1", data1?._id);
+    let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
+    console.log("ans ", ans);
+    const data =
+      (await Object.keys(data1).length) > 0 &&
+      console.log("objA._id?.toString()", data1?._id?.toString());
+    const matchingObjB = ans?.find(
+      (objB) => objB?.question_id.toString() == data1?._id?.toString()
+    );
+    console.log("matchingObjB", matchingObjB);
 
-    // let ans = await Answer.findOne({ _id: req.params.id }).lean();
+    let {
+      follow_up_question_group_id,
+      text,
+      question_id,
+      template_id,
+      _id,
+      answer,
+      question,
+      question_type,
+    } = matchingObjB;
 
-    // const data = await data1.map((objA) => {
-    //   const matchingObjB = ans.find(
-    //     (objB) => objB?.question_id.toString() === objA._id.toString()
-    //   );
-    //   if (
-    //     matchingObjB &&
-    //     Object.keys(matchingObjB).length > 0 &&
-    //     matchingObjB !== null &&
-    //     matchingObjB !== undefined
-    //   ) {
-    //     let {
-    //       follow_up_question_group_id,
-    //       text,
-    //       question_id,
-    //       template_id,
-    //       _id,
-    //     } = matchingObjB;
+    let answerD = {
+      follow_up_question_group_id,
+      text,
+      question_id,
+      template_id,
+      ans_id: _id,
 
-    //     let send = {
-    //       follow_up_question_group_id,
-    //       text,
-    //       question_id,
-    //       template_id,
-    //       ans_id: _id,
-    //     };
+      answer,
+      question,
+      question_type,
+    };
+    let objA = {
+      _id: data1?._id,
+      template_id: data1?.template_id,
+      question: data1?.question,
+      question_type: data1?.question_type,
+    };
+    let v = { ...objA, answerD };
 
-    //     return { ...objA, ...send };
-    //   } else {
-    //     return { ...objA };
-    //   }
-    // });
+    // console.log("data v", v);
     res.json({
-      data1,
+      data: v,
       currentPage: page,
       totalPages,
+      count: totalDocuments,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log("get single catch error", error);
+  }
 };
+
+exports.Add_Update_Answer = async () => {};

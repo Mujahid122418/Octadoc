@@ -22,19 +22,20 @@ import {
 } from "../../../../redux/TemplateQuestion/TemplateQuestion";
 import { toast } from "react-toastify";
 import {
+  addAnswerFunAPI,
   addQuestionFunAPI,
+  getAnswers,
   getQuestion,
   updateAnswerFunAPI,
+  UpdateQuestionFunAPI,
 } from "../../../../redux/TemplateQuestion/TemplateQuestionAPI";
 import { create_UUID } from "../../../../utils/UUID";
+import { customRadioStyle } from "../EditQuestionBar";
 
 interface StateType {
   // Define your state properties here
   right: any; // Change 'any' to the appropriate type
 }
-const customRadioStyle = {
-  color: "#6049cd",
-};
 
 type Anchor = "right";
 interface IAnswerBar {
@@ -47,201 +48,6 @@ interface IAnswerBar {
   UpdateQuestionsArray: (value: any) => void;
   QuestionType: any;
 }
-interface FollowUpQuestion {
-  question: string;
-  answer: string;
-  Qindex: string;
-  followup: FollowUpQuestion[];
-  QuestionType: string;
-}
-interface QNAItem {
-  question: string;
-  answer: string;
-  Qindex?: string;
-  followUp: FollowUpQuestion[];
-  QuestionType: string;
-}
-
-const QNAComponent: React.FC<{
-  qna: any;
-  onUpdate: (updatedQna: QNAItem[]) => void;
-  // onDelete: (updatedQna: QNAItem[]) => void;
-}> = ({ qna, onUpdate }) => {
-  const createUUID = (): string => {
-    return create_UUID();
-  };
-
-  const handleAddQuestion = () => {
-    const updatedQna = [...qna];
-    updatedQna.push({
-      question: "",
-      answer: "",
-      Qindex: createUUID(),
-      followUp: [],
-      QuestionType: "",
-    });
-    onUpdate(updatedQna);
-  };
-
-  const handelDelete = (e: any) => {
-    const updatedQna = [...qna];
-    let filter = updatedQna.filter((item) => item.index !== e);
-    onUpdate(filter);
-    console.log("delete", filter);
-  };
-  const onChangeQuestion = async (text: any, key: any) => {
-    onUpdate(
-      qna?.map((item: any) => {
-        return item.Qindex === key ? { ...item, question: text } : item;
-      })
-    );
-  };
-
-  // const onChangeAnswer = async (text: any, key: any) => {
-
-  //   onUpdate(
-  //     qna.map((item: any) => {
-  //       return item.Qindex === key ? { ...item, answer: text } : item;
-  //     })
-  //   );
-  // };
-  const updateNestedArray = (qna: any, newValue: any, targetIndex: any) => {
-    console.log("index", targetIndex);
-
-    return qna.map((item: any) => {
-      if (item.Qindex === targetIndex) {
-        // If the target item is found, update its value
-        return { ...item, answer: newValue };
-      } else if (item.followUp && item.followUp.length > 0) {
-        // If there are nested items, recursively update them
-        const updatedFollowUp = updateNestedArray(
-          item.followUp,
-          targetIndex,
-          newValue
-        );
-        console.log("second item", { ...item, followUp: updatedFollowUp });
-        return { ...item, followUp: updatedFollowUp };
-      } else {
-        console.log("else item", item);
-
-        return item;
-      }
-    });
-  };
-  const onChangeAnswer = async (text: any, key: any) => {
-    const updatedQna = updateNestedArray(qna, key, text);
-    console.log(" updatedQna ans", updatedQna);
-
-    onUpdate(updatedQna);
-  };
-  const onChangeQuestionType = async (text: any, key: any) => {
-    onUpdate(
-      qna.map((item: any) => {
-        return item.Qindex === key ? { ...item, QuestionType: text } : item;
-      })
-    );
-  };
-  return (
-    <div>
-      {qna.map((item: any, questionIndex: any) => (
-        <div key={item.index} className="input-cover" style={{ padding: 10 }}>
-          {/* <button onClick={() => handelDelete(item.index)}>delete</button> */}
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <IconButton
-              aria-label="delete"
-              onClick={() => handelDelete(item.index)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </div>
-          <div>
-            <label htmlFor="">Question*</label>
-            <input
-              type="text"
-              value={item.question}
-              className="question-input"
-              placeholder="Question"
-              onChange={(e) => onChangeQuestion(e.target.value, item.Qindex)}
-              // onChange={(e) => {
-              //   const value = e.target.value;
-              //   const updatedQna = [...qna];
-              //   updatedQna[questionIndex].question = value;
-              //   onUpdate(updatedQna);
-              // }}
-            />
-          </div>
-
-          <div className="selectt-box mt-3">
-            <label htmlFor="">Type*</label>
-            <select
-              className="form-select mt-1"
-              value={item.QuestionType}
-              onChange={(e) =>
-                onChangeQuestionType(e.target.value, item.Qindex)
-              }
-              // onChange={(e) => {
-              //   const value = e.target.value;
-              //   const updatedQna = [...qna];
-              //   updatedQna[questionIndex].QuestionType = value;
-              //   onUpdate(updatedQna);
-              // }}
-            >
-              <option>Select</option>
-              <option>Date Time</option>
-              <option>Dosage</option>
-              <option>Free Text</option>
-              <option>Multiple Choice</option>
-              <option>Single Choice</option>
-            </select>
-          </div>
-          <div style={{ paddingTop: 20 }}>
-            <label htmlFor=""> Answer*</label>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <input
-                type="text"
-                className="answer-input"
-                value={item.answer}
-                placeholder="Answer"
-                onChange={(e) => onChangeAnswer(e.target.value, item.Qindex)}
-                // onChange={(e) => {
-                //   const value = e.target.value;
-                //   const updatedQna = [...qna];
-                //   updatedQna[questionIndex].answer = value;
-                //   onUpdate(updatedQna);
-                // }}
-              />
-            </div>
-          </div>
-
-          <QNAComponent
-            qna={item.followUp}
-            onUpdate={(updatedFollowUp) => {
-              const updatedQna = [...qna];
-              updatedQna[questionIndex].followUp = updatedFollowUp;
-              onUpdate(updatedQna);
-            }}
-          />
-        </div>
-      ))}
-
-      {qna.length > 0 ? (
-        <Button2 name="Edit Question" onClick={handleAddQuestion} />
-      ) : (
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <IconButton aria-label="delete" onClick={handleAddQuestion}>
-            <AddIcon />
-          </IconButton>
-        </div>
-      )}
-    </div>
-  );
-};
 
 const EditAnswerBar: React.FC<IAnswerBar> = ({
   newAnswer,
@@ -260,6 +66,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
     editQuestionModel,
     EditAnswer,
     EditSelectedQuestion,
+    parent_id,
   } = useSelector((state: RootState) => state?.templateQuestion);
   // console.log("EditSelectedQuestion", EditSelectedQuestion);
 
@@ -272,54 +79,64 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
     window.location.href.split("/questions/edit/")[1] ||
     window.location.href.split("/questions/")[1];
   // handel answer state end
-  const handleClickBtnSaveAnswer = (event: any, e1: string) => {
+  const SaveFollowupQuestions = (event: any, e1: string) => {
     event.preventDefault();
 
-    if (!newAnswer) {
-      toast.error("Answer is required");
-    } else {
+    let data = {
+      question_id: parent_id,
+      follow_up_question_group_id: parent_id,
+
+      answer: [{ answer: newAnswer }],
+      template_id: template_id,
+    };
+
+    console.log("save updated ans", data);
+
+    dispatch(addAnswerFunAPI(data)).then(() => {
+      let d1 = {
+        page: 1,
+        pageSize: 20,
+      };
+      dispatch(getQuestion(d1));
+      dispatch(editQuestionModelFun(!editQuestionModel));
       let data = {
-        question: newQuestion,
-        answer: newAnswer,
-        QuestionType: QuestionType,
-        index: create_UUID(),
-        followUp: [],
+        page: 1,
+        pageSize: 20,
       };
-      const updatedQna = [...qna];
-      updatedQna.push(data);
-      // console.log("passQuestion", updatedQna);
-      // console.log("qna", qna);
-      var saveMultiple = {
-        template_id: template_id,
-        // question_type: QuestionType,
-        followUp: updatedQna,
-      };
-      var saveSingle = {
-        // question_type: QuestionType,
-        question: newQuestion,
-        answer: newAnswer,
-      };
-      if (
-        QuestionType === "Multiple Choice" ||
-        QuestionType === "Single Choice"
-      ) {
-        console.log("save ", saveMultiple);
-        dispatch(addQuestionFunAPI(saveMultiple))
-          .unwrap()
-          .then((response) => {
-            let d1 = {
-              page: 1,
-              pageSize: 20,
-            };
-            dispatch(getQuestion(d1));
-          })
-          .catch((error) => {
-            toast.error(error);
-          });
-      } else {
-        console.log("saveSingle ", saveSingle);
-      }
-    }
+      dispatch(getAnswers(data));
+    });
+
+    // dispatch(UpdateQuestionFunAPI(data))
+    //   .unwrap()
+    //   .then((response) => {
+    //     let { _id } = response.data;
+    //     localStorage.setItem("last_question_id", _id);
+    //     let data1 = {
+    //       id: EditSelectedQuestion?.answerD?.ans_id,
+    //       template_id: template_id,
+    //       question: newQuestion,
+    //       answer: newAnswer,
+    //       question_type: QuestionType,
+    //       follow_up_question_group_id: _id,
+    //       question_id: _id,
+    //     };
+
+    //     dispatch(updateAnswerFunAPI(data1)).then(() => {
+    //       let d1 = {
+    //         page: 1,
+    //         pageSize: 20,
+    //       };
+    //       dispatch(getQuestion(d1));
+    //       // setNewAnswer("");
+    //       // setNewQuestion("");
+    //       // setQuestionType("");
+    //       // dispatch(questionTypeFun(""));
+    //     });
+    //     // dispatch(getQuestion(d1));
+    //   })
+    //   .catch((error) => {
+    //     toast.error(error);
+    //   });
   };
 
   const [state, setState] = React.useState<StateType>({
@@ -339,49 +156,6 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       setNewAnswer(EditAnswer?.ans);
     }
   }, [EditAnswer]);
-  const updateAnswer = () => {
-    try {
-      let ans = { id: EditAnswer?.id, text: newAnswer };
-
-      dispatch(updateAnswerFunAPI(ans))
-        .unwrap()
-        .then((response) => {
-          let d1 = {
-            page: 1,
-            pageSize: 20,
-          };
-          dispatch(getQuestion(d1));
-        })
-        .catch((error) => {
-          toast.error(error);
-        });
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
-  const SaveFollowupQuestions = () => {
-    console.log("qna", qna);
-    var save = {
-      template_id: template_id,
-      // question_type: QuestionType,
-      Question: qna,
-    };
-    console.log("edit save ", save);
-
-    // dispatch(addQuestionFunAPI(save))
-    //   .unwrap()
-    //   .then((response) => {
-    //     let d1 = {
-    //       page: 1,
-    //       pageSize: 20,
-    //     };
-    //     dispatch(getQuestion(d1));
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error);
-    //   });
-  };
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
@@ -396,13 +170,12 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       </IconButton>
       <List className="p-3 qu-bar">
         <h2 className="mb-1">Edit Answer to</h2>
-
         <label htmlFor="">Answer</label>
         <input
           type="text"
           placeholder="Add Your Answer"
           // onClick={handleInputClick}
-          value={newAnswer}
+          // value={newAnswer}
           onChange={(e) => setNewAnswer(e.target.value)}
         />
         <FormControlLabel
@@ -421,7 +194,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
                 </p>
               </div>
               <input
-                value={newAnswer}
+                value={newAnswer ? newAnswer : "add Out Put Text"}
                 disabled
                 className="mt-2 ms-0"
                 type="text"
@@ -433,15 +206,9 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
         {/* ===collpase==== */}
         <div className="save-button mt-2">
           <Button2
-            name={
-              Object.keys(EditAnswer).length > 0
-                ? "Update Answer"
-                : "Save Answer"
-            }
+            name={"Update Answer"}
             onClick={(e) => {
-              Object.keys(EditAnswer).length > 0
-                ? updateAnswer()
-                : handleClickBtnSaveAnswer(e, "save");
+              SaveFollowupQuestions(e, "save");
             }}
           />
         </div>
@@ -457,18 +224,12 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
             icon={<AddIcon />}
           />
         </div>
-
-        {qna.length > 0 ? (
-          <QNAComponent qna={qna} onUpdate={setQna} />
-        ) : (
-          <textarea disabled name="" id="" cols={30} rows={5} />
-        )}
-
+        <textarea name="" id="" cols={30} rows={5} />
         <div className="save-button mt-2">
           <Button2
             name="Update Followup Questions"
-            onClick={() => {
-              SaveFollowupQuestions();
+            onClick={(e) => {
+              SaveFollowupQuestions(e, "save");
             }}
           />
         </div>

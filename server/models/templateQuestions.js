@@ -45,7 +45,13 @@ const template_Schema = new schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "template",
     },
+    section_id: {
+      type: String,
+    },
     question: {
+      type: String,
+    },
+    parent_id: {
       type: String,
     },
     // answers: {

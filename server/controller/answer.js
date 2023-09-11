@@ -98,3 +98,24 @@ exports.updateAnswer = async (req, res) => {
       });
     });
 };
+
+exports.addAnswer_Against_Question = async (req, res) => {
+  const payload = req.body;
+  console.log("payload", payload);
+  let { Q_id } = req.body;
+  try {
+    let d = await Answer.find({ follow_up_question_group_id: Q_id });
+    console.log("get data", d);
+  } catch (error) {
+    console.log("err data", error);
+  }
+
+  // await Answer(payload)
+  //   .save()
+  //   .then((item) => {
+  //     res.json({ success: true, data: item });
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error.message);
+  //   });
+};

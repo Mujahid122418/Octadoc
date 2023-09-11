@@ -60,13 +60,16 @@ const Header = () => {
       console.log("error", error);
     }
   };
+
   return (
     <div className="header">
       <div className=" d-flex align-items-center justify-content-end">
         <IconButton>
           <HelpOutlineIcon />
         </IconButton>
-        <Button2 name="New Templates " onClick={handleClickBtn} />
+        {window.location.pathname == "/" && (
+          <Button2 name="New Templates " onClick={handleClickBtn} />
+        )}
         <Avatar>A</Avatar>
         <p className="mx-2 mb-0 header-name">{user?.name}</p>
         <IconButton
@@ -95,6 +98,12 @@ const Header = () => {
         >
           <MenuItem onClick={handleClose}>Profile</MenuItem>
           <MenuItem onClick={handleClose}>My account</MenuItem>
+          <Link to="/admin">
+            <MenuItem onClick={handleClose}>Admin</MenuItem>
+          </Link>
+          <Link to="/category">
+            <MenuItem onClick={handleClose}>Category</MenuItem>
+          </Link>
           <Link to="/setting">
             <MenuItem onClick={handleClose}>Setting</MenuItem>
           </Link>

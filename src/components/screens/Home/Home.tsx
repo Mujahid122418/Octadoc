@@ -20,7 +20,7 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Card from "./Card";
 import { getcategories } from "../../../redux/Admin/CategoryAPI";
-import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
+import SummarizeRoundedIcon from "@mui/icons-material/SummarizeRounded";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -104,13 +104,15 @@ const Home: React.FC = () => {
   return (
     <div className="home">
       <div className="container">
-        
         <Search />
         <AddTemplate />
         <div className="card-sec mt-5">
           <div className="row d-flex  justify-content-between">
             <div className="col-md-6 col-lg-4">
-              <h2 className="card-heading"><SummarizeRoundedIcon sx={{fontSize:40,}} />My Template</h2>
+              <h2 className="card-heading">
+                <SummarizeRoundedIcon sx={{ fontSize: 40 }} />
+                My Template
+              </h2>
             </div>
             <div className="col-md-6 col-lg-4">
               <div className="position-relative">

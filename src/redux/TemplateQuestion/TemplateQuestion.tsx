@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getQuestion, getSingleQuestionFun } from "./TemplateQuestionAPI";
+import {
+  getQuestion,
+  getSingleQuestionFun,
+  DeleteQuestion,
+  getAnswers,
+  DeleteAnswer,
+} from "./TemplateQuestionAPI";
 
 interface TemplateArray {
   isLoading: Boolean;
@@ -13,9 +19,11 @@ interface TemplateArray {
   addQuestion: any;
   questionType: string;
   getQuestions: any;
+  getAnswer: any;
   passQuestion: any;
   getSingleQuestion: any;
   EditAnswer: any;
+  parent_id: string;
 }
 
 const initialState: TemplateArray = {
@@ -30,9 +38,11 @@ const initialState: TemplateArray = {
   addQuestion: [],
   questionType: "",
   getQuestions: [],
+  getAnswer: [],
   passQuestion: {},
   getSingleQuestion: [],
   EditAnswer: {},
+  parent_id: "",
 };
 
 export const templateQuestionSlice = createSlice({
@@ -66,6 +76,9 @@ export const templateQuestionSlice = createSlice({
     EditAnswerFun: (state, action) => {
       state.EditAnswer = action.payload;
     },
+    ParentId_Fun: (state, action) => {
+      state.parent_id = action.payload;
+    },
   },
   extraReducers: {
     [getQuestion.pending.type]: (state, action) => {
@@ -78,6 +91,16 @@ export const templateQuestionSlice = createSlice({
     [getQuestion.rejected.type]: (state, action) => {
       state.isLoading = false;
     },
+    [getAnswers.pending.type]: (state, action) => {
+      state.isLoading = true;
+    },
+    [getAnswers.fulfilled.type]: (state, { payload }) => {
+      state.isLoading = false;
+      state.getAnswer = payload;
+    },
+    [getAnswers.rejected.type]: (state, action) => {
+      state.isLoading = false;
+    },
     [getSingleQuestionFun.pending.type]: (state, action) => {
       state.isLoading = true;
     },
@@ -86,6 +109,25 @@ export const templateQuestionSlice = createSlice({
       state.getSingleQuestion = payload;
     },
     [getSingleQuestionFun.rejected.type]: (state, action) => {
+      state.isLoading = false;
+    },
+    [DeleteQuestion.pending.type]: (state, action) => {
+      state.isLoading = true;
+    },
+    [DeleteQuestion.fulfilled.type]: (state, { payload }) => {
+      state.isLoading = false;
+    },
+    [DeleteQuestion.rejected.type]: (state, action) => {
+      state.isLoading = false;
+    },
+
+    [DeleteAnswer.pending.type]: (state, action) => {
+      state.isLoading = true;
+    },
+    [DeleteAnswer.fulfilled.type]: (state, { payload }) => {
+      state.isLoading = false;
+    },
+    [DeleteAnswer.rejected.type]: (state, action) => {
       state.isLoading = false;
     },
   },
@@ -105,5 +147,6 @@ export const {
   EditAnswerFun,
   editQuestionModelFun,
   editQuestionFollowupModelFun,
+  ParentId_Fun,
 } = templateQuestionSlice.actions;
 export default templateQuestionSlice.reducer;
