@@ -21,6 +21,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Card from "./Card";
 import { getcategories } from "../../../redux/Admin/CategoryAPI";
 import SummarizeRoundedIcon from "@mui/icons-material/SummarizeRounded";
+import { Bounce } from 'react-reveal';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -104,8 +105,11 @@ const Home: React.FC = () => {
   return (
     <div className="home">
       <div className="container">
+        <Bounce left>
         <Search />
         <AddTemplate />
+        </Bounce>
+        <Bounce bottom>
         <div className="card-sec mt-5">
           <div className="row d-flex  justify-content-between">
             <div className="col-md-6 col-lg-4">
@@ -210,6 +214,7 @@ const Home: React.FC = () => {
             </div>
           )}
         </div>
+        </Bounce>
       </div>
     </div>
   );

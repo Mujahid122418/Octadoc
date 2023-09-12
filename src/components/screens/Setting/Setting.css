@@ -3,11 +3,18 @@
     font-family: var(--font) !important;
     margin-top: 50px;
     border-radius: 20px;
-    background: var(--theme-color) !important;
+    /* background: var(--theme-color) !important; */
     padding: 50px;
 }
+.contact-box{
+    border: 2px solid var(--color);
+    border-radius: 20px !important;
+}
 h4{
-    color: var(--white);
+    color: var(--color);
+}
+.profile-box{
+    border: 2px solid var(--color);
 }
 .profile-box{
     background-color: var(--white);
@@ -39,13 +46,38 @@ form{
     border-radius: 20px;
 }
 form .form-control{
-    margin: 25px 0px;
+    margin: 25px 0px ;
     outline: none;
     padding: 10px !important;
     background-color: var(--white);
     border: 1px solid var(--color) !important;
 }
+.control{
+    margin: 0px !important;
+}
+label{
+    font-weight: 500 !important;
+    font-size:15px !important ;
+}
 .form-control:focus {
+    color: #212529;
+    background-color: var(--white) !important;
+    border-color: var(--color);
+    box-shadow: 0 0 0 0.2rem var(--rgba) !important;
+}
+
+.form-controll{
+    outline: none;
+    padding: 10px !important;
+    background-color: var(--white);
+    border: 1px solid var(--color) !important;
+    margin-bottom: 20px;
+    border-radius: 5px !important;
+}
+.form-controll input{
+    padding: 0px !important;
+}
+.form-controll:focus {
     color: #212529;
     background-color: var(--white) !important;
     border-color: var(--color);
@@ -57,3 +89,10 @@ form .form-control{
     top: 50%;
     transform: translateY(-50%);
 }
+
+@media screen and (max-width: 700px) {
+    .form-box{
+        padding: 10px !important;
+        padding-bottom: 30px !important;
+    }
+  }

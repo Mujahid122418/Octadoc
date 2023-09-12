@@ -15,6 +15,7 @@ import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 import { useNavigate } from "react-router-dom";
 import { getMeFun } from "../../../redux/Auth/AuthAPI";
 import { AppDispatch } from "../../../redux/Store";
+import { Bounce } from 'react-reveal';
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -51,6 +52,8 @@ const Header = () => {
     event.preventDefault();
     dispatch(addTemplateModelFun(false));
   };
+
+
   const Logout = () => {
     try {
       localStorage.removeItem("token");
@@ -62,11 +65,13 @@ const Header = () => {
   };
 
   return (
+    <Bounce top>
     <div className="header">
-      <div className=" d-flex align-items-center justify-content-end">
+      <div className="d-flex align-items-center justify-content-end">
         <IconButton>
           <HelpOutlineIcon />
         </IconButton>
+        
         {window.location.pathname == "/" && (
           <Button2 name="New Templates " onClick={handleClickBtn} />
         )}
@@ -81,6 +86,7 @@ const Header = () => {
         >
           <ArrowDropDownRoundedIcon />
         </IconButton>
+        
         <Menu
           id="demo-positioned-menu"
           aria-labelledby="demo-positioned-button"
@@ -107,10 +113,18 @@ const Header = () => {
           <Link to="/setting">
             <MenuItem onClick={handleClose}>Setting</MenuItem>
           </Link>
+          <Link to="/contact">
+            <MenuItem onClick={handleClose}>Contact</MenuItem>
+          </Link>
+          <Link to="/payment">
+            <MenuItem onClick={handleClose}>Payment Method</MenuItem>
+          </Link>
           <MenuItem onClick={Logout}>Logout</MenuItem>
         </Menu>
+
       </div>
     </div>
+    </Bounce>
   );
 };
 

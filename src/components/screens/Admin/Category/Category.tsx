@@ -5,13 +5,14 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
+
 import TableRow from "@mui/material/TableRow";
 import type { RootState } from "../../../../redux/Store";
 import { AppDispatch } from "../../../../redux/Store";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import { Bounce } from 'react-reveal';
 
 import Button2 from "../../Button2/Button2";
 import {
@@ -21,13 +22,6 @@ import {
   updatecategory,
 } from "../../../../redux/Admin/CategoryAPI";
 
-interface Column {
-  id: string;
-  label: string;
-  minWidth?: number;
-  align?: "right" | "left" | "center";
-  format?: (value: number) => string;
-}
 interface CategoryState {
   selectedcategory: {
     _id: string; // Make sure to use the correct data type of _id
@@ -35,10 +29,7 @@ interface CategoryState {
   };
   // ... other state properties
 }
-const columns: readonly Column[] = [
-  { id: "category", label: "category", minWidth: 200 },
-  { id: "Edit/Delete", label: "Action", minWidth: 170 },
-];
+
 
 export default function Category() {
   const dispatch = useDispatch<AppDispatch>();
@@ -50,23 +41,14 @@ export default function Category() {
     category: category,
   };
 
-  const [page, setPage] = React.useState(0);
+  
   const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
   let dataa = {
     pagesize: rowsPerPage.toString(),
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   useEffect(() => {
     dispatch(getcategories(dataa));
@@ -104,13 +86,16 @@ export default function Category() {
           width: "100%",
         }}
       >
-        <div className="">
+        <div className="w-75">
+          <Bounce left>
           <h3 className="ms-5 heading">Categories</h3>
+          </Bounce>
           <Paper sx={{ width: "100%", overflow: "hidden", margin: "0 auto" }}>
             {selectedcategory ? (
               <div className="row p-3 user-list-row">
                 <div className="col-12 search-h">
                   <input
+                    className="me-2"
                     type="text"
                     value={category}
                     onChange={(e) => setcategory(e.target.value)}
@@ -123,6 +108,7 @@ export default function Category() {
               <div className="row p-3 user-list-row">
                 <div className="col-12 search-h">
                   <input
+                    className="me-2"
                     type="text"
                     value={category}
                     onChange={(e) => setcategory(e.target.value)}
@@ -132,64 +118,37 @@ export default function Category() {
                 </div>
               </div>
             )}
-            <TableContainer>
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead className="table-head">
-                  <TableRow sx={{ background: "transparent" }}>
-                    {columns.length > 0 &&
-                      columns.map((column) => (
-                        <TableCell
-                          sx={{ background: "transparent", color: "white" }}
-                          key={column.id}
-                          align={column.align}
-                          style={{ minWidth: column.minWidth }}
-                        >
-                          {column.label}
-                        </TableCell>
-                      ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {allcategory.length > 0 &&
+         
+        
+              {allcategory.length > 0 &&
                     allcategory.map((category) => (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={category?._id}
-                      >
-                        <TableCell align="left">{category.category}</TableCell>
-                        <TableCell align="left" className="d-flex">
-                          <Button2
-                            onClick={() => handleClick(category)}
-                            name="Edit"
+                    <Bounce>
+                      <span className="bandd d-flex "  key={category?._id} >
+                        <div className="d-flex align-items-center">
+                        {category.category}
+                        
+                        
+                        <div className="actionn">
+                          <EditRoundedIcon
+                          className="edi"
+                          onClick={() => handleClick(category)}
                           />
-                          <button
-                            className="btn btn-danger p-1"
+                          </div>
+                          <div className="actionn">
+                            <DeleteIcon 
+                            className="del"
                             onClick={() =>
                               dispatch(deleteCategory(category?._id)).then(() =>
                                 dispatch(getcategories(dataa))
                               )
                             }
-                          >
-                            <DeleteIcon />
-                          </button>
-                        </TableCell>
-                      </TableRow>
+                            />
+                          </div>
+                        </div>
+                      </span>
+                      </Bounce>
                     ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              className="table-fot"
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={allcategory.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            
           </Paper>
         </div>
       </TableContainer>
