@@ -37,7 +37,7 @@ import {
 import { toast } from "react-toastify";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+
 import Stack from "@mui/material/Stack";
 import { create_UUID } from "../../../utils/UUID";
 import EditAnswerBar from "./Answerpart/EditAnswerbar";
@@ -70,8 +70,8 @@ export default function EditQuestionBar() {
   const createUUID = (): string => {
     return create_UUID();
   };
-  // handel states start
 
+  // handel states start
   const [qna, setQna] = useState<any>([
     {
       question: "",
@@ -86,7 +86,6 @@ export default function EditQuestionBar() {
   const [newAnswer, setNewAnswer] = useState<string>("");
 
   const [QuestionType, setQuestionType] = useState("");
-
   const UpdateQuestionsArray = (e: any) => {
     // const updatedQna = [...qna];
     // updatedQna.push({
@@ -107,20 +106,14 @@ export default function EditQuestionBar() {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
   const handleClickSaveBtn = () => {
     let template_id =
       window.location.href.split("/questions/edit/")[1] ||
       window.location.href.split("/questions/")[1];
     if (!newQuestion) {
       toast.error("Please enter Question");
-    }
-    // else if (
-    //   questionType === "Single Choice" ||
-    //   questionType === "Multiple Choice"
-    // ) {
-    //   toast.error("The answer field is required.");
-    // }
-    else {
+    } else {
       try {
         let data = {
           id: EditSelectedQuestion?._id,
@@ -132,13 +125,14 @@ export default function EditQuestionBar() {
         dispatch(UpdateQuestionFunAPI(data))
           .unwrap()
           .then((response) => {
-            console.log("respoce", response);
             dispatch(getQuestion(data));
           })
           .catch((error) => {
             toast.error(error);
           });
-      } catch (error) {}
+      } catch (error) {
+        console.log("err", error);
+      }
     }
   };
 
@@ -171,14 +165,17 @@ export default function EditQuestionBar() {
       event.stopPropagation();
     }
   };
+
   // handel qdit question
 
   useEffect(() => {
     if (Object.keys(EditSelectedQuestion).length > 0) {
-      dispatch(getSingleQuestionFun(EditSelectedQuestion?._id));
-      // setNewQuestion(EditSelectedQuestion?.question);
-      // setNewAnswer(EditSelectedQuestion?.answerD?.answer);
-      // setQuestionType(EditSelectedQuestion?.question_type);
+      let data = {
+        id: EditSelectedQuestion?._id,
+        page: 1,
+        pageSize: 20,
+      };
+      dispatch(getSingleQuestionFun(data));
     }
   }, [EditSelectedQuestion]);
 
@@ -232,8 +229,7 @@ export default function EditQuestionBar() {
         <label htmlFor="">Question</label>
         <input
           type="text"
-          placeholder="What do you want to ask? "
-          // onClick={handleInputClick}
+          placeholder="What do you want to ask?"
           value={newQuestion}
           onChange={(e) => setNewQuestion(e.target.value)}
         />
@@ -315,7 +311,7 @@ export default function EditQuestionBar() {
             <div
               style={{
                 // padding: 5,
-                border: "1px black solid",
+                // border: "1px black solid",
                 marginTop: 5,
                 borderRadius: 8,
               }}

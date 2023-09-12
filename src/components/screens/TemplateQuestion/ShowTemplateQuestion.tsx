@@ -172,31 +172,33 @@ const ShowTemplateQuestion = () => {
               sx={{ borderRight: 1, border: "none", minWidth: "250px" }}
             >
               {sectionData?.length ? (
-                sectionData?.map((item: any, index: any) => (
-                  <Tab
-                    key={item._id}
-                    label={item?.name}
-                    {...a11yProps(item._id)}
-                    id={item._id}
-                    value={item._id}
-                    sx={{
-                      marginTop: "20px",
-                      borderRadius: "10px",
-                      backgroundColor: tabscolor,
-                      width: "90%",
-                      "&.Mui-selected": {
-                        backgroundColor: activetab,
-                        width: "100%",
-                        color: "white",
-                        borderBottomColor: "#9d62f5",
-                        borderBottomWidth: "2px",
-                        borderRadius: "0px",
-                        clipPath:
-                          "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
-                      },
-                    }}
-                  />
-                ))
+                sectionData
+                  ?.filter((item) => item?.tempplate_id == tem_id)
+                  .map((item: any, index: any) => (
+                    <Tab
+                      key={item._id}
+                      label={item?.name}
+                      {...a11yProps(item._id)}
+                      id={item._id}
+                      value={item._id}
+                      sx={{
+                        marginTop: "20px",
+                        borderRadius: "10px",
+                        backgroundColor: tabscolor,
+                        width: "90%",
+                        "&.Mui-selected": {
+                          backgroundColor: activetab,
+                          width: "100%",
+                          color: "white",
+                          borderBottomColor: "#9d62f5",
+                          borderBottomWidth: "2px",
+                          borderRadius: "0px",
+                          clipPath:
+                            "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
+                        },
+                      }}
+                    />
+                  ))
               ) : (
                 <p>you did not have any tabs</p>
               )}
@@ -254,8 +256,6 @@ const ShowTemplateQuestion = () => {
                     <ul className="mt-4 mb-4">
                       {getQuestions?.filter(
                         (item: any) => item?.template_id === tem_id
-                        // &&
-                        // item.section_id === activeSection
                       ).length > 0 ? (
                         getQuestions
                           ?.filter(
@@ -295,7 +295,6 @@ const ShowTemplateQuestion = () => {
                                       >
                                         <EditIcon />
                                       </IconButton>
-
                                       <IconButton
                                         aria-label="delete"
                                         onClick={() =>
@@ -466,7 +465,11 @@ const ShowTemplateQuestion = () => {
                                         </div>
                                       );
                                     })
-                                ) : null}
+                                ) : (
+                                  <p style={{ textAlign: "center" }}>
+                                    No Record Found 1
+                                  </p>
+                                )}
                               </div>
                             );
                           })
@@ -477,7 +480,7 @@ const ShowTemplateQuestion = () => {
                   </div>
                   <div className="question-footer">
                     <Button2
-                      name="Add Question  "
+                      name="Add Question"
                       onClick={AddQuestionModel}
                       icon={<HelpCenterIcon />}
                     />
@@ -492,13 +495,6 @@ const ShowTemplateQuestion = () => {
                   </div>
                 </div>
               </div>
-              {/* </TabPanel> */}
-              {/* <TabPanel value={value} index={1}>
-                Item Two
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                Item Three
-              </TabPanel> */}
             </div>
           </Box>
         </div>

@@ -60,14 +60,17 @@ const Header = () => {
       console.log("error", error);
     }
   };
-
+  let checkPath =
+    window.location.pathname === "/" ||
+    window.location.pathname === "/template" ||
+    window.location.pathname === "/community";
   return (
     <div className="header">
       <div className=" d-flex align-items-center justify-content-end">
         <IconButton>
           <HelpOutlineIcon />
         </IconButton>
-        {window.location.pathname == "/" && (
+        {checkPath && (
           <Button2 name="New Templates " onClick={handleClickBtn} />
         )}
         <Avatar>A</Avatar>

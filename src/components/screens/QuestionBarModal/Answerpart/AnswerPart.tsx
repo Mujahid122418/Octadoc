@@ -73,6 +73,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     EditSelectedQuestion,
     parent_id,
   } = useSelector((state: RootState) => state?.templateQuestion);
+  const { activeSection } = useSelector((state: RootState) => state?.section);
 
   useEffect(() => {
     // let data =
@@ -129,6 +130,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       answer: newAnswer,
       question_type: QuestionType,
       parent_id: "",
+      section_id: activeSection,
     };
 
     dispatch(addQuestionFunAPI(data))

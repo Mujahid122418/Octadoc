@@ -69,7 +69,7 @@ export const getSingleQuestionFun = createAsyncThunk(
     try {
       const response = await axios.get(
         Baseurl +
-          `/question/singleQueston/${data}?page=${data.page}&pageSize=${data.pageSize}`
+          `/question/singleQueston/${data?.id}?page=${data.page}&pageSize=${data.pageSize}`
       );
 
       return response.data?.data;

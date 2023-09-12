@@ -69,15 +69,27 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
           <IconButton
             className="action-btn"
             disabled={item?.user_id === user?._id ? false : true}
-            sx={{opacity: item?.user_id === user?._id ? 1 : 0.8}}
+            sx={{ opacity: item?.user_id === user?._id ? 1 : 0.8 }}
             aria-label="delete"
             onClick={() => updateTemplate(item)}
           >
             <EditIcon />
           </IconButton>
+
           <IconButton
-            disabled={item?.user_id === user?._id ? false : true}
-            sx={{opacity: item?.user_id === user?._id ? 1 : 0.8}}
+            disabled={
+              item?.user_id === user?._id &&
+              window.location.pathname === "/template"
+                ? false
+                : true
+            }
+            sx={{
+              opacity:
+                item?.user_id === user?._id &&
+                window.location.pathname === "/template"
+                  ? 1
+                  : 0.8,
+            }}
             aria-label="delete"
             className="action-btn"
             onClick={() => DeleteTemplate(item?._id)}

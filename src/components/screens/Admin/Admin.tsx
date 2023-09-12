@@ -24,11 +24,13 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
+  { id: "#", label: "#", minWidth: 40 },
   { id: "_id", label: "ID", minWidth: 170 },
   { id: "name", label: "Name", minWidth: 170 },
   { id: "email", label: "Email", minWidth: 170 },
   { id: "action", label: "action", minWidth: 100 },
   { id: "status", label: "status", minWidth: 100 },
+  { id: "created at", label: "Created At", minWidth: 100 },
 ];
 
 export default function Admin() {
@@ -104,11 +106,13 @@ export default function Admin() {
           </TableHead>
           <TableBody>
             {allUsers.length > 0 &&
-              allUsers?.map((row) => (
+              allUsers?.map((row, i) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                  <TableCell align="left">{++i}</TableCell>
                   <TableCell align="left">{row._id}</TableCell>
                   <TableCell align="left">{row.name}</TableCell>
                   <TableCell align="left">{row.email}</TableCell>
+
                   <TableCell align="left">
                     <div className="position-relative">
                       <select
@@ -127,6 +131,7 @@ export default function Admin() {
                       <ArrowDropDownIcon className="mui-select-arrow" />
                     </div>
                   </TableCell>
+
                   <TableCell align="left">
                     <div className="position-relative">
                       <select
@@ -144,6 +149,7 @@ export default function Admin() {
                       <ArrowDropDownIcon className="mui-select-arrow" />
                     </div>
                   </TableCell>
+                  <TableCell align="left">{row.createdAt}</TableCell>
                 </TableRow>
               ))}
           </TableBody>

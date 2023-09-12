@@ -18,7 +18,7 @@ const template = require("./routes/template");
 const answer = require("./routes/answer");
 const category = require("./routes/category");
 const followup = require("./routes/followup");
-
+const stripe = require("./routes/subscription");
 const errorHandler = require("./utils/errorMiddleware");
 app.use(cors());
 app.use(errorHandler);
@@ -34,7 +34,7 @@ app.use("/template", template);
 app.use("/answer", answer);
 app.use("/category", category);
 app.use("/followup", followup);
-
+app.use("/stripe", stripe);
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   next();

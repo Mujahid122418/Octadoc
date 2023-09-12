@@ -160,16 +160,14 @@ exports.singleQuestion = async (req, res) => {
       .lean()
       .skip(skip)
       .limit(pageSize);
-    console.log("data1", data1?._id);
+
     let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
-    console.log("ans ", ans);
-    const data =
-      (await Object.keys(data1).length) > 0 &&
-      console.log("objA._id?.toString()", data1?._id?.toString());
+
+    // const data = (await Object.keys(data1).length) > 0;
+
     const matchingObjB = ans?.find(
       (objB) => objB?.question_id.toString() == data1?._id?.toString()
     );
-    console.log("matchingObjB", matchingObjB);
 
     let {
       follow_up_question_group_id,
@@ -181,7 +179,6 @@ exports.singleQuestion = async (req, res) => {
       question,
       question_type,
     } = matchingObjB;
-
     let answerD = {
       follow_up_question_group_id,
       text,
@@ -201,7 +198,6 @@ exports.singleQuestion = async (req, res) => {
     };
     let v = { ...objA, answerD };
 
-    // console.log("data v", v);
     res.json({
       data: v,
       currentPage: page,
