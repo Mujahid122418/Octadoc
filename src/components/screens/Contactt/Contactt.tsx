@@ -1,30 +1,42 @@
-import React, { useState } from 'react'
-import './Contactt.css'
-import Button2 from "../Button2/Button2";
+import React, { useState, useRef } from 'react';
+import './Contactt.css';
+import Button2 from '../Button2/Button2';
 import { Bounce } from 'react-reveal';
+import emailjs from '@emailjs/browser';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Contactt = () => {
+  const [sendmail, setsendmail] = useState<any>({});
 
-  const [loginn , setloginn] =useState<any>({});
+  const loginHandler = (e: any) => {
+    setsendmail({ ...sendmail, [e.target.name]: e.target.value });
+  };
 
-  const loginHandler = (e:any) => {
-      setloginn({...loginn , [e.target.name] : e.target.value})
-  }
+  const formRef = useRef<any>(null);// Create a ref for the form element
 
+  console.log("ref",formRef.current);
+  
 
-  const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickBtn = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const config = {
-      SecureToken : 'f8d28859-83e4-45a5-963f-54df7c3442c7',
-      To : 'asadmian503@gmail.com',
-      From : loginn.email,
-      Subject : "This is the subject",
-      Body : loginn.text
-    };
-    // if(loginn.email){
-
-    // }
-    
+    // Pass the form element using the ref
+    emailjs
+      .sendForm('service_ibq1b1i', 'template_9ivg4da',formRef.current, 'KGKjRSyJd1IJQhcXg')
+      .then(
+        (result) => {
+          console.log(result.text);
+          toast.success('Email sent');
+          setsendmail({
+            name: '',
+            email: '',
+            text: '',
+          });
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
   };
 
   return (
@@ -32,64 +44,58 @@ const Contactt = () => {
       <div className="container mb-5">
         <div className="form-box">
           <Bounce left>
-          <h4 className="mt-4 ms-3">Contact Information</h4>
+            <h4 className="mt-4 ms-3">Contact Information</h4>
           </Bounce>
           <Bounce bottom>
-          <div className="contact-box">
-            <div className="row   d-flex justify-content-center">
-              <div className="col-lg-6 col-md-8 col-10 p-0">
-                <form className="bg-white w-100">
-                  
-                  <div className="form-group">
-                    <input
-                      type="Text"
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Enter Your Name"
-                      name='name'
-                      value={loginn.name}
-                      onChange={loginHandler}
-                   
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      placeholder="Email.."
-                      name='email'
-                      value={loginn.email}
-                      onChange={loginHandler}
-                      
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <textarea  
-                      className="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      placeholder="Type Your message Here..."
-                      rows={8}
-                      name='text'
-                      onChange={loginHandler}
-                      value={loginn.text}
-                    />
-                  </div>
-
-                  <Button2 name="Send" onClick={handleClickBtn} />
-                </form>
+            <div className="contact-box">
+              <div className="row d-flex justify-content-center">
+                <div className="col-lg-6 col-md-8 col-10 p-0">
+                  <form className="bg-white w-100" ref={formRef}> {/* Attach the ref to the form */}
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        placeholder="Enter Your Name"
+                        name="name"
+                        value={sendmail.name}
+                        onChange={loginHandler}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="email"
+                        className="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        placeholder="Email.."
+                        name="email"
+                        value={sendmail.email}
+                        onChange={loginHandler}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <textarea
+                        className="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        placeholder="Type Your message Here..."
+                        rows={8}
+                        name="text"
+                        onChange={loginHandler}
+                        value={sendmail.text}
+                      />
+                    </div>
+                    <Button2 name="Send" onClick={handleClickBtn} />
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
           </Bounce>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Contactt
+export default Contactt;
