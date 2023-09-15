@@ -86,7 +86,7 @@ const EditTemplateQuestion = () => {
             <div className="question-body">
               <ul className="mt-4 mb-4">
                 {/* ==== one question/ans complete==== */}
-                {getQuestions.length > 0 &&
+                {getQuestions?.length > 0 &&
                 getQuestions?.filter(
                   (item: any) => item?.template_id === tem_id
                 ).length > 0 ? (

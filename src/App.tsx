@@ -15,6 +15,8 @@ import ForgotPass from "./components/screens/Auth/ForgotPass";
 import Admin from "./components/screens/Admin/Admin";
 import OTP from "./components/screens/Auth/OTP";
 import Category from "./components/screens/Admin/Category/Category";
+import Contactt from "./components/screens/Contactt/Contactt";
+import Paymentss from "./components/screens/Paymentss/Paymentss";
 
 function App() {
   return (
@@ -106,6 +108,28 @@ function App() {
               <Header />
               <SideBar />
               <Category />
+            </div>
+          }
+        />
+
+        <Route
+          path="/payment"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <Paymentss />
+            </div>
+          }
+        />
+
+        <Route
+          path="/contact"
+          element={
+            <div className="position-relative">
+              <Header />
+              <SideBar />
+              <Contactt />
             </div>
           }
         />

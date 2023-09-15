@@ -57,7 +57,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      {qna.length > 0 &&
+      {qna?.length > 0 &&
         qna?.map((item, questionIndex) => (
           <div key={item.index}>
             <input
@@ -90,7 +90,7 @@ const App: React.FC = () => {
               Add Follow-up
             </button>
             <div>
-              {item?.followUp.length > 0 &&
+              {item?.followUp?.length > 0 &&
                 item?.followUp?.map((followUp, followUpIndex) => (
                   <div key={followUp.index}>
                     <input

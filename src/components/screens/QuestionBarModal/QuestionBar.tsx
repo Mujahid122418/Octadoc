@@ -113,6 +113,7 @@ export default function QuestionBar() {
           template_id: template_id,
           section_id: activeSection,
           question_type: questionType,
+          parent_id: "",
         };
 
         dispatch(addQuestionFunAPI(data))

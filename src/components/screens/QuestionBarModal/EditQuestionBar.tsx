@@ -66,6 +66,7 @@ export default function EditQuestionBar() {
     getAnswer,
     parent_id,
   } = useSelector((state: RootState) => state?.templateQuestion);
+  console.log("EditSelectedQuestion", EditSelectedQuestion);
 
   const createUUID = (): string => {
     return create_UUID();
@@ -196,14 +197,6 @@ export default function EditQuestionBar() {
   }, []);
   // get all answers end
 
-  // const EditAnsewer = (e: any) => {
-  //   let ans = {
-  //     id: e.ans_id,
-  //     ans: e.text,
-  //   };
-  //   dispatch(EditAnswerFun(ans));
-  //   dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
-  // };
   const DeleteAns = async (e: any) => {
     try {
       dispatch(DeleteAnswer(e)).then(() => {

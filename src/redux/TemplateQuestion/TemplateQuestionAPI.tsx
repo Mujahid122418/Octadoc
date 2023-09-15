@@ -64,8 +64,6 @@ export const getAnswers = createAsyncThunk(
 export const getSingleQuestionFun = createAsyncThunk(
   "question/singleQueston",
   async (data: any) => {
-    console.log("edit datta", data);
-
     try {
       const response = await axios.get(
         Baseurl +

@@ -8,6 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CircularProgress from '@mui/material/CircularProgress';
 
+import { Bounce } from 'react-reveal';
+
 export default function Login() {
   const navigate = useNavigate(); // Use useNavigate hook to access
   const dispatch = useDispatch<AppDispatch>();
@@ -79,6 +81,7 @@ export default function Login() {
   };
   return (
     <div className="login-Container" style={{ height: window.innerHeight }}>
+       <Bounce top>
       <div className="login-wrap">
         <div className="login-html">
           <input
@@ -222,7 +225,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-      </div>
+      </div></Bounce>
     </div>
   );
 }

@@ -67,6 +67,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
     EditAnswer,
     EditSelectedQuestion,
     parent_id,
+    getSingleQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
   // console.log("EditSelectedQuestion", EditSelectedQuestion);
 
@@ -89,8 +90,6 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       answer: [{ answer: newAnswer }],
       template_id: template_id,
     };
-
-    console.log("save updated ans", data);
 
     dispatch(addAnswerFunAPI(data)).then(() => {
       let d1 = {
@@ -156,6 +155,15 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       setNewAnswer(EditAnswer?.ans);
     }
   }, [EditAnswer]);
+  const addFollowUpQuestion = () => {
+    dispatch(editQuestionModelFun(!editQuestionModel));
+    dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
+
+    // let data = {
+    //   parent_id: getSingleQuestion._id,
+    // };
+    // console.log("call", getSingleQuestion);
+  };
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
@@ -218,8 +226,9 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
           <Button2
             name="+ Add Follow Up Question"
             onClick={() => {
+              addFollowUpQuestion();
               // addQuestionFollowupBtn();
-              UpdateQuestionsArray("answer");
+              // UpdateQuestionsArray("answer");
             }}
             icon={<AddIcon />}
           />

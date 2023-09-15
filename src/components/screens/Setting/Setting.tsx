@@ -9,6 +9,7 @@ import type { RootState } from "../../../redux/Store";
 
 import { updateProfile } from "../../../redux/Auth/AuthAPI";
 import { toast } from "react-toastify";
+import { Bounce } from 'react-reveal';
 
 const Setting = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -71,13 +72,19 @@ const Setting = () => {
     <div>
       <div className="container mb-5">
         <div className="form-box">
+          <Bounce left>
           <h4>Profile Photo</h4>
+          </Bounce>
+          <Bounce right>
           <div className="profile-box">
             <Avatar className="avatar">p</Avatar>
             <button className="btn btn-update ms-4">Update Photo</button>
           </div>
-
+          </Bounce>
+          <Bounce left>
           <h4 className="mt-4">Contact Information</h4>
+          </Bounce>
+          <Bounce bottom>
           <div className="contact-box">
             <div className="row   d-flex justify-content-center">
               <div className="col-lg-6 col-md-8 col-10">
@@ -201,6 +208,7 @@ const Setting = () => {
               </div>
             </div>
           </div>
+          </Bounce>
         </div>
       </div>
     </div>

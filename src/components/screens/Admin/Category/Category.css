@@ -10,7 +10,7 @@
       justify-content: center;
     }
     .search-h input{
-      width: 300px !important;
+      /* width: 300px !important; */
       border: 2px solid var(--color);
       border-radius: 10px;
       padding: 7px 10px !important;
@@ -18,24 +18,34 @@
     .search-h input::placeholder {
       color: var(--color);
     }
-    .table-head{
-        background: var(--theme-color) !important ;
-    }
+
     .MuiToolbar-gutters {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
     }
-    .table-fot{
-        background:var(--theme-color) !important ;
-        color: var(--white) !important;
+
+    .bandd{
+      margin: 8px 8px;
+      padding: 5px 10px !important;
+      background: var(--color) !important;
+      color: var(--white) !important;
+      border-radius:30px !important; 
+      display: inline-block !important;
     }
-      /* Target the pagination buttons specifically */
-      .table-fot .MuiTablePagination-actions button {
-        color: white !important; /* Color for the arrow buttons */
-    
-      }
-    
-      .table-fot .MuiTablePagination-selectIcon svg {
-        fill: white !important; /* Color for the multiselect arrow icons */
-      }
+    .actionn{
+      background-color: var(--white);
+      color: var(--color);
+      width: 20px !important;
+      height: 20px !important;
+      border-radius: 20px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center; 
+      margin-left: 5px !important;
+      
+    }
+    .del , .edi{
+      font-size: 18px !important;
+      cursor: pointer !important;
+    }
