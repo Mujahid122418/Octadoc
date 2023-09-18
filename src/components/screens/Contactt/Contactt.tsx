@@ -1,13 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Contactt.css'
 import Button2 from "../Button2/Button2";
 import { Bounce } from 'react-reveal';
 
 const Contactt = () => {
 
+  const [loginn , setloginn] =useState<any>({});
+
+  const loginHandler = (e:any) => {
+      setloginn({...loginn , [e.target.name] : e.target.value})
+  }
+
+
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-   
+    const config = {
+      SecureToken : 'f8d28859-83e4-45a5-963f-54df7c3442c7',
+      To : 'asadmian503@gmail.com',
+      From : loginn.email,
+      Subject : "This is the subject",
+      Body : loginn.text
+    };
+    // if(loginn.email){
+
+    // }
+    
   };
 
   return (
@@ -29,6 +46,9 @@ const Contactt = () => {
                       className="form-control"
                       id="exampleInputPassword1"
                       placeholder="Enter Your Name"
+                      name='name'
+                      value={loginn.name}
+                      onChange={loginHandler}
                    
                     />
                   </div>
@@ -40,7 +60,9 @@ const Contactt = () => {
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
                       placeholder="Email.."
-
+                      name='email'
+                      value={loginn.email}
+                      onChange={loginHandler}
                       
                     />
                   </div>
@@ -52,6 +74,9 @@ const Contactt = () => {
                       aria-describedby="emailHelp"
                       placeholder="Type Your message Here..."
                       rows={8}
+                      name='text'
+                      onChange={loginHandler}
+                      value={loginn.text}
                     />
                   </div>
 

@@ -1,0 +1,49 @@
+.payment-card_pay{
+    border: 2px solid var(--color);
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 30px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.payment-card_pay:hover{
+    margin-top: 10px !important;
+    box-shadow: 0 0 10px rgb(160, 75, 127);
+}
+.card-head_pay{
+    color: white !important;
+    background-color: var(--color);
+    padding: 15px;
+}
+.card-bodyy_pay{
+    padding: 15px;
+    background-color: rgb(241, 241, 241);
+}
+.prise_pay{
+
+    width: 270px !important;
+    margin-top: 20px;
+    font-size: 24px;
+    background-color: var(--color);
+    color: white;
+    padding: 6px 0px;
+    clip-path: polygon(89% 0, 100% 50%, 90% 100%, 0% 100%, 7% 49%, 0% 0%);
+}
+.card-bodyy_pay ul{
+    margin-top: 25px ;
+    padding: 0px;
+}
+.card-bodyy_pay ul li{
+    margin: 15px 0px;
+    display: flex !important;
+    align-items: center;
+}
+.card-bodyy_pay ul li p{
+    margin-bottom: 0px !important;
+}
+.lead{
+    font-weight: 600;
+}
+.ion_pay{
+    margin-right: 13px !important;
+}

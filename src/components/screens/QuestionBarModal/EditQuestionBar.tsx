@@ -66,7 +66,6 @@ export default function EditQuestionBar() {
     getAnswer,
     parent_id,
   } = useSelector((state: RootState) => state?.templateQuestion);
-  console.log("EditSelectedQuestion", EditSelectedQuestion);
 
   const createUUID = (): string => {
     return create_UUID();
@@ -176,6 +175,7 @@ export default function EditQuestionBar() {
         page: 1,
         pageSize: 20,
       };
+
       dispatch(getSingleQuestionFun(data));
     }
   }, [EditSelectedQuestion]);
@@ -221,6 +221,7 @@ export default function EditQuestionBar() {
         <p>Section Name</p>
         <label htmlFor="">Question</label>
         <input
+          // disabled
           type="text"
           placeholder="What do you want to ask?"
           value={newQuestion}
@@ -275,6 +276,7 @@ export default function EditQuestionBar() {
           </select>
         </div>
         <input
+          disabled
           type="text"
           className="mt-2 ms-0"
           placeholder="What do you want to ask?"
@@ -392,6 +394,7 @@ export default function EditQuestionBar() {
         newAnswer={newAnswer}
         setNewAnswer={setNewAnswer}
         newQuestion={newQuestion}
+        setNewQuestion={setNewQuestion}
         qna={qna}
         setQna={setQna}
         UpdateQuestionsArray={UpdateQuestionsArray}

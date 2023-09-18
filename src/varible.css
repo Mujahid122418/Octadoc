@@ -15,7 +15,7 @@
     --gray:#6A6F8C;
     /* --rgba : rgba(201, 152, 245, 0.2); */
     --rgba : #F2EBEF;
-    --box-shadow: 0 0 5px rgba(96, 73, 205, 1);
+    --box-shadow: 0 0 5px rgb(160, 75, 127);
     --font: 'Poppins', sans-serif;
     --lower-weight: 400 ; 
     --normal-weight:500 ;

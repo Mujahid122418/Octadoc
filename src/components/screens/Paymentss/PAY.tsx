@@ -4,8 +4,6 @@ import { Baseurl } from "../../../utils/BaseUrl";
 import axios from "axios";
 
 let API_Key = process.env.REACT_APP_API_KEY;
-// require("dotenv").config();
-console.log("process.env.publishable_API_Key", API_Key);
 
 const TakeMoney: React.FC = () => {
   const onToken = async (token: Token) => {

@@ -64,15 +64,18 @@ export const getAnswers = createAsyncThunk(
 export const getSingleQuestionFun = createAsyncThunk(
   "question/singleQueston",
   async (data: any) => {
+    console.log("data call", data);
+
     try {
       const response = await axios.get(
         Baseurl +
           `/question/singleQueston/${data?.id}?page=${data.page}&pageSize=${data.pageSize}`
       );
+      console.log(" response api", response.data?.data);
 
       return response.data?.data;
     } catch (error) {
-      console.log(error);
+      console.log("error in api", error);
     }
   }
 );

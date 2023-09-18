@@ -72,7 +72,11 @@ const ShowTemplateQuestion = () => {
     getQuestions,
     editQuestionModel,
     getAnswer,
+    EditSelectedQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
+
+  // console.log("EditSelectedQuestion", EditSelectedQuestion);
+
   const { section: sectionData, activeSection } = useSelector(
     (state: RootState) => state?.section
   );
@@ -117,10 +121,6 @@ const ShowTemplateQuestion = () => {
     dispatch(activeSectionFun(newValue));
   };
 
-  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    // setActiveTab(newValue);
-  };
-
   // ====tabs end======
 
   const updateTemplateQuestion = async (e: any) => {
@@ -142,7 +142,7 @@ const ShowTemplateQuestion = () => {
         console.log("delete question", e);
       });
   };
-  // ?.filter((item: any) => item.section_id === activeSection))
+
   const SectionDetails = section?.map((item, index) => {
     return (
       <>
@@ -465,11 +465,7 @@ const ShowTemplateQuestion = () => {
                                         </div>
                                       );
                                     })
-                                ) : (
-                                  <p style={{ textAlign: "center" }}>
-                                    No Record Found 1
-                                  </p>
-                                )}
+                                ) : null}
                               </div>
                             );
                           })
@@ -489,7 +485,6 @@ const ShowTemplateQuestion = () => {
                       onClick={() => AddSection(item)}
                       icon={<HighlightAltIcon />}
                     />
-
                     <QuestionBar />
                     <EditQuestionBar />
                   </div>
