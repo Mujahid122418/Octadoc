@@ -42,6 +42,7 @@ const SectionModal: React.FC<ModelProps> = ({
     let d1 = {
       page: 1,
       pageSize: 20,
+      tempplate_id: template_id,
     };
     dispatch(addSection(data)).then(() => {
       dispatch(getSection(d1));

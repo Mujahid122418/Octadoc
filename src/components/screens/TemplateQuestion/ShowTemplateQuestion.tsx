@@ -35,7 +35,7 @@ import EditQuestionBar, {
 
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
+
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import AddIcon from "@mui/icons-material/Add";
@@ -86,6 +86,7 @@ const ShowTemplateQuestion = () => {
     let data = {
       page: 1,
       pageSize: 20,
+      tempplate_id: tem_id,
     };
     dispatch(getQuestion(data));
     dispatch(getAnswers(data));
@@ -172,33 +173,31 @@ const ShowTemplateQuestion = () => {
               sx={{ borderRight: 1, border: "none", minWidth: "250px" }}
             >
               {sectionData?.length ? (
-                sectionData
-                  ?.filter((item) => item?.tempplate_id == tem_id)
-                  .map((item: any, index: any) => (
-                    <Tab
-                      key={item._id}
-                      label={item?.name}
-                      {...a11yProps(item._id)}
-                      id={item._id}
-                      value={item._id}
-                      sx={{
-                        marginTop: "20px",
-                        borderRadius: "10px",
-                        backgroundColor: tabscolor,
-                        width: "90%",
-                        "&.Mui-selected": {
-                          backgroundColor: activetab,
-                          width: "100%",
-                          color: "white",
-                          borderBottomColor: "#9d62f5",
-                          borderBottomWidth: "2px",
-                          borderRadius: "0px",
-                          clipPath:
-                            "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
-                        },
-                      }}
-                    />
-                  ))
+                sectionData.map((item: any, index: any) => (
+                  <Tab
+                    key={item._id}
+                    label={item?.name}
+                    {...a11yProps(item._id)}
+                    id={item._id}
+                    value={item._id}
+                    sx={{
+                      marginTop: "20px",
+                      borderRadius: "10px",
+                      backgroundColor: tabscolor,
+                      width: "90%",
+                      "&.Mui-selected": {
+                        backgroundColor: activetab,
+                        width: "100%",
+                        color: "white",
+                        borderBottomColor: "#9d62f5",
+                        borderBottomWidth: "2px",
+                        borderRadius: "0px",
+                        clipPath:
+                          "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
+                      },
+                    }}
+                  />
+                ))
               ) : (
                 <p>you did not have any tabs</p>
               )}
