@@ -95,7 +95,6 @@ const ShowTemplateQuestion = () => {
   };
 
   // model state end
-  // console.log("EditSelectedQuestion", EditSelectedQuestion);
 
   const {
     section: sectionData,
