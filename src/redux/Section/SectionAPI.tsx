@@ -6,10 +6,18 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const getSection = createAsyncThunk(
   "section/getSection",
   async (data: any) => {
+    console.log("getSection ===> ", data);
+
     try {
-      const response = await axios.get(Baseurl + "/section/section");
+      const response = await axios.get(
+        Baseurl +
+          `/section/section/?page=${data.page}&pageSize=${data.pageSize}&template_id=${data.tempplate_id}`
+      );
+      console.log("getSection  get===> ", response.data?.data);
       return response.data?.data;
     } catch (error) {
+      console.log("section  error", error);
+
       console.log(error);
     }
   }
@@ -18,10 +26,12 @@ export const getSection = createAsyncThunk(
 export const addSection = createAsyncThunk(
   "section/addSection",
   async (data: any) => {
-    console.log("send data", data);
+    console.log("send data section", data);
 
     try {
       const response = await axios.post(Baseurl + "/section/section", data);
+      console.log("response.data?.data section", response.data?.data);
+
       return response.data?.data;
     } catch (error) {
       console.log(error);

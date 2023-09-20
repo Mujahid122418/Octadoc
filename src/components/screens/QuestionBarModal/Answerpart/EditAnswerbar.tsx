@@ -17,6 +17,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Button2 from "../../Button2/Button2";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ParentId_Fun,
   editQuestionFollowupModelFun,
   editQuestionModelFun,
 } from "../../../../redux/TemplateQuestion/TemplateQuestion";
@@ -29,6 +30,7 @@ import {
   updateAnswerFunAPI,
   UpdateQuestionFunAPI,
 } from "../../../../redux/TemplateQuestion/TemplateQuestionAPI";
+
 import { create_UUID } from "../../../../utils/UUID";
 import { customRadioStyle } from "../EditQuestionBar";
 
@@ -42,6 +44,7 @@ interface IAnswerBar {
   newAnswer: string;
   setNewAnswer: (value: any) => void;
   newQuestion: string;
+  setNewQuestion: (value: any) => void;
   qna: any;
   setQna: (value: any) => void;
 
@@ -53,6 +56,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
   newAnswer,
   setNewAnswer,
   newQuestion,
+  setNewQuestion,
   qna,
   setQna,
   UpdateQuestionsArray,
@@ -67,6 +71,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
     EditAnswer,
     EditSelectedQuestion,
     parent_id,
+    getSingleQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
   // console.log("EditSelectedQuestion", EditSelectedQuestion);
 
@@ -89,8 +94,6 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       answer: [{ answer: newAnswer }],
       template_id: template_id,
     };
-
-    console.log("save updated ans", data);
 
     dispatch(addAnswerFunAPI(data)).then(() => {
       let d1 = {
@@ -156,6 +159,19 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       setNewAnswer(EditAnswer?.ans);
     }
   }, [EditAnswer]);
+  const addFollowUpQuestion = () => {
+    setNewAnswer("");
+    setNewQuestion("");
+
+    dispatch(editQuestionModelFun(!editQuestionModel));
+    dispatch(editQuestionFollowupModelFun(!editQuestionFollowupModel));
+    dispatch(ParentId_Fun(getSingleQuestion._id));
+
+    // let data = {
+    //   parent_id: getSingleQuestion._id,
+    // };
+    // console.log("call", getSingleQuestion);
+  };
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
@@ -218,8 +234,9 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
           <Button2
             name="+ Add Follow Up Question"
             onClick={() => {
+              addFollowUpQuestion();
               // addQuestionFollowupBtn();
-              UpdateQuestionsArray("answer");
+              // UpdateQuestionsArray("answer");
             }}
             icon={<AddIcon />}
           />

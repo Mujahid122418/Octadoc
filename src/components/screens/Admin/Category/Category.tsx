@@ -11,8 +11,8 @@ import type { RootState } from "../../../../redux/Store";
 import { AppDispatch } from "../../../../redux/Store";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Bounce } from 'react-reveal';
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import { Bounce } from "react-reveal";
 
 import Button2 from "../../Button2/Button2";
 import {
@@ -30,7 +30,6 @@ interface CategoryState {
   // ... other state properties
 }
 
-
 export default function Category() {
   const dispatch = useDispatch<AppDispatch>();
   const { allcategory } = useSelector((state: RootState) => state?.category);
@@ -41,14 +40,11 @@ export default function Category() {
     category: category,
   };
 
-  
   const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
   let dataa = {
     pagesize: rowsPerPage.toString(),
   };
-
-
 
   useEffect(() => {
     dispatch(getcategories(dataa));
@@ -88,7 +84,7 @@ export default function Category() {
       >
         <div className="w-75">
           <Bounce left>
-          <h3 className="ms-5 heading">Categories</h3>
+            <h3 className="ms-5 heading">Categories</h3>
           </Bounce>
           <Paper sx={{ width: "100%", overflow: "hidden", margin: "0 auto" }}>
             {selectedcategory ? (
@@ -118,37 +114,34 @@ export default function Category() {
                 </div>
               </div>
             )}
-         
-        
-              {allcategory.length > 0 &&
-                    allcategory.map((category) => (
-                    <Bounce>
-                      <span className="bandd d-flex "  key={category?._id} >
-                        <div className="d-flex align-items-center">
-                        {category.category}
-                        
-                        
-                        <div className="actionn">
-                          <EditRoundedIcon
+
+            {allcategory?.length > 0 &&
+              allcategory?.map((category) => (
+                <Bounce>
+                  <span className="bandd d-flex " key={category?._id}>
+                    <div className="d-flex align-items-center">
+                      {category.category}
+
+                      <div className="actionn">
+                        <EditRoundedIcon
                           className="edi"
                           onClick={() => handleClick(category)}
-                          />
-                          </div>
-                          <div className="actionn">
-                            <DeleteIcon 
-                            className="del"
-                            onClick={() =>
-                              dispatch(deleteCategory(category?._id)).then(() =>
-                                dispatch(getcategories(dataa))
-                              )
-                            }
-                            />
-                          </div>
-                        </div>
-                      </span>
-                      </Bounce>
-                    ))}
-            
+                        />
+                      </div>
+                      <div className="actionn">
+                        <DeleteIcon
+                          className="del"
+                          onClick={() =>
+                            dispatch(deleteCategory(category?._id)).then(() =>
+                              dispatch(getcategories(dataa))
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                  </span>
+                </Bounce>
+              ))}
           </Paper>
         </div>
       </TableContainer>

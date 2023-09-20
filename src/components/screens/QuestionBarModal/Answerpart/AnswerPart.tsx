@@ -73,14 +73,15 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     EditSelectedQuestion,
     parent_id,
   } = useSelector((state: RootState) => state?.templateQuestion);
+  const { activeSection } = useSelector((state: RootState) => state?.section);
 
   useEffect(() => {
     // let data =
-    //   EditSelectedQuestion.length > 0 ? EditSelectedQuestion[0].Question : [];
+    //   EditSelectedQuestion?.length > 0 ? EditSelectedQuestion[0].Question : [];
     // console.log("data edit", data);
     setQna(EditSelectedQuestion);
 
-    // if (data.length > 0) {
+    // if (data?.length > 0) {
 
     // EditSelectedQuestion.map((item: any) => {
     //   newData.push({
@@ -129,6 +130,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       answer: newAnswer,
       question_type: QuestionType,
       parent_id: "",
+      section_id: activeSection,
     };
 
     dispatch(addQuestionFunAPI(data))

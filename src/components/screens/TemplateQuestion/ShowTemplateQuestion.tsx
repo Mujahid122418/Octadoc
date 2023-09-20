@@ -35,7 +35,7 @@ import EditQuestionBar, {
 
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
+
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import AddIcon from "@mui/icons-material/Add";
@@ -72,7 +72,11 @@ const ShowTemplateQuestion = () => {
     getQuestions,
     editQuestionModel,
     getAnswer,
+    EditSelectedQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
+
+  // console.log("EditSelectedQuestion", EditSelectedQuestion);
+
   const { section: sectionData, activeSection } = useSelector(
     (state: RootState) => state?.section
   );
@@ -82,6 +86,7 @@ const ShowTemplateQuestion = () => {
     let data = {
       page: 1,
       pageSize: 20,
+      tempplate_id: tem_id,
     };
     dispatch(getQuestion(data));
     dispatch(getAnswers(data));
@@ -117,10 +122,6 @@ const ShowTemplateQuestion = () => {
     dispatch(activeSectionFun(newValue));
   };
 
-  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    // setActiveTab(newValue);
-  };
-
   // ====tabs end======
 
   const updateTemplateQuestion = async (e: any) => {
@@ -142,7 +143,7 @@ const ShowTemplateQuestion = () => {
         console.log("delete question", e);
       });
   };
-  // ?.filter((item: any) => item.section_id === activeSection))
+
   const SectionDetails = section?.map((item, index) => {
     return (
       <>
@@ -172,7 +173,7 @@ const ShowTemplateQuestion = () => {
               sx={{ borderRight: 1, border: "none", minWidth: "250px" }}
             >
               {sectionData?.length ? (
-                sectionData?.map((item: any, index: any) => (
+                sectionData.map((item: any, index: any) => (
                   <Tab
                     key={item._id}
                     label={item?.name}
@@ -254,8 +255,6 @@ const ShowTemplateQuestion = () => {
                     <ul className="mt-4 mb-4">
                       {getQuestions?.filter(
                         (item: any) => item?.template_id === tem_id
-                        // &&
-                        // item.section_id === activeSection
                       ).length > 0 ? (
                         getQuestions
                           ?.filter(
@@ -295,7 +294,6 @@ const ShowTemplateQuestion = () => {
                                       >
                                         <EditIcon />
                                       </IconButton>
-
                                       <IconButton
                                         aria-label="delete"
                                         onClick={() =>
@@ -477,7 +475,7 @@ const ShowTemplateQuestion = () => {
                   </div>
                   <div className="question-footer">
                     <Button2
-                      name="Add Question  "
+                      name="Add Question"
                       onClick={AddQuestionModel}
                       icon={<HelpCenterIcon />}
                     />
@@ -486,19 +484,11 @@ const ShowTemplateQuestion = () => {
                       onClick={() => AddSection(item)}
                       icon={<HighlightAltIcon />}
                     />
-
                     <QuestionBar />
                     <EditQuestionBar />
                   </div>
                 </div>
               </div>
-              {/* </TabPanel> */}
-              {/* <TabPanel value={value} index={1}>
-                Item Two
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                Item Three
-              </TabPanel> */}
             </div>
           </Box>
         </div>

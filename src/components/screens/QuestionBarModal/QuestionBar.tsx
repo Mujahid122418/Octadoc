@@ -113,6 +113,7 @@ export default function QuestionBar() {
           template_id: template_id,
           section_id: activeSection,
           question_type: questionType,
+          parent_id: "",
         };
 
         dispatch(addQuestionFunAPI(data))
@@ -184,6 +185,7 @@ export default function QuestionBar() {
         <p>Section Name</p>
         <label htmlFor="">Question</label>
         <input
+          // disabled
           type="text"
           placeholder="What do you want to ask? "
           // onClick={handleInputClick}
@@ -239,6 +241,7 @@ export default function QuestionBar() {
           </select>
         </div>
         <input
+          disabled
           type="text"
           className="mt-2 ms-0"
           placeholder="What do you want to ask?"

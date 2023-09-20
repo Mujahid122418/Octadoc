@@ -18,9 +18,11 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+
   },
   "include": [
-    "src"
+    "src",
+   // "react-reveal.d.ts" // Include your declaration file here
   ]
 }

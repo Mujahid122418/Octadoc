@@ -15,7 +15,7 @@ import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 import { useNavigate } from "react-router-dom";
 import { getMeFun } from "../../../redux/Auth/AuthAPI";
 import { AppDispatch } from "../../../redux/Store";
-import { Bounce } from 'react-reveal';
+import { Bounce } from "react-reveal";
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,7 +53,6 @@ const Header = () => {
     dispatch(addTemplateModelFun(false));
   };
 
-
   const Logout = () => {
     try {
       localStorage.removeItem("token");
@@ -63,67 +62,68 @@ const Header = () => {
       console.log("error", error);
     }
   };
-
+  let checkPath =
+    window.location.pathname === "/" ||
+    window.location.pathname === "/template" ||
+    window.location.pathname === "/community";
   return (
     <Bounce top>
-    <div className="header">
-      <div className="d-flex align-items-center justify-content-end">
-        <IconButton>
-          <HelpOutlineIcon />
-        </IconButton>
-        
-        {window.location.pathname == "/" && (
-          <Button2 name="New Templates " onClick={handleClickBtn} />
-        )}
-        <Avatar>A</Avatar>
-        <p className="mx-2 mb-0 header-name">{user?.name}</p>
-        <IconButton
-          id="demo-positioned-button"
-          aria-controls={open ? "demo-positioned-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleClick}
-        >
-          <ArrowDropDownRoundedIcon />
-        </IconButton>
-        
-        <Menu
-          id="demo-positioned-menu"
-          aria-labelledby="demo-positioned-button"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-        >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem>
-          <Link to="/admin">
-            <MenuItem onClick={handleClose}>Admin</MenuItem>
-          </Link>
-          <Link to="/category">
-            <MenuItem onClick={handleClose}>Category</MenuItem>
-          </Link>
-          <Link to="/setting">
-            <MenuItem onClick={handleClose}>Setting</MenuItem>
-          </Link>
-          <Link to="/contact">
-            <MenuItem onClick={handleClose}>Contact</MenuItem>
-          </Link>
-          <Link to="/payment">
-            <MenuItem onClick={handleClose}>Payment Method</MenuItem>
-          </Link>
-          <MenuItem onClick={Logout}>Logout</MenuItem>
-        </Menu>
+      <div className="header">
+        <div className="d-flex align-items-center justify-content-end">
+          <IconButton>
+            <HelpOutlineIcon />
+          </IconButton>
+          {checkPath && (
+            <Button2 name="New Templates " onClick={handleClickBtn} />
+          )}
+          <Avatar>A</Avatar>
+          <p className="mx-2 mb-0 header-name">{user?.name}</p>
+          <IconButton
+            id="demo-positioned-button"
+            aria-controls={open ? "demo-positioned-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <ArrowDropDownRoundedIcon />
+          </IconButton>
 
+          <Menu
+            id="demo-positioned-menu"
+            aria-labelledby="demo-positioned-button"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <Link to="/admin">
+              <MenuItem onClick={handleClose}>Admin</MenuItem>
+            </Link>
+            <Link to="/category">
+              <MenuItem onClick={handleClose}>Category</MenuItem>
+            </Link>
+            <Link to="/setting">
+              <MenuItem onClick={handleClose}>Setting</MenuItem>
+            </Link>
+            <Link to="/contact">
+              <MenuItem onClick={handleClose}>Contact</MenuItem>
+            </Link>
+            <Link to="/payment">
+              <MenuItem onClick={handleClose}>Payment Method</MenuItem>
+            </Link>
+            <MenuItem onClick={Logout}>Logout</MenuItem>
+          </Menu>
+        </div>
       </div>
-    </div>
     </Bounce>
   );
 };
