@@ -55,7 +55,7 @@ const SectionModal: React.FC<ModelProps> = ({
       <Modal open={openSection} onClose={handleClose}>
         <Box className="modalStyle">
           <div className="modal-header">
-            <h1 className="modal-title fs-5">New Template</h1>
+            <h1 className="modal-title fs-5">New Section</h1>
             <button
               type="button"
               className="btn-close"

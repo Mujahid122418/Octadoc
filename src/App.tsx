@@ -17,130 +17,140 @@ import OTP from "./components/screens/Auth/OTP";
 import Category from "./components/screens/Admin/Category/Category";
 import Contactt from "./components/screens/Contactt/Contactt";
 import Paymentss from "./components/screens/Paymentss/Paymentss";
+import Section from "./components/screens/Admin/Section.js/Section";
 
 function App() {
   return (
     <div className="body">
-      <BrowserRouter >
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              <Home />
-            </div>
-          }
-        />
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Home />
+              </div>
+            }
+          />
 
-        <Route
-          path="/setting"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              <Setting />
-            </div>
-          }
-        />
+          <Route
+            path="/setting"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Setting />
+              </div>
+            }
+          />
 
-        <Route
-          path="/template"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              {/* <Template /> */}
-              <Home />
-            </div>
-          }
-        />
+          <Route
+            path="/template"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                {/* <Template /> */}
+                <Home />
+              </div>
+            }
+          />
 
-        <Route
-          path="/community"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
+          <Route
+            path="/community"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
 
-              <Home />
-            </div>
-          }
-        />
+                <Home />
+              </div>
+            }
+          />
 
-        <Route
-          path="/questions/:id"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              <ShowTemplateQuestion />
-            </div>
-          }
-        />
-        <Route
-          path="/questions/edit/:id"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              <EditTemplateQuestion />
-            </div>
-          }
-        />
+          <Route
+            path="/questions/:id"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <ShowTemplateQuestion />
+              </div>
+            }
+          />
+          <Route
+            path="/questions/edit/:id"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <EditTemplateQuestion />
+              </div>
+            }
+          />
 
-        <Route
-          path="/admin"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              <Admin />
-            </div>
-          }
-        />
+          <Route
+            path="/admin"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Admin />
+              </div>
+            }
+          />
 
-        <Route
-          path="/category"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              <Category />
-            </div>
-          }
-        />
+          <Route
+            path="/category"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Category />
+              </div>
+            }
+          />
+          <Route
+            path="/section"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Section />
+              </div>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Paymentss />
+              </div>
+            }
+          />
 
-        <Route
-          path="/payment"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              <Paymentss />
-            </div>
-          }
-        />
+          <Route
+            path="/contact"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Contactt />
+              </div>
+            }
+          />
 
-        <Route
-          path="/contact"
-          element={
-            <div className="position-relative">
-              <Header />
-              <SideBar />
-              <Contactt />
-            </div>
-          }
-        />
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/SendMail" element={<SendMail />} />
-        <Route path="/forgot" element={<ForgotPass />} />
-        <Route path="/otp" element={<OTP />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/login" element={<Login />} />
+          <Route path="/SendMail" element={<SendMail />} />
+          <Route path="/forgot" element={<ForgotPass />} />
+          <Route path="/otp" element={<OTP />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

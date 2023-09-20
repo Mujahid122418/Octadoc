@@ -22,7 +22,7 @@ import {
   addQuestionModelFun,
   editQuestionModelFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestion";
-
+import CancelIcon from "@mui/icons-material/Cancel";
 import {
   getQuestion,
   getAnswers,
@@ -39,10 +39,16 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import AddIcon from "@mui/icons-material/Add";
-import { IconButton, Tooltip } from "@mui/material";
+import {
+  IconButton,
+  Tooltip,
+  Modal,
+  CircularProgress,
+  Button,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getSection } from "../../../redux/Section/SectionAPI";
+import { deleteSection, getSection } from "../../../redux/Section/SectionAPI";
 import SectionModal from "./SectionModel";
 import { activeSectionFun } from "../../../redux/Section/SectionSlice";
 import { toast } from "react-toastify";
@@ -50,7 +56,7 @@ import { toast } from "react-toastify";
 // ===== tabs =====
 
 const tabscolor = "#F2EBEF";
-const activetab = "#9F496E";
+const activetabColor = "#9F496E";
 
 function a11yProps(index: any) {
   return {
@@ -58,7 +64,10 @@ function a11yProps(index: any) {
     "aria-controls": `vertical-tabpanel-${index}`,
   };
 }
-
+interface Item {
+  _id: string;
+  // Add other properties as needed
+}
 // =====tabs end ====
 
 const ShowTemplateQuestion = () => {
@@ -66,6 +75,9 @@ const ShowTemplateQuestion = () => {
   const navigate = useNavigate();
   const [section, setSection] = useState([1]);
   const [openSection, setOpenSection] = useState(false);
+  // active tab
+  const [activeTab, setActiveTab] = useState<Item[]>([]);
+
   const {
     isLoading,
     addQuestionModel,
@@ -74,12 +86,22 @@ const ShowTemplateQuestion = () => {
     getAnswer,
     EditSelectedQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
+  // model state start
+  const [open, setOpen] = useState(false);
+  const [delete_item, setDelete_item] = useState("");
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // model state end
   // console.log("EditSelectedQuestion", EditSelectedQuestion);
 
-  const { section: sectionData, activeSection } = useSelector(
-    (state: RootState) => state?.section
-  );
+  const {
+    section: sectionData,
+    activeSection,
+    isLoading: isLoadingSecton,
+  } = useSelector((state: RootState) => state?.section);
 
   let tem_id = window.location.href.split("/questions/")[1];
   useEffect(() => {
@@ -118,6 +140,8 @@ const ShowTemplateQuestion = () => {
   const [value, setValue] = useState("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    console.log("val active", newValue);
+
     setValue(newValue);
     dispatch(activeSectionFun(newValue));
   };
@@ -144,9 +168,62 @@ const ShowTemplateQuestion = () => {
       });
   };
 
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "50%",
+    bgcolor: "background.paper",
+    // border: "2px solid #000",
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
+  const HandelDeleteSection = () => {
+    dispatch(deleteSection(delete_item)).then((res) => {
+      setOpen(!open);
+      let data = {
+        page: 1,
+        pageSize: 20,
+        tempplate_id: tem_id,
+      };
+      dispatch(getSection(data));
+    });
+  };
+  // let test = sectionData.some((item) => item._id !== activeTab);
+  // console.log("test", test);
+
   const SectionDetails = section?.map((item, index) => {
     return (
       <>
+        {/* handel model start */}
+        <Modal
+          open={open}
+          // onClose={handleClose}
+          aria-labelledby="parent-modal-title"
+          aria-describedby="parent-modal-description"
+        >
+          <Box sx={{ ...style }}>
+            <h2 id="parent-modal-title">
+              Are you sure you want to delete this Section?
+            </h2>
+            <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+              {isLoadingSecton ? (
+                <CircularProgress
+                  color="inherit"
+                  size={20}
+                  sx={{ mr: 2, mt: 1 }}
+                />
+              ) : (
+                <Button2 name="Delete" onClick={() => HandelDeleteSection()} />
+              )}
+              <Button2 name="Cancel" onClick={handleClose} />
+            </div>
+          </Box>
+        </Modal>
+        {/* handel model end  */}
         <SectionModal
           openSection={openSection}
           setOpenSection={setOpenSection}
@@ -163,17 +240,79 @@ const ShowTemplateQuestion = () => {
               width: "100%",
             }}
           >
-            <Tabs
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {sectionData?.length ? (
+                sectionData.map((item: any) => (
+                  <div style={{ width: 250 }}>
+                    <IconButton
+                      onClick={() => {
+                        setOpen(!open);
+                        setDelete_item(item._id);
+                      }}
+                      style={{
+                        position: "absolute",
+                        marginTop: "2px",
+                        marginLeft: "-15px",
+                        // bottom: 0,
+                        // top: "12px",
+                        // left: 0,
+                        // right: 8,
+                        zIndex: 1,
+                      }}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                    <Box
+                      onClick={() => {
+                        setValue(item?._id);
+                        dispatch(activeSectionFun(item?._id));
+                        activeTab.includes(item)
+                          ? setActiveTab(activeTab.filter((i) => i !== item))
+                          : setActiveTab([item]);
+                      }}
+                      sx={{
+                        display: "flex",
+                        justifyItems: "center",
+                        alignItems: "center",
+                        height: 50,
+                        textAlign: "center",
+                        marginTop: "20px",
+                        justifyContent: "center",
+                        backgroundColor: activeTab.includes(item)
+                          ? activetabColor
+                          : tabscolor,
+
+                        width: activeTab.includes(item) ? "100%" : "90%",
+
+                        color: activeTab.includes(item) ? "white" : null,
+                        borderBottomColor: activeTab.includes(item)
+                          ? null
+                          : "#9d62f5",
+                        borderBottomWidth: "2px",
+                        borderRadius: activeTab.includes(item) ? "10px" : "5px",
+                        clipPath: activeTab.includes(item)
+                          ? "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)"
+                          : null,
+                      }}
+                    >
+                      {item?.name}
+                    </Box>
+                  </div>
+                ))
+              ) : (
+                <p>you did not have any tabs</p>
+              )}
+            </div>
+            {/* <Tabs
               orientation="vertical"
               variant="scrollable"
               value={value}
               onChange={handleChange}
-              // onChange={(e) => console.log("e", e)}
               aria-label="Vertical tabs example"
               sx={{ borderRight: 1, border: "none", minWidth: "250px" }}
             >
               {sectionData?.length ? (
-                sectionData.map((item: any, index: any) => (
+                sectionData.map((item: any) => (
                   <Tab
                     key={item._id}
                     label={item?.name}
@@ -201,34 +340,64 @@ const ShowTemplateQuestion = () => {
               ) : (
                 <p>you did not have any tabs</p>
               )}
+            </Tabs> */}
 
-              {/* <Button2 name="add +" onClick={CopyModel} /> */}
-
-              <Tab
-                label="Add +"
-                // {...a11yProps(item.num)}
-                onClick={() => setOpenSection(true)}
-                sx={{
-                  marginTop: "20px",
-                  borderRadius: "10px",
-                  backgroundColor: tabscolor,
-                  width: "90%",
-                  "&.Mui-selected": {
-                    backgroundColor: activetab,
-                    width: "100%",
-                    color: "white",
-                    borderBottomColor: "#9d62f5",
-                    borderBottomWidth: "2px",
-                    borderRadius: "0px",
-                    clipPath:
-                      "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
-                  },
-                }}
-              />
-            </Tabs>
+            {/* <Tabs
+              id="1122"
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderRight: 1, border: "none", minWidth: "250px" }}
+            >
+              {sectionData?.length ? (
+                sectionData.map((item: any) => (
+                  <div>
+                    <IconButton
+                      onClick={() => {
+                        setOpen(!open);
+                        setDelete_item(item._id);
+                      }}
+                      style={{
+                        position: "absolute",
+                        right: 8,
+                        zIndex: 1,
+                      }}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                    <Tab
+                      key={item._id}
+                      label={item?.name}
+                      {...a11yProps(item._id)}
+                      id={item._id}
+                      value={item._id}
+                      sx={{
+                        marginTop: "20px",
+                        borderRadius: "10px",
+                        backgroundColor: tabscolor,
+                        width: "90%",
+                        "&.Mui-selected": {
+                          backgroundColor: activetab,
+                          width: "100%",
+                          color: "white",
+                          borderBottomColor: "#9d62f5",
+                          borderBottomWidth: "2px",
+                          borderRadius: "0px",
+                          clipPath:
+                            "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
+                        },
+                      }}
+                    />
+                  </div>
+                ))
+              ) : (
+                <p>you did not have any tabs</p>
+              )}
+            </Tabs> */}
 
             <div style={{ width: "100%" }}>
-              {/* <TabPanel value={value} index={0}> */}
               <div key={index}>
                 <div className="questions-box">
                   <div className="d-flex justify-content-between ">
@@ -481,7 +650,8 @@ const ShowTemplateQuestion = () => {
                     />
                     <Button2
                       name="Add Section"
-                      onClick={() => AddSection(item)}
+                      // onClick={() => AddSection(item)}
+                      onClick={() => setOpenSection(true)}
                       icon={<HighlightAltIcon />}
                     />
                     <QuestionBar />

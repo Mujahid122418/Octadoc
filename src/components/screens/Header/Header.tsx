@@ -111,6 +111,9 @@ const Header = () => {
             <Link to="/category">
               <MenuItem onClick={handleClose}>Category</MenuItem>
             </Link>
+            {/* <Link to="/section">
+              <MenuItem onClick={handleClose}>Section</MenuItem>
+            </Link> */}
             <Link to="/setting">
               <MenuItem onClick={handleClose}>Setting</MenuItem>
             </Link>
