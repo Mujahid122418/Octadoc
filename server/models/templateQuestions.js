@@ -5,9 +5,11 @@ const FollowUpSchema = new mongoose.Schema({
   question: {
     type: String,
   },
-  answer: {
-    type: String,
-  },
+  answer: [
+    {
+      type: String,
+    },
+  ],
   questionType: {
     type: String,
   },
@@ -64,9 +66,11 @@ const template_Schema = new schema(
       type: String,
       required: true,
     },
-    answer: {
-      type: String,
-    },
+    answer: [
+      {
+        type: String,
+      },
+    ],
     followUp: [FollowUpSchema],
     parentId: {
       type: String,

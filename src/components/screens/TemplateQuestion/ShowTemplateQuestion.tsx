@@ -89,6 +89,7 @@ const ShowTemplateQuestion = () => {
   };
 
   // model state end
+  // console.log("EditSelectedQuestion", EditSelectedQuestion);
 
   const {
     section: sectionData,
@@ -131,7 +132,14 @@ const ShowTemplateQuestion = () => {
 
   // ====tabs======
   const [value, setValue] = useState("");
-  const [sectionName, setSectionName] = useState("");
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    console.log("val active", newValue);
+
+    setValue(newValue);
+    dispatch(activeSectionFun(newValue));
+  };
+
   // ====tabs end======
 
   const updateTemplateQuestion = async (e: any) => {
@@ -178,7 +186,7 @@ const ShowTemplateQuestion = () => {
       dispatch(getSection(data));
     });
   };
-
+  console.log(getQuestions, "sectionData===>");
   // let test = sectionData.some((item) => item._id !== activeTab);
   // console.log("test", test);
 
@@ -240,7 +248,10 @@ const ShowTemplateQuestion = () => {
                         position: "absolute",
                         marginTop: "2px",
                         marginLeft: "-15px",
-
+                        // bottom: 0,
+                        // top: "12px",
+                        // left: 0,
+                        // right: 8,
                         zIndex: 1,
                       }}
                     >
@@ -249,7 +260,6 @@ const ShowTemplateQuestion = () => {
                     <Box
                       onClick={() => {
                         setValue(item?._id);
-                        setSectionName(item?.name);
                         dispatch(activeSectionFun(item?._id));
                         activeTab.includes(item)
                           ? setActiveTab(activeTab.filter((i) => i !== item))
@@ -288,6 +298,99 @@ const ShowTemplateQuestion = () => {
                 <p>you did not have any tabs</p>
               )}
             </div>
+            {/* <Tabs
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderRight: 1, border: "none", minWidth: "250px" }}
+            >
+              {sectionData?.length ? (
+                sectionData.map((item: any) => (
+                  <Tab
+                    key={item._id}
+                    label={item?.name}
+                    {...a11yProps(item._id)}
+                    id={item._id}
+                    value={item._id}
+                    sx={{
+                      marginTop: "20px",
+                      borderRadius: "10px",
+                      backgroundColor: tabscolor,
+                      width: "90%",
+                      "&.Mui-selected": {
+                        backgroundColor: activetab,
+                        width: "100%",
+                        color: "white",
+                        borderBottomColor: "#9d62f5",
+                        borderBottomWidth: "2px",
+                        borderRadius: "0px",
+                        clipPath:
+                          "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
+                      },
+                    }}
+                  />
+                ))
+              ) : (
+                <p>you did not have any tabs</p>
+              )}
+            </Tabs> */}
+
+            {/* <Tabs
+              id="1122"
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderRight: 1, border: "none", minWidth: "250px" }}
+            >
+              {sectionData?.length ? (
+                sectionData.map((item: any) => (
+                  <div>
+                    <IconButton
+                      onClick={() => {
+                        setOpen(!open);
+                        setDelete_item(item._id);
+                      }}
+                      style={{
+                        position: "absolute",
+                        right: 8,
+                        zIndex: 1,
+                      }}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                    <Tab
+                      key={item._id}
+                      label={item?.name}
+                      {...a11yProps(item._id)}
+                      id={item._id}
+                      value={item._id}
+                      sx={{
+                        marginTop: "20px",
+                        borderRadius: "10px",
+                        backgroundColor: tabscolor,
+                        width: "90%",
+                        "&.Mui-selected": {
+                          backgroundColor: activetab,
+                          width: "100%",
+                          color: "white",
+                          borderBottomColor: "#9d62f5",
+                          borderBottomWidth: "2px",
+                          borderRadius: "0px",
+                          clipPath:
+                            "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)",
+                        },
+                      }}
+                    />
+                  </div>
+                ))
+              ) : (
+                <p>you did not have any tabs</p>
+              )}
+            </Tabs> */}
 
             <div style={{ width: "100%" }}>
               <div key={index}>
@@ -305,16 +408,13 @@ const ShowTemplateQuestion = () => {
                       }}
                     >
                       <Button2 name="Copy" onClick={CopyModel} />
-                      {/* <Button2 name="Edit" onClick={() => EditSection(item)} /> */}
+                      <Button2 name="Edit" onClick={() => EditSection(item)} />
                     </div>
                   </div>
                   <div className="question-head">
                     <HelpOutlineIcon />{" "}
-                    <h5 className="mb-0 ms-1">
-                      {sectionName ? sectionName : "Select Section"}{" "}
-                    </h5>
+                    <h5 className="mb-0 ms-1">Section Name </h5>
                   </div>
-
                   <div className="question-body">
                     <ul className="mt-4 mb-4">
                       {getQuestions?.filter(
@@ -337,12 +437,22 @@ const ShowTemplateQuestion = () => {
                                     alignItems: "center",
                                   }}
                                 >
-                                  <div>
-                                    <li>
-                                      <ArrowForwardIosRoundedIcon />
-                                      {item?.question}
-                                    </li>
-                                  </div>
+                                  <li>
+                                    <ArrowForwardIosRoundedIcon />
+                                    {item?.question}
+                                  </li>
+
+                                  {item?.followUp.map((item: any) => {
+                                    return (
+                                      <>
+                                        <br />
+                                        <li>{item.question}</li>
+                                        <br />
+                                        <li>{item.answer}</li>
+                                      </>
+                                    );
+                                  })}
+
                                   <div>
                                     <Stack
                                       direction="row"
@@ -380,7 +490,6 @@ const ShowTemplateQuestion = () => {
                                     </Stack>
                                   </div>
                                 </div>
-
                                 {item?.questionType === "Date Time" ? (
                                   <div className="answer mt-3 mb-2 ms-3">
                                     <div className="first">
@@ -415,6 +524,7 @@ const ShowTemplateQuestion = () => {
                                       <input type="text" />
                                       <b className="mg"> mg</b>
                                     </div>
+
                                     <FormControl>
                                       <RadioGroup
                                         row
@@ -481,64 +591,54 @@ const ShowTemplateQuestion = () => {
                                     </div>
                                   </div>
                                 ) : item?.questionType === "Multiple Choice" ? (
-                                  <div>
-                                    {item?.answer && (
-                                      <FormControlLabel
-                                        className="ms-1"
-                                        control={
-                                          <Checkbox
-                                            defaultChecked
-                                            style={customRadioStyle}
-                                          />
-                                        }
-                                        label={item.answer}
-                                      />
-                                    )}
-                                    {item?.followUp.map((e1: any) => {
+                                  getAnswer
+                                    ?.filter(
+                                      (e: any) =>
+                                        e.follow_up_question_group_id ===
+                                        item._id
+                                    )
+                                    .map((e1: any) => {
                                       return (
-                                        <div style={{ padding: 20 }}>
-                                          <li>{e1.question}</li>
-                                          <FormControlLabel
-                                            className="ms-1"
-                                            control={
-                                              <Checkbox
-                                                defaultChecked
-                                                style={customRadioStyle}
-                                              />
-                                            }
-                                            label={e1.answer}
-                                          />
-                                        </div>
+                                        <FormControlLabel
+                                          className="ms-1"
+                                          control={
+                                            <Checkbox
+                                              defaultChecked
+                                              style={customRadioStyle}
+                                            />
+                                          }
+                                          label={e1.answer[0].answer}
+                                          // label="sjkdl"
+                                        />
                                       );
-                                    })}
-                                  </div>
+                                    })
                                 ) : item?.questionType === "Single Choice" ? (
-                                  <div>
-                                    {item?.answer && (
-                                      <input
-                                        disabled
-                                        value={item.answer}
-                                        type="text"
-                                        placeholder="Free Text"
-                                      />
-                                    )}
-
-                                    {item?.followUp.map((e1: any) => {
+                                  getAnswer
+                                    ?.filter(
+                                      (e: any) =>
+                                        e.follow_up_question_group_id ===
+                                        item._id
+                                    )
+                                    .map((e1: any) => {
                                       return (
-                                        <div className=" mt-3 mb-2 ms-3">
-                                          <li> {e1?.question}</li>
+                                        <div
+                                          className=" mt-3 mb-2 ms-3"
+                                          style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                          }}
+                                        >
                                           <div className="first">
                                             <input
                                               disabled
-                                              value={e1.answer}
+                                              value={e1.answer[0].answer}
                                               type="text"
                                               placeholder="Free Text"
                                             />
                                           </div>
                                         </div>
                                       );
-                                    })}
-                                  </div>
+                                    })
                                 ) : null}
                               </div>
                             );

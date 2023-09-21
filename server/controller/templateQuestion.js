@@ -4,7 +4,6 @@ const FollowUp = require("../models/followup");
 const { v4: uuidv4 } = require("uuid");
 exports.addQuestion = async (req, res) => {
   const payload = req.body;
-  console.log(payload, "--->");
   try {
     const {
       question,
@@ -63,14 +62,43 @@ exports.addQuestion = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
-  // await TemplateQuestions(payload)
-  //   .save()
-  //   .then((item) => {
-  //     res.json({ success: true, data: item });
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error: error.message });
-  //   });
+};
+
+// Route to Edit the Questions
+exports.EditQuestions = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { question, answer, followUpId } = req.body;
+    const existingQuestion = await TemplateQuestions.findById(id);
+    if (!existingQuestion) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+    if (followUpId) {
+      const followUpQuestion = existingQuestion?.followUp?.find(
+        (followUp) => followUp?._id?.toString() === followUpId
+      );
+      if (!followUpQuestion) {
+        return res.status(404).json({ error: "Follow-up question not found" });
+      }
+      followUpQuestion.question = question;
+      followUpQuestion.answer = answer;
+      const updatedQuestion = await existingQuestion.save();
+      return res.status(200).json({
+        message: "Follow-up Question and Answer updated successfully",
+        question: updatedQuestion,
+      });
+    }
+    existingQuestion.question = question;
+    existingQuestion.answer = answer;
+    const updatedQuestion = await existingQuestion.save();
+    res.status(200).json({
+      message: "Question and Answer updated successfully",
+      question: updatedQuestion,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 // Route to get paginated data
