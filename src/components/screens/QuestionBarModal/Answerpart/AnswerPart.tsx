@@ -123,62 +123,66 @@ const AnswerBar: React.FC<IAnswerBar> = ({
 
   const SaveFollowupQuestions = async () => {
     // let id = await localStorage.getItem("last_question_id");
+    if (parent_id) {
+      let data = {
+        question: newQuestion,
+        answer: newAnswer,
+        template_id: template_id,
+        section_id: activeSection,
+        questionType: QuestionType,
+        parentId: parent_id,
+      };
+      console.log(data, "data---hassan>");
+      // dispatch(addQuestionFunAPI(data))
+      //   .unwrap()
+      //   .then((response) => {
+      //     console.log(response, "Question-->");
+      // let { _id } = response.data;
+      // localStorage.setItem("last_question_id", _id);
+      // let data1 = {
+      //   template_id: template_id,
+      //   question: newQuestion,
+      //   answer: [{ answer: newAnswer }],
+      //   question_type: QuestionType,
+      //   follow_up_question_group_id: _id,
+      //   question_id: _id,
+      // };
 
-    let data = {
-      template_id: template_id,
-      question: newQuestion,
-      answer: newAnswer,
-      question_type: QuestionType,
-      parent_id: "",
-      section_id: activeSection,
-    };
+      // dispatch(addAnswerFunAPI(data1))
+      //   .unwrap()
+      //   .then((res2) => {
+      //     let f_up = {
+      //       question_id: response?.data?._id,
+      //       answer_id: res2?.data?._id,
+      //     };
+      //     console.log("see follow up", f_up);
 
-    dispatch(addQuestionFunAPI(data))
-      .unwrap()
-      .then((response) => {
-        let { _id } = response.data;
-        localStorage.setItem("last_question_id", _id);
-        let data1 = {
-          template_id: template_id,
-          question: newQuestion,
-          answer: [{ answer: newAnswer }],
-          question_type: QuestionType,
-          follow_up_question_group_id: _id,
-          question_id: _id,
-        };
-
-        dispatch(addAnswerFunAPI(data1))
-          .unwrap()
-          .then((res2) => {
-            let f_up = {
-              question_id: response?.data?._id,
-              answer_id: res2?.data?._id,
-            };
-            console.log("see follow up", f_up);
-
-            dispatch(add_FollowUp_FunAPI(f_up));
-            let d1 = {
-              page: 1,
-              pageSize: 20,
-            };
-            dispatch(getQuestion(d1));
-            dispatch(addQuestionModelFun(false));
-            dispatch(addQuestionFollowupModelFun(false));
-            setNewAnswer("");
-            setNewQuestion("");
-            setQuestionType("");
-            dispatch(questionTypeFun(""));
-          });
-        // dispatch(getQuestion(d1));
-      })
-      .catch((error) => {
-        toast.error(error);
-      });
+      //     dispatch(add_FollowUp_FunAPI(f_up));
+      //     let d1 = {
+      //       page: 1,
+      //       pageSize: 20,
+      //     };
+      //     dispatch(getQuestion(d1));
+      //     dispatch(addQuestionModelFun(false));
+      //     dispatch(addQuestionFollowupModelFun(false));
+      //     setNewAnswer("");
+      //     setNewQuestion("");
+      //     setQuestionType("");
+      //     dispatch(questionTypeFun(""));
+      //   });
+      // dispatch(getQuestion(d1));
+      // })
+      // .catch((error) => {
+      //   toast.error(error);
+      // });
+    }
   };
   const AddModelFollowUpBtn = () => {
     dispatch(addQuestionModelFun(!addQuestionModel));
     dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
   };
+
+  console.log(parent_id, "parent_id");
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 600 }} role="presentation">

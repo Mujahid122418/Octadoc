@@ -15,7 +15,9 @@ const FollowUpSchema = new mongoose.Schema({
     type: String,
   },
   template_id: {
-    type: String,
+    // type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "template",
   },
   section_id: {
     type: String,
@@ -51,9 +53,9 @@ const template_Schema = new schema(
       type: String,
     },
     template_id: {
-      type: String,
-      // type: mongoose.Schema.Types.ObjectId,
-      // ref: "template",
+      // type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "template",
     },
     section_id: {
       type: String,

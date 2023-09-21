@@ -74,7 +74,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
     getSingleQuestion,
   } = useSelector((state: RootState) => state?.templateQuestion);
   // console.log("EditSelectedQuestion", EditSelectedQuestion);
-
+  const { activeSection } = useSelector((state: RootState) => state?.section);
   useEffect(() => {
     setQna(EditSelectedQuestion);
   }, [EditSelectedQuestion]);
@@ -88,58 +88,59 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
     event.preventDefault();
 
     let data = {
-      question_id: parent_id,
-      follow_up_question_group_id: parent_id,
-
-      answer: [{ answer: newAnswer }],
+      question: newQuestion,
+      answer: newAnswer,
       template_id: template_id,
+      section_id: activeSection,
+      questionType: QuestionType,
+      parentId: parent_id,
     };
-
-    dispatch(addAnswerFunAPI(data)).then(() => {
+    console.log(data, "data---->");
+    dispatch(addQuestionFunAPI(data)).then(() => {
       let d1 = {
         page: 1,
         pageSize: 20,
       };
-      dispatch(getQuestion(d1));
-      dispatch(editQuestionModelFun(!editQuestionModel));
-      let data = {
-        page: 1,
-        pageSize: 20,
-      };
-      dispatch(getAnswers(data));
+      //   dispatch(getQuestion(d1));
+      //   dispatch(editQuestionModelFun(!editQuestionModel));
+      //   let data = {
+      //     page: 1,
+      //     pageSize: 20,
+      //   };
+      //   dispatch(getAnswers(data));
+      // });
+
+      // dispatch(UpdateQuestionFunAPI(data))
+      //   .unwrap()
+      //   .then((response) => {
+      //     let { _id } = response.data;
+      //     localStorage.setItem("last_question_id", _id);
+      //     let data1 = {
+      //       id: EditSelectedQuestion?.answerD?.ans_id,
+      //       template_id: template_id,
+      //       question: newQuestion,
+      //       answer: newAnswer,
+      //       question_type: QuestionType,
+      //       follow_up_question_group_id: _id,
+      //       question_id: _id,
+      //     };
+
+      //     dispatch(updateAnswerFunAPI(data1)).then(() => {
+      //       let d1 = {
+      //         page: 1,
+      //         pageSize: 20,
+      //       };
+      //       dispatch(getQuestion(d1));
+      //       // setNewAnswer("");
+      //       // setNewQuestion("");
+      //       // setQuestionType("");
+      //       // dispatch(questionTypeFun(""));
+      //     });
+      //     // dispatch(getQuestion(d1));
+      //   })
+      //   .catch((error) => {
+      //     toast.error(error);
     });
-
-    // dispatch(UpdateQuestionFunAPI(data))
-    //   .unwrap()
-    //   .then((response) => {
-    //     let { _id } = response.data;
-    //     localStorage.setItem("last_question_id", _id);
-    //     let data1 = {
-    //       id: EditSelectedQuestion?.answerD?.ans_id,
-    //       template_id: template_id,
-    //       question: newQuestion,
-    //       answer: newAnswer,
-    //       question_type: QuestionType,
-    //       follow_up_question_group_id: _id,
-    //       question_id: _id,
-    //     };
-
-    //     dispatch(updateAnswerFunAPI(data1)).then(() => {
-    //       let d1 = {
-    //         page: 1,
-    //         pageSize: 20,
-    //       };
-    //       dispatch(getQuestion(d1));
-    //       // setNewAnswer("");
-    //       // setNewQuestion("");
-    //       // setQuestionType("");
-    //       // dispatch(questionTypeFun(""));
-    //     });
-    //     // dispatch(getQuestion(d1));
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error);
-    //   });
   };
 
   const [state, setState] = React.useState<StateType>({
@@ -172,6 +173,8 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
     // };
     // console.log("call", getSingleQuestion);
   };
+
+  console.log(parent_id, "parent_id");
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">

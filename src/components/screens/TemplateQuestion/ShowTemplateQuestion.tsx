@@ -192,6 +192,7 @@ const ShowTemplateQuestion = () => {
       dispatch(getSection(data));
     });
   };
+  console.log(getQuestions, "sectionData===>");
   // let test = sectionData.some((item) => item._id !== activeTab);
   // console.log("test", test);
 
@@ -446,6 +447,18 @@ const ShowTemplateQuestion = () => {
                                     <ArrowForwardIosRoundedIcon />
                                     {item?.question}
                                   </li>
+
+                                  {item?.followUp.map((item: any) => {
+                                    return (
+                                      <>
+                                        <br />
+                                        <li>{item.question}</li>
+                                        <br />
+                                        <li>{item.answer}</li>
+                                      </>
+                                    );
+                                  })}
+
                                   <div>
                                     <Stack
                                       direction="row"
@@ -483,7 +496,7 @@ const ShowTemplateQuestion = () => {
                                     </Stack>
                                   </div>
                                 </div>
-                                {item?.question_type === "Date Time" ? (
+                                {item?.questionType === "Date Time" ? (
                                   <div className="answer mt-3 mb-2 ms-3">
                                     <div className="first">
                                       <label>When did this start?</label>
@@ -510,7 +523,7 @@ const ShowTemplateQuestion = () => {
                                       </div>
                                     </div>
                                   </div>
-                                ) : item?.question_type === "Dosage" ? (
+                                ) : item?.questionType === "Dosage" ? (
                                   <div className="answer mt-3 mb-2 ms-3">
                                     <div className="first">
                                       <label>When did this start?</label>
@@ -574,7 +587,7 @@ const ShowTemplateQuestion = () => {
                                       labelPlacement="start"
                                     />
                                   </div>
-                                ) : item?.question_type === "Free Text" ? (
+                                ) : item?.questionType === "Free Text" ? (
                                   <div className="answer mt-3 mb-2 ms-3">
                                     <div className="first">
                                       <input
@@ -583,8 +596,7 @@ const ShowTemplateQuestion = () => {
                                       />
                                     </div>
                                   </div>
-                                ) : item?.question_type ===
-                                  "Multiple Choice" ? (
+                                ) : item?.questionType === "Multiple Choice" ? (
                                   getAnswer
                                     ?.filter(
                                       (e: any) =>
@@ -606,7 +618,7 @@ const ShowTemplateQuestion = () => {
                                         />
                                       );
                                     })
-                                ) : item?.question_type === "Single Choice" ? (
+                                ) : item?.questionType === "Single Choice" ? (
                                   getAnswer
                                     ?.filter(
                                       (e: any) =>
