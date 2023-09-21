@@ -78,7 +78,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   useEffect(() => {
     // let data =
     //   EditSelectedQuestion?.length > 0 ? EditSelectedQuestion[0].Question : [];
-    // console.log("data edit", data);
+
     setQna(EditSelectedQuestion);
 
     // if (data?.length > 0) {
