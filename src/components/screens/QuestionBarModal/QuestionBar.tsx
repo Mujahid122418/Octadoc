@@ -107,13 +107,12 @@ export default function QuestionBar() {
     } else {
       try {
         let data = {
-          // name: newQuestion,
           question: newQuestion,
-          // answer: newAnswer,
+          answer: newAnswer,
           template_id: template_id,
           section_id: activeSection,
-          question_type: questionType,
-          parent_id: "",
+          questionType: questionType,
+          parentId: "",
         };
 
         dispatch(addQuestionFunAPI(data))

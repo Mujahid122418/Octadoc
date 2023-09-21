@@ -4,10 +4,10 @@ import { Baseurl } from "../../utils/BaseUrl";
 import { toast } from "react-toastify";
 
 export const addQuestionFunAPI = createAsyncThunk(
-  "question/addQuestion",
+  "/addQuestion",
   async (data: any) => {
     try {
-      const response = await axios.post(Baseurl + `/question/question`, data);
+      const response = await axios.post(Baseurl + `/question`, data);
 
       return response.data;
     } catch (error) {
@@ -17,13 +17,10 @@ export const addQuestionFunAPI = createAsyncThunk(
 );
 
 export const UpdateQuestionFunAPI = createAsyncThunk(
-  "question/addQuestion",
+  "/addQuestion",
   async (data: any) => {
     try {
-      const response = await axios.put(
-        Baseurl + `/question/question/${data?.id}`,
-        data
-      );
+      const response = await axios.put(Baseurl + `/question/${data?.id}`, data);
       toast.success("Updated successfully");
       return response.data;
     } catch (error) {
@@ -32,12 +29,11 @@ export const UpdateQuestionFunAPI = createAsyncThunk(
   }
 );
 export const getQuestion = createAsyncThunk(
-  "question/getQuestion",
+  "/getQuestion",
   async (data: any) => {
     try {
       const response = await axios.get(
-        Baseurl +
-          `/question/question?page=${data.page}&pageSize=${data.pageSize}`
+        Baseurl + `/question?page=${data.page}&pageSize=${data.pageSize}`
       );
 
       return response.data?.data;
@@ -46,30 +42,27 @@ export const getQuestion = createAsyncThunk(
     }
   }
 );
-export const getAnswers = createAsyncThunk(
-  "question/getAnswers",
-  async (data: any) => {
-    try {
-      // alert("ans");
-      const response = await axios.get(
-        Baseurl + `/answer/answer?page=${data?.page}&pageSize=${data?.pageSize}`
-      );
+export const getAnswers = createAsyncThunk("/getAnswers", async (data: any) => {
+  try {
+    // alert("ans");
+    const response = await axios.get(
+      Baseurl + `/answer/answer?page=${data?.page}&pageSize=${data?.pageSize}`
+    );
 
-      return response.data?.data;
-    } catch (error) {
-      console.log("error getanswer", error);
-    }
+    return response.data?.data;
+  } catch (error) {
+    console.log("error getanswer", error);
   }
-);
+});
 export const getSingleQuestionFun = createAsyncThunk(
-  "question/singleQueston",
+  "/singleQueston",
   async (data: any) => {
     console.log("data call", data);
 
     try {
       const response = await axios.get(
         Baseurl +
-          `/question/singleQueston/${data?.id}?page=${data.page}&pageSize=${data.pageSize}`
+          `/singleQueston/${data?.id}?page=${data.page}&pageSize=${data.pageSize}`
       );
       console.log(" response api", response.data?.data);
 
@@ -83,6 +76,7 @@ export const getSingleQuestionFun = createAsyncThunk(
 export const addAnswerFunAPI = createAsyncThunk(
   "answer/addAnswer",
   async (data: any) => {
+    console.log(data, "data===>");
     try {
       const response = await axios.post(Baseurl + `/answer/answer`, data);
 
