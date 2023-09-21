@@ -66,7 +66,6 @@ const template_Schema = new schema(
     },
     answer: {
       type: String,
-      required: true,
     },
     followUp: [FollowUpSchema],
     parentId: {

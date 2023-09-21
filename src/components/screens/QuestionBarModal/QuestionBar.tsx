@@ -114,6 +114,7 @@ export default function QuestionBar() {
           questionType: questionType,
           parentId: "",
         };
+        console.log("add data", data);
 
         dispatch(addQuestionFunAPI(data))
           .unwrap()
@@ -128,7 +129,9 @@ export default function QuestionBar() {
           .catch((error) => {
             toast.error(error);
           });
-      } catch (error) {}
+      } catch (error) {
+        console.log("add data err", error);
+      }
     }
   };
   // ===collpase end====

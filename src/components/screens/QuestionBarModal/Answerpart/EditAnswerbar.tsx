@@ -101,7 +101,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
         page: 1,
         pageSize: 20,
       };
-      //   dispatch(getQuestion(d1));
+      dispatch(getQuestion(d1));
       //   dispatch(editQuestionModelFun(!editQuestionModel));
       //   let data = {
       //     page: 1,
