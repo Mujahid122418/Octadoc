@@ -28,7 +28,7 @@ app.use(cors());
 // app.use("/api", bootCamp);
 // app.use("/course", course);
 app.use("/auth", auth);
-app.use("/question", question);
+app.use("/", question);
 app.use("/section", section);
 app.use("/template", template);
 app.use("/answer", answer);

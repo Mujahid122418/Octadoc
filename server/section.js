@@ -11,7 +11,6 @@ const section_Schema = new schema(
       type: String,
       index: true,
     },
-
     order: {
       type: String,
       index: true,

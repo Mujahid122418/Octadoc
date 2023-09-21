@@ -1,20 +1,29 @@
 const mongoose = require("mongoose");
 const schema = mongoose.Schema;
-const Questions_Schema = new mongoose.Schema({
-  question: { type: String },
-  answers: { type: String },
-  QuestionType: { type: String },
-  Qindex: { type: String },
-  followUp: [
-    {
-      question: String,
-      answers: String,
-      QuestionType: String,
-      followUp: [],
-      Qindex: String,
-    },
-  ],
+
+const FollowUpSchema = new mongoose.Schema({
+  question: {
+    type: String,
+  },
+  answer: {
+    type: String,
+  },
+  questionType: {
+    type: String,
+  },
+  parentId: {
+    type: String,
+  },
+  template_id: {
+    type: String,
+  },
+  section_id: {
+    type: String,
+  },
+  newId: { type: String, required: true },
+  followBy: { type: String, required: true },
 });
+
 const template_Schema = new schema(
   {
     name: {
@@ -29,7 +38,7 @@ const template_Schema = new schema(
     helptext: {
       type: String,
     },
-    question_type: {
+    questionType: {
       type: String,
     },
     order: {
@@ -42,16 +51,23 @@ const template_Schema = new schema(
       type: String,
     },
     template_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "template",
+      type: String,
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref: "template",
     },
     section_id: {
       type: String,
     },
     question: {
       type: String,
+      required: true,
     },
-    parent_id: {
+    answer: {
+      type: String,
+      required: true,
+    },
+    followUp: [FollowUpSchema],
+    parentId: {
       type: String,
     },
     // answers: {

@@ -1,17 +1,76 @@
 const Answer = require("../models/answer");
 const TemplateQuestions = require("../models/templateQuestions");
 const FollowUp = require("../models/followup");
+const { v4: uuidv4 } = require("uuid");
 exports.addQuestion = async (req, res) => {
   const payload = req.body;
+  console.log(payload, "--->");
+  try {
+    const {
+      question,
+      answer,
+      parentId,
+      template_id,
+      section_id,
+      questionType,
+    } = req.body;
+    let savedQuestion;
+    if (parentId) {
+      const parentQuestion = await TemplateQuestions.findById(parentId);
+      if (parentQuestion) {
+        const newId = uuidv4();
+        const previousFollowBy = parentQuestion.followUp.length
+          ? parentQuestion.followUp[parentQuestion.followUp.length - 1]._id
+          : parentQuestion._id;
 
-  await TemplateQuestions(payload)
-    .save()
-    .then((item) => {
-      res.json({ success: true, data: item });
-    })
-    .catch((error) => {
-      res.status(500).json({ error: error.message });
+        const followUp = {
+          question,
+          answer,
+          newId,
+          template_id,
+          section_id,
+          questionType,
+          followBy: previousFollowBy,
+        };
+        parentQuestion.followUp.push(followUp);
+        await parentQuestion.save();
+        savedQuestion = parentQuestion;
+      } else {
+        const newQuestion = new TemplateQuestions({
+          question,
+          answer,
+          template_id,
+          section_id,
+          questionType,
+        });
+        savedQuestion = await newQuestion.save();
+      }
+    } else {
+      const newQuestion = new TemplateQuestions({
+        question,
+        answer,
+        template_id,
+        section_id,
+        questionType,
+      });
+      savedQuestion = await newQuestion.save();
+    }
+    res.status(201).json({
+      message: "Question and Answer created successfully",
+      question: savedQuestion,
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+  // await TemplateQuestions(payload)
+  //   .save()
+  //   .then((item) => {
+  //     res.json({ success: true, data: item });
+  //   })
+  //   .catch((error) => {
+  //     res.status(500).json({ error: error.message });
+  //   });
 };
 
 // Route to get paginated data

@@ -1,7 +1,20 @@
 const mongoose = require("mongoose");
 const schema = mongoose.Schema;
-const ans_Schema = new mongoose.Schema({
-  answer: { type: String },
+const FollowUpSchema = new mongoose.Schema({
+  // answer: { type: String },
+  question: {
+    type: String,
+    // required: true,
+  },
+  answer: {
+    type: String,
+    // required: true,
+  },
+  questionType: {
+    type: String,
+  },
+  newId: { type: String, required: true },
+  followBy: { type: String, required: true },
 });
 const answer_Schema = new schema(
   {
@@ -12,12 +25,15 @@ const answer_Schema = new schema(
     text: {
       type: String,
     },
-    answer: {
-      type: [ans_Schema],
-    },
     question: {
       type: String,
+      required: true,
     },
+    answer: {
+      type: String,
+      required: true,
+    },
+    followUp: [FollowUpSchema],
     question_type: {
       type: String,
     },

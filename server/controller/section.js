@@ -15,7 +15,6 @@ exports.addSection = async (req, res) => {
 
 // Route to get paginated data
 exports.getSection = async (req, res) => {
-  console.log("body params id?", req.query);
   const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
   const pageSize = parseInt(req.query.pageSize) || 10; // Get the page size or default to 10
 
@@ -30,7 +29,7 @@ exports.getSection = async (req, res) => {
     const data = await Section.find({
       tempplate_id: req.query.template_id,
     });
-    console.log("find match", data);
+
     // .skip(skip).limit(pageSize);
 
     res.json({

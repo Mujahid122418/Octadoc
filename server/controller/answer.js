@@ -3,7 +3,6 @@ const { populate } = require("../models/template");
 
 exports.addAnswer = async (req, res) => {
   const payload = req.body;
-
   await Answer(payload)
     .save()
     .then((item) => {
@@ -101,7 +100,6 @@ exports.updateAnswer = async (req, res) => {
 
 exports.addAnswer_Against_Question = async (req, res) => {
   const payload = req.body;
-  console.log("payload", payload);
   let { Q_id } = req.body;
   try {
     let d = await Answer.find({ follow_up_question_group_id: Q_id });
