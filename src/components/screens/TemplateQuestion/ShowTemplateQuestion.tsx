@@ -58,12 +58,6 @@ import { toast } from "react-toastify";
 const tabscolor = "#F2EBEF";
 const activetabColor = "#9F496E";
 
-function a11yProps(index: any) {
-  return {
-    id: `vertical-tab-${index}`,
-    "aria-controls": `vertical-tabpanel-${index}`,
-  };
-}
 interface Item {
   _id: string;
   // Add other properties as needed
