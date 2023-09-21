@@ -1,5 +1,5 @@
 const Section = require("../models/section");
-
+const Question = require("../models/templateQuestions");
 exports.addSection = async (req, res) => {
   const payload = req.body;
 
@@ -43,6 +43,7 @@ exports.getSection = async (req, res) => {
 };
 
 exports.deleteSection = async (req, res) => {
+  await Question.deleteMany({ section_id: req.params?.id });
   await Section.findByIdAndDelete(req.params?.id)
     .then((deletedPost) => {
       if (deletedPost) {

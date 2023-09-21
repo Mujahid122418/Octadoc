@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getSection } from "./SectionAPI";
+import { getSection, deleteSection } from "./SectionAPI";
 interface Template {
   tempplate_id: string;
   name: string;
@@ -43,6 +43,20 @@ export const sectionSlice = createSlice({
       state.isLoading = false;
     },
     [getSection.rejected.type]: (state, action) => {
+      state.status = "failed";
+      state.isLoading = false;
+    },
+
+    [deleteSection.pending.type]: (state, action) => {
+      state.status = "pending";
+      state.isLoading = true;
+    },
+    [deleteSection.fulfilled.type]: (state, { payload }) => {
+      state.status = "success";
+      state.section = payload;
+      state.isLoading = false;
+    },
+    [deleteSection.rejected.type]: (state, action) => {
       state.status = "failed";
       state.isLoading = false;
     },
