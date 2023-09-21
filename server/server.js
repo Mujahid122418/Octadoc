@@ -24,7 +24,7 @@ app.use(cors());
 app.use(errorHandler);
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+
 // app.use("/api", bootCamp);
 // app.use("/course", course);
 app.use("/auth", auth);
