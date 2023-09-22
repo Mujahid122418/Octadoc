@@ -108,7 +108,7 @@ export default function QuestionBar() {
       try {
         let data = {
           question: newQuestion,
-          answer: newAnswer,
+          answer: [newAnswer],
           template_id: template_id,
           section_id: activeSection,
           questionType: questionType,

@@ -6,6 +6,7 @@ const {
   deleteQuestion,
   updateQuestion,
   singleQuestion,
+  EditQuestions,
 } = require("../controller/templateQuestion");
 
 const router = express.Router();
@@ -13,6 +14,7 @@ const router = express.Router();
 // const { protect } = require('../middleware/auth');
 
 router.post("/question", addQuestion);
+router.put("/question/:id", EditQuestions);
 router.get("/question", getQuestion);
 router.delete("/question/:id", deleteQuestion);
 router.put("/question/:id", updateQuestion);
