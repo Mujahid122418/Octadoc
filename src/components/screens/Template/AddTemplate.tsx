@@ -19,7 +19,7 @@ import {
 } from "../../../redux/Template/TemplateSlice";
 import { getcategories } from "../../../redux/Admin/CategoryAPI";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Bounce } from 'react-reveal';
+
 
 const AddTemplate: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

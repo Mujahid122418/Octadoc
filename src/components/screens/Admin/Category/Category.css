@@ -24,7 +24,9 @@
         align-items: center !important;
         justify-content: center !important;
     }
-
+    .lowww{
+      opacity: 0.5 !important;
+    }
     .bandd{
       margin: 8px 8px;
       padding: 5px 10px !important;

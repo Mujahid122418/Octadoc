@@ -1,6 +1,6 @@
 import "./Paymentss.css";
 import Button2 from "../Button2/Button2";
-import { Bounce } from "react-reveal";
+import { Fade } from "react-reveal";
 import InputMask from "react-input-mask";
 import PaymentInfo from "./PAY";
 
@@ -17,7 +17,7 @@ const Paymentss = () => {
         <div className="payments-cards_pay">
           <div className="row d-flex justify-content-around">
             <div className="col-lg-4 col-md-6 col-sm-12">
-              <Bounce left>
+              <Fade bottom>
                 <div className="payment-card_pay">
                   <div className="card-head_pay">
                     <h5 className="mb-0">Weekly Subscription</h5>
@@ -70,11 +70,11 @@ const Paymentss = () => {
                     </ul>
                   </div>
                 </div>
-              </Bounce>
+              </Fade>
             </div>
 
             <div className="col-lg-4 col-md-6 col-sm-12">
-              <Bounce>
+              <Fade>
                 <div className="payment-card_pay">
                   <div className="card-head_pay">
                     <h5 className="mb-0">Monthly Subscription</h5>
@@ -127,11 +127,11 @@ const Paymentss = () => {
                     </ul>
                   </div>
                 </div>
-              </Bounce>
+              </Fade>
             </div>
 
             <div className="col-lg-4 col-md-6 col-sm-12">
-              <Bounce right>
+              <Fade bottom>
                 <div className="payment-card_pay">
                   <div className="card-head_pay">
                     <h5 className="mb-0">Yearly Subscription</h5>
@@ -185,16 +185,16 @@ const Paymentss = () => {
                     </ul>
                   </div>
                 </div>
-              </Bounce>
+              </Fade>
             </div>
           </div>
         </div>
 
         <div className="form-box">
-          <Bounce left>
+          <Fade bottom>
             <h4 className="mt-4 ms-3">Update Payment Method</h4>
-          </Bounce>
-          <Bounce bottom>
+          </Fade>
+          <Fade bottom>
             <div className="contact-box">
               <div className="row   d-flex justify-content-center">
                 <div className="col-lg-10 col-md-8 col-10 p-0">
@@ -243,12 +243,12 @@ const Paymentss = () => {
                 </div>
               </div>
             </div>
-          </Bounce>
+          </Fade>
 
-          <Bounce left>
+          <Fade bottom>
             <h4 className="mt-4 ms-3">Redeem Coupon</h4>
-          </Bounce>
-          <Bounce bottom>
+          </Fade>
+          <Fade bottom>
             <div className="contact-box">
               <div className="row   d-flex justify-content-center">
                 <div className="col-lg-10 col-md-8 col-10 p-0">
@@ -267,7 +267,7 @@ const Paymentss = () => {
                 </div>
               </div>
             </div>
-          </Bounce>
+          </Fade>
         </div>
       </div>
     </div>

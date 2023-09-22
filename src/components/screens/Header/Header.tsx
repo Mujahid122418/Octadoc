@@ -15,7 +15,7 @@ import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 import { useNavigate } from "react-router-dom";
 import { getMeFun } from "../../../redux/Auth/AuthAPI";
 import { AppDispatch } from "../../../redux/Store";
-import { Bounce } from "react-reveal";
+import { Fade } from "react-reveal";
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -67,7 +67,7 @@ const Header = () => {
     window.location.pathname === "/template" ||
     window.location.pathname === "/community";
   return (
-    <Bounce top>
+    
       <div className="header">
         <div className="d-flex align-items-center justify-content-end">
           <IconButton>
@@ -103,8 +103,10 @@ const Header = () => {
               horizontal: "left",
             }}
           >
+            <Link to="/profile">
             <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
+            </Link>
+            {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
             <Link to="/admin">
               <MenuItem onClick={handleClose}>Admin</MenuItem>
             </Link>
@@ -127,7 +129,7 @@ const Header = () => {
           </Menu>
         </div>
       </div>
-    </Bounce>
+    
   );
 };
 

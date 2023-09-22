@@ -12,7 +12,7 @@ import { AppDispatch } from "../../../../redux/Store";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import { Bounce } from "react-reveal";
+import { Fade } from "react-reveal";
 
 import Button2 from "../../Button2/Button2";
 import {
@@ -52,13 +52,13 @@ export default function Section() {
         }}
       >
         <div className="w-75">
-          <Bounce left>
+          <Fade bottom>
             <h3 className="ms-5 heading">Sections</h3>
-          </Bounce>
+          </Fade>
           <Paper sx={{ width: "100%", overflow: "hidden", margin: "0 auto" }}>
             {allcategory?.length > 0 &&
               allcategory?.map((category) => (
-                <Bounce>
+                <Fade>
                   <span className="bandd d-flex " key={category?._id}>
                     <div className="d-flex align-items-center">
                       {category.category}
@@ -75,7 +75,7 @@ export default function Section() {
                       </div>
                     </div>
                   </span>
-                </Bounce>
+                </Fade>
               ))}
           </Paper>
         </div>
