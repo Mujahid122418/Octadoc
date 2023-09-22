@@ -48,7 +48,6 @@ interface IAnswerBar {
   qna: any;
   setQna: (value: any) => void;
 
-  UpdateQuestionsArray: (value: any) => void;
   QuestionType: any;
 }
 
@@ -59,7 +58,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
   setNewQuestion,
   qna,
   setQna,
-  UpdateQuestionsArray,
+
   QuestionType,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -89,7 +88,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
 
     let data = {
       question: newQuestion,
-      answer: ["oy ja kam kr", newAnswer],
+      answer: [newAnswer],
       template_id: template_id,
       section_id: activeSection,
       questionType: QuestionType,
@@ -120,7 +119,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
       //       template_id: template_id,
       //       question: newQuestion,
       //       answer: newAnswer,
-      //       question_type: QuestionType,
+      //       questionType: QuestionType,
       //       follow_up_question_group_id: _id,
       //       question_id: _id,
       //     };
@@ -173,8 +172,6 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
     // };
     // console.log("call", getSingleQuestion);
   };
-
-  console.log(parent_id, "parent_id");
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
@@ -239,7 +236,6 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
             onClick={() => {
               addFollowUpQuestion();
               // addQuestionFollowupBtn();
-              // UpdateQuestionsArray("answer");
             }}
             icon={<AddIcon />}
           />

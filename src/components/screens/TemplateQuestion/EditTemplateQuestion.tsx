@@ -130,7 +130,7 @@ const EditTemplateQuestion = () => {
                               {item?.question}
                             </li>
                           </div>
-                          {item?.question_type === "Date Time" ? (
+                          {item?.questionType === "Date Time" ? (
                             <div className="answer mt-3 mb-2 ms-3">
                               <div className="first">
                                 <label>When did this start?</label>
@@ -154,7 +154,7 @@ const EditTemplateQuestion = () => {
                                 </div>
                               </div>
                             </div>
-                          ) : item?.question_type === "Dosage" ? (
+                          ) : item?.questionType === "Dosage" ? (
                             <div className="answer mt-3 mb-2 ms-3">
                               <div className="first">
                                 <label>When did this start?</label>
@@ -208,13 +208,13 @@ const EditTemplateQuestion = () => {
                                 labelPlacement="start"
                               />
                             </div>
-                          ) : item?.question_type === "Free Text" ? (
+                          ) : item?.questionType === "Free Text" ? (
                             <div className="answer mt-3 mb-2 ms-3">
                               <div className="first">
                                 <input type="text" placeholder="Free Text" />
                               </div>
                             </div>
-                          ) : item?.question_type === "Multiple Choice" ? (
+                          ) : item?.questionType === "Multiple Choice" ? (
                             <FormControlLabel
                               className="ms-1"
                               control={
@@ -225,7 +225,7 @@ const EditTemplateQuestion = () => {
                               }
                               label="Hide this from your clinical notes"
                             />
-                          ) : item?.question_type === "Single Choice" ? (
+                          ) : item?.questionType === "Single Choice" ? (
                             <div className="answer mt-3 mb-2 ms-3">
                               <div className="first">
                                 <input

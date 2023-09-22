@@ -190,14 +190,13 @@ const ShowTemplateQuestion = () => {
   // let test = sectionData.some((item) => item._id !== activeTab);
   // console.log("test", test);
 
-  const EditFollow = async (edit: { _id: string }, id: string) => {
-    console.log(id, "edit?._id", id, "----------------->");
-    let res = await axios.put(`http://localhost:5051/question/${id}`, {
-      question: "what is your ages?",
-      answer: ["hassan", "habib tahir"],
-      // followUpId: edit?._id,
-    });
-    console.log(res, "res===>");
+  const EditFollow = async (edit: { _id: string }, parentId: string) => {
+    console.log(edit?._id, "edit?._id", parentId, "----------------->");
+    // let res = await axios.put(`http://localhost:5051/question/${id}`, {
+    //   question: "what is your ages?",
+    //   answer: ["hassan", "habib tahir"],
+    //   // followUpId: edit?._id,
+    // });
   };
 
   const SectionDetails = section?.map((item, index) => {
@@ -519,22 +518,24 @@ const ShowTemplateQuestion = () => {
                                       //   label={item?.answer}
                                       // />
                                     )}
-                                    {item?.followUp.map((e1: any) => {
+                                    {item?.followUp.map((e1: any, i: any) => {
                                       return (
                                         <>
                                           <div style={{ padding: 20 }}>
-                                            <li>{e1.question}</li>
+                                            <li>
+                                              {++i}:- {e1.question}
+                                            </li>
                                             {e1?.answer.map((item: any) => (
                                               <li>{item}</li>
                                             ))}
                                           </div>
-                                          <button
+                                          {/* <button
                                             onClick={() =>
                                               EditFollow(e1, item._id)
                                             }
                                           >
                                             edit
-                                          </button>
+                                          </button> */}
                                         </>
                                       );
                                     })}

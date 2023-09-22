@@ -68,7 +68,7 @@ exports.addQuestion = async (req, res) => {
 exports.EditQuestions = async (req, res) => {
   try {
     const { id } = req.params;
-    const { question, answer, followUpId } = req.body;
+    const { question, answer, followUpId, questionType } = req.body;
     const existingQuestion = await TemplateQuestions.findById(id);
     if (!existingQuestion) {
       return res.status(404).json({ error: "Question not found" });
@@ -82,6 +82,8 @@ exports.EditQuestions = async (req, res) => {
       }
       followUpQuestion.question = question;
       followUpQuestion.answer = answer;
+      followUpQuestion.questionType = questionType;
+
       const updatedQuestion = await existingQuestion.save();
       return res.status(200).json({
         message: "Follow-up Question and Answer updated successfully",
@@ -90,6 +92,7 @@ exports.EditQuestions = async (req, res) => {
     }
     existingQuestion.question = question;
     existingQuestion.answer = answer;
+    existingQuestion.questionType = questionType;
     const updatedQuestion = await existingQuestion.save();
     res.status(200).json({
       message: "Question and Answer updated successfully",
@@ -233,60 +236,55 @@ exports.singleQuestion = async (req, res) => {
 
   try {
     const totalDocuments = await TemplateQuestions.countDocuments(); // Get the total number of documents
-
     const totalPages = Math.ceil(totalDocuments / pageSize); // Calculate the total number of pages
-
     const skip = (page - 1) * pageSize; // Calculate the number of documents to skip
 
     // Query and retrieve paginated data
 
     // Find data based on the query
-    // { _id: req?.params.id }
 
     const data1 = await TemplateQuestions.findOne({ _id: req.params.id })
       .lean()
       .skip(skip)
       .limit(pageSize);
 
-    let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
+    // let ans = await Answer.find({ question_id: { $in: data1 } }).lean();
 
-    // const data = (await Object.keys(data1).length) > 0;
+    // const matchingObjB = ans?.find(
+    //   (objB) => objB?.question_id.toString() == data1?._id?.toString()
+    // );
 
-    const matchingObjB = ans?.find(
-      (objB) => objB?.question_id.toString() == data1?._id?.toString()
-    );
+    // let {
+    //   follow_up_question_group_id,
+    //   text,
+    //   question_id,
+    //   template_id,
+    //   _id,
+    //   answer,
+    //   question,
+    //   question_type,
+    // } = matchingObjB;
+    // let answerD = {
+    //   follow_up_question_group_id,
+    //   text,
+    //   question_id,
+    //   template_id,
+    //   ans_id: _id,
 
-    let {
-      follow_up_question_group_id,
-      text,
-      question_id,
-      template_id,
-      _id,
-      answer,
-      question,
-      question_type,
-    } = matchingObjB;
-    let answerD = {
-      follow_up_question_group_id,
-      text,
-      question_id,
-      template_id,
-      ans_id: _id,
-
-      answer,
-      question,
-      question_type,
-    };
-    let objA = {
-      _id: data1?._id,
-      template_id: data1?.template_id,
-      question: data1?.question,
-      question_type: data1?.question_type,
-    };
-    let v = { ...objA, answerD };
+    //   answer,
+    //   question,
+    //   question_type,
+    // };
+    // let objA = {
+    //   _id: data1?._id,
+    //   template_id: data1?.template_id,
+    //   question: data1?.question,
+    //   question_type: data1?.question_type,
+    // };
+    // let v = { ...objA, answerD };
 
     res.json({
-      data: v,
+      data: data1,
       currentPage: page,
       totalPages,
       count: totalDocuments,
