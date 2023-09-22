@@ -1,5 +1,5 @@
 declare module "react-reveal" {
-  const Bounce: any; // Use 'any' as a fallback if no type definitions are available
+  const Fade: any; // Use 'any' as a fallback if no type definitions are available
   // Declare other components or functions from 'react-reveal' if needed
 }
 

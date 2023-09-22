@@ -18,6 +18,8 @@ import Category from "./components/screens/Admin/Category/Category";
 import Contactt from "./components/screens/Contactt/Contactt";
 import Paymentss from "./components/screens/Paymentss/Paymentss";
 import Section from "./components/screens/Admin/Section.js/Section";
+import Profilee from "./components/screens/Profilee/Profilee";
+
 
 function App() {
   return (
@@ -42,6 +44,17 @@ function App() {
                 <Header />
                 <SideBar />
                 <Setting />
+              </div>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Profilee />
               </div>
             }
           />

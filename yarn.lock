@@ -160,7 +160,7 @@
     "@babel/helper-compilation-targets" "^7.22.6"
     "@babel/helper-plugin-utils" "^7.22.5"
     debug "^4.1.1"
-    lodash.debounce "^4.0.8"
+    lodash.deFade "^4.0.8"
     resolve "^1.14.2"
 
 "@babel/helper-environment-visitor@^7.22.5":
@@ -6754,9 +6754,9 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash.debounce@^4.0.8:
+lodash.deFade@^4.0.8:
   version "4.0.8"
-  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  resolved "https://registry.yarnpkg.com/lodash.deFade/-/lodash.deFade-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
 
 lodash.memoize@^4.1.2:

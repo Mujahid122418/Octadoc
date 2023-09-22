@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch , useSelector } from "react-redux";
 import type { RootState } from "../../../redux/Store";
 import CircularProgress from '@mui/material/CircularProgress';
-import { Bounce } from 'react-reveal';
+import { Fade } from 'react-reveal';
 
 
 
@@ -34,7 +34,7 @@ export default function SendMail() {
 
   return (
     <div className="login-Container" style={{ height: window.innerHeight }}>
-      <Bounce bottom>
+      <Fade bottom>
       <div className="email-wrap">
         <div className="login-html">
           <input
@@ -80,7 +80,7 @@ export default function SendMail() {
           </div>
         </div>
       </div>
-      </Bounce>
+      </Fade>
     </div>
   );
 }

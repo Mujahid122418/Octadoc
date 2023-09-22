@@ -6,6 +6,10 @@
    box-shadow: var(--box-shadow);
 }
 
+.icon-size{
+   font-size: var(--icon-size) !important;
+}
+
 a:hover{
  color: var(--color) !important;
 }

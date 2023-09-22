@@ -13,7 +13,7 @@ exports.addAnswer = async (req, res) => {
     });
 };
 
-// Route to get paginated data
+// Route to get paginated data ///
 exports.getAnswer = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
   const pageSize = parseInt(req.query.pageSize) || 10; // Get the page size or default to 10

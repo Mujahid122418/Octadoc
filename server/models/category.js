@@ -6,6 +6,11 @@ const category_Schema = new schema(
     category: {
       type: String,
     },
+    enable:{
+      type: Boolean,
+     
+      default: true,
+    }
   },
   { timestamps: true }
 );

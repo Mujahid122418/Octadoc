@@ -168,7 +168,7 @@ const ShowTemplateQuestion = () => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "50%",
-    bgcolor: "background.paper",
+    bgcolor: "white",
     // border: "2px solid #000",
     boxShadow: 24,
     pt: 2,
@@ -260,8 +260,8 @@ const ShowTemplateQuestion = () => {
 
                         zIndex: 1,
                       }}
-                    >
-                      <CancelIcon />
+                    > 
+                      <CancelIcon className="icon-size" />
                     </IconButton>
                     <Box
                       onClick={() => {
@@ -326,7 +326,7 @@ const ShowTemplateQuestion = () => {
                     </div>
                   </div>
                   <div className="question-head">
-                    <HelpOutlineIcon />{" "}
+                    <HelpOutlineIcon className="icon-size" />{" "}
                     <h5 className="mb-0 ms-1">
                       {sectionName ? sectionName : "Select Section"}{" "}
                     </h5>
@@ -356,7 +356,7 @@ const ShowTemplateQuestion = () => {
                                 >
                                   <div>
                                     <li>
-                                      <ArrowForwardIosRoundedIcon />
+                                      <ArrowForwardIosRoundedIcon className="icon-size" />
                                       {item?.question}
                                     </li>
                                   </div>
@@ -375,7 +375,7 @@ const ShowTemplateQuestion = () => {
                                           updateTemplateQuestion(item)
                                         }
                                       >
-                                        <EditIcon />
+                                        <EditIcon className="icon-size" />
                                       </IconButton>
                                       <IconButton
                                         aria-label="delete"
@@ -383,7 +383,7 @@ const ShowTemplateQuestion = () => {
                                           DeleteTemplateQuestion(item?._id)
                                         }
                                       >
-                                        <DeleteIcon />
+                                        <DeleteIcon className="icon-size" />
                                       </IconButton>
                                       <Tooltip title="Add Followup">
                                         <IconButton
@@ -391,7 +391,7 @@ const ShowTemplateQuestion = () => {
                                             updateTemplateQuestion(item)
                                           }
                                         >
-                                          <AddIcon />
+                                          <AddIcon className="icon-size" />
                                         </IconButton>
                                       </Tooltip>
                                     </Stack>
