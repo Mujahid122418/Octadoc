@@ -52,6 +52,7 @@ import { deleteSection, getSection } from "../../../redux/Section/SectionAPI";
 import SectionModal from "./SectionModel";
 import { activeSectionFun } from "../../../redux/Section/SectionSlice";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 // ===== tabs =====
 
@@ -85,6 +86,7 @@ const ShowTemplateQuestion = () => {
     editQuestionModel,
     getAnswer,
     EditSelectedQuestion,
+    parent_id,
   } = useSelector((state: RootState) => state?.templateQuestion);
   // model state start
   const [open, setOpen] = useState(false);
@@ -187,6 +189,16 @@ const ShowTemplateQuestion = () => {
 
   // let test = sectionData.some((item) => item._id !== activeTab);
   // console.log("test", test);
+
+  const EditFollow = async (edit: { _id: string }, id: string) => {
+    console.log(id, "edit?._id", id, "----------------->");
+    let res = await axios.put(`http://localhost:5051/question/${id}`, {
+      question: "what is your ages?",
+      answer: ["hassan", "habib tahir"],
+      // followUpId: edit?._id,
+    });
+    console.log(res, "res===>");
+  };
 
   const SectionDetails = section?.map((item, index) => {
     return (
@@ -489,32 +501,41 @@ const ShowTemplateQuestion = () => {
                                 ) : item?.questionType === "Multiple Choice" ? (
                                   <div>
                                     {item?.answer && (
-                                      <FormControlLabel
-                                        className="ms-1"
-                                        control={
-                                          <Checkbox
-                                            defaultChecked
-                                            style={customRadioStyle}
-                                          />
-                                        }
-                                        label={item.answer}
-                                      />
+                                      <ul>
+                                        {item?.answer.map(
+                                          (item: any, index: any) => (
+                                            <li key={index}>{item}</li>
+                                          )
+                                        )}
+                                      </ul>
+                                      // <FormControlLabel
+                                      //   className="ms-1"
+                                      //   control={
+                                      //     <Checkbox
+                                      //       defaultChecked
+                                      //       style={customRadioStyle}
+                                      //     />
+                                      //   }
+                                      //   label={item?.answer}
+                                      // />
                                     )}
                                     {item?.followUp.map((e1: any) => {
                                       return (
-                                        <div style={{ padding: 20 }}>
-                                          <li>{e1.question}</li>
-                                          <FormControlLabel
-                                            className="ms-1"
-                                            control={
-                                              <Checkbox
-                                                defaultChecked
-                                                style={customRadioStyle}
-                                              />
+                                        <>
+                                          <div style={{ padding: 20 }}>
+                                            <li>{e1.question}</li>
+                                            {e1?.answer.map((item: any) => (
+                                              <li>{item}</li>
+                                            ))}
+                                          </div>
+                                          <button
+                                            onClick={() =>
+                                              EditFollow(e1, item._id)
                                             }
-                                            label={e1.answer}
-                                          />
-                                        </div>
+                                          >
+                                            edit
+                                          </button>
+                                        </>
                                       );
                                     })}
                                   </div>

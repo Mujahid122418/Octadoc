@@ -89,7 +89,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
 
     let data = {
       question: newQuestion,
-      answer: newAnswer,
+      answer: ["oy ja kam kr", newAnswer],
       template_id: template_id,
       section_id: activeSection,
       questionType: QuestionType,
