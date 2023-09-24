@@ -195,7 +195,7 @@ const ShowTemplateQuestion = () => {
     let res = await axios.put(`http://localhost:5051/question/${id}`, {
       question: "what is your ages?",
       answer: ["hassan", "habib tahir"],
-      // followUpId: edit?._id,
+      followUpId: edit?._id,
     });
     console.log(res, "res===>");
   };

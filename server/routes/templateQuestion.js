@@ -7,6 +7,7 @@ const {
   updateQuestion,
   singleQuestion,
   EditQuestions,
+  DeleteQuestions,
 } = require("../controller/templateQuestion");
 
 const router = express.Router();
@@ -15,6 +16,7 @@ const router = express.Router();
 
 router.post("/question", addQuestion);
 router.put("/question/:id", EditQuestions);
+router.delete("/question/:questionId", DeleteQuestions);
 router.get("/question", getQuestion);
 router.delete("/question/:id", deleteQuestion);
 router.put("/question/:id", updateQuestion);
