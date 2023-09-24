@@ -260,7 +260,7 @@ const ShowTemplateQuestion = () => {
 
                         zIndex: 1,
                       }}
-                    > 
+                    >
                       <CancelIcon className="icon-size" />
                     </IconButton>
                     <Box
