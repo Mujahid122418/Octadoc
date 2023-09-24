@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 
 import ViewStreamIcon from "@mui/icons-material/ViewStream";
@@ -11,6 +11,8 @@ import Stack from "@mui/material/Stack";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../redux/Store";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { Baseurl } from "../../../utils/BaseUrl";
 
 interface ICard {
   item: any;
@@ -20,7 +22,26 @@ interface ICard {
 
 const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
   const { user } = useSelector((state: RootState) => state?.auth);
+  const [template, setTemplate] = useState("");
+  const [question, setQuestion] = useState("");
+  const initTemplate = async () => {
+    let { data } = await axios.get(Baseurl + `/question?page=1&pageSize=20`);
 
+    let { count } = data;
+
+    setQuestion(count);
+  };
+  const initQuestion = async () => {
+    let { data } = await axios.get(Baseurl + `/template/template`);
+
+    let { count } = data;
+
+    setTemplate(count);
+  };
+  useEffect(() => {
+    initTemplate();
+    initQuestion();
+  }, []);
   return (
     <div className="col-lg-4 col-md-6 mt-4">
       <div className="card-box">
@@ -39,7 +60,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
                   <ViewStreamIcon />
                 </IconButton>
                 <div className="band">
-                  <p>12</p>
+                  <p>{template}</p>
                 </div>
               </div>
               <div className="icon-box">
@@ -47,7 +68,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
                   <QuestionMarkIcon />
                 </IconButton>
                 <div className="band">
-                  <p>2</p>
+                  <p>{question}</p>
                 </div>
               </div>
             </div>

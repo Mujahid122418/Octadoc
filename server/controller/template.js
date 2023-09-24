@@ -37,6 +37,7 @@ exports.getTemplate = async (req, res) => {
       data,
       currentPage: page,
       totalPages,
+      count: totalDocuments,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
