@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import './Contactt.css';
 import Button2 from '../Button2/Button2';
-import { Bounce } from 'react-reveal';
+import { Fade } from 'react-reveal';
 import emailjs from '@emailjs/browser';
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Contactt = () => {
@@ -13,14 +13,13 @@ const Contactt = () => {
     setsendmail({ ...sendmail, [e.target.name]: e.target.value });
   };
 
-  const formRef = useRef<any>(null);// Create a ref for the form element
+  const formRef = useRef<any>(null);
 
   console.log("ref",formRef.current);
-  
 
   const handleClickBtn = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // Pass the form element using the ref
+
     emailjs
       .sendForm('service_ibq1b1i', 'template_9ivg4da',formRef.current, 'KGKjRSyJd1IJQhcXg')
       .then(
@@ -43,14 +42,14 @@ const Contactt = () => {
     <div>
       <div className="container mb-5">
         <div className="form-box">
-          <Bounce left>
+          <Fade bottom>
             <h4 className="mt-4 ms-3">Contact Information</h4>
-          </Bounce>
-          <Bounce bottom>
+          </Fade>
+          <Fade bottom>
             <div className="contact-box">
               <div className="row d-flex justify-content-center">
                 <div className="col-lg-6 col-md-8 col-10 p-0">
-                  <form className="bg-white w-100" ref={formRef}> {/* Attach the ref to the form */}
+                  <form className="bg-white w-100" ref={formRef}> 
                     <div className="form-group">
                       <input
                         type="text"
@@ -91,7 +90,7 @@ const Contactt = () => {
                 </div>
               </div>
             </div>
-          </Bounce>
+          </Fade>
         </div>
       </div>
     </div>

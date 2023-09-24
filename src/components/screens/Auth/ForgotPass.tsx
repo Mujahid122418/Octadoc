@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useDispatch , useSelector } from "react-redux";
 import type { RootState } from "../../../redux/Store";
 import CircularProgress from '@mui/material/CircularProgress';
-import { Bounce } from 'react-reveal';
+import { Fade } from 'react-reveal';
 
 
 export default function ForgotPass() {
@@ -45,7 +45,7 @@ export default function ForgotPass() {
 
   return (
     <div className="login-Container" style={{ height: window.innerHeight }}>
-      <Bounce right>
+      <Fade bottom>
       <div className="forgot-wrap">
         <div className="login-html">
           <input
@@ -107,7 +107,7 @@ export default function ForgotPass() {
           </div>
         </div>
       </div>
-      </Bounce>
+      </Fade>
     </div>
   );
 }
