@@ -143,7 +143,7 @@ export default function QuestionBar() {
     let pass = {
       name: newQuestion,
       template_id: window.location.href.split("/questions/")[1],
-      question_type: questionType,
+      questionType: questionType,
     };
 
     dispatch(passQuestionFun(pass));

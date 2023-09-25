@@ -17,7 +17,7 @@ export const addQuestionFunAPI = createAsyncThunk(
 );
 
 export const UpdateQuestionFunAPI = createAsyncThunk(
-  "/addQuestion",
+  "/updateQuestion",
   async (data: any) => {
     try {
       const response = await axios.put(Baseurl + `/question/${data?.id}`, data);
@@ -57,14 +57,11 @@ export const getAnswers = createAsyncThunk("/getAnswers", async (data: any) => {
 export const getSingleQuestionFun = createAsyncThunk(
   "/singleQueston",
   async (data: any) => {
-    console.log("data call", data);
-
     try {
       const response = await axios.get(
         Baseurl +
           `/singleQueston/${data?.id}?page=${data.page}&pageSize=${data.pageSize}`
       );
-      console.log(" response api", response.data?.data);
 
       return response.data?.data;
     } catch (error) {

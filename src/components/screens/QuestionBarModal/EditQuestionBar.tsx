@@ -37,10 +37,11 @@ import {
 import { toast } from "react-toastify";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import { create_UUID } from "../../../utils/UUID";
 import EditAnswerBar from "./Answerpart/EditAnswerbar";
+import EditFollowupModel from "./EditFollowupModel";
 
 interface StateType {
   // Define your state properties here
@@ -86,19 +87,6 @@ export default function EditQuestionBar() {
   const [newAnswer, setNewAnswer] = useState<string>("");
 
   const [QuestionType, setQuestionType] = useState("");
-  const UpdateQuestionsArray = (e: any) => {
-    // const updatedQna = [...qna];
-    // updatedQna.push({
-    //   question: newQuestion,
-    //   answer: newAnswer,
-    //   QuestionType: QuestionType,
-    //   Qindex: createUUID(),
-    //   followUp: [],
-    // });
-    // setQna(updatedQna);
-    // setNewQuestion("");
-    // setNewAnswer("");
-  };
 
   // ===collpase====
   const [expanded, setExpanded] = useState(false);
@@ -119,7 +107,7 @@ export default function EditQuestionBar() {
           id: EditSelectedQuestion?._id,
           question: newQuestion,
           template_id: template_id,
-          question_type: questionType,
+          questionType: QuestionType,
         };
 
         dispatch(UpdateQuestionFunAPI(data))
@@ -183,8 +171,8 @@ export default function EditQuestionBar() {
   useEffect(() => {
     if (getSingleQuestion) {
       setNewQuestion(getSingleQuestion?.question);
-      setQuestionType(getSingleQuestion?.question_type);
-      setNewAnswer(getSingleQuestion?.answerD?.answer);
+      setQuestionType(getSingleQuestion?.questionType);
+      setNewAnswer(getSingleQuestion?.answer);
     }
   }, [getSingleQuestion]);
   // get all answers start
@@ -197,17 +185,32 @@ export default function EditQuestionBar() {
   }, []);
   // get all answers end
 
-  const DeleteAns = async (e: any) => {
+  const DeleteAns = async (e: any, parent_id: any) => {
     try {
-      dispatch(DeleteAnswer(e)).then(() => {
-        let data = {
-          page: 1,
-          pageSize: 20,
-        };
-        dispatch(getAnswers(data));
-      });
+      console.log("item id", e, parent_id);
+
+      // dispatch(DeleteAnswer(e)).then(() => {
+      //   let data = {
+      //     page: 1,
+      //     pageSize: 20,
+      //   };
+      //   dispatch(getAnswers(data));
+      // });
     } catch (error) {}
   };
+  // edit states of followup question start
+  const [editFollowUpModel, setEditFollowUpModel] = useState(false);
+  const [editFollowUp, setEditFollowUp] = useState({});
+
+  const EditFollowupAns = async (e: any, parent_id: any) => {
+    try {
+      setEditFollowUpModel(true);
+      setEditFollowUp(e);
+    } catch (error) {
+      console.log("EditFollowupAns err", error);
+    }
+  };
+  // edit states of followup question end
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 550 }} role="presentation">
       <IconButton
@@ -298,7 +301,6 @@ export default function EditQuestionBar() {
                 name="Add Answer"
                 onClick={() => {
                   addQuestionFollowupBtn();
-                  UpdateQuestionsArray("question");
                 }}
                 icon={<AddIcon />}
               />
@@ -311,54 +313,61 @@ export default function EditQuestionBar() {
                 borderRadius: 8,
               }}
             >
-              {getAnswer?.length > 0 ? (
-                getAnswer
-                  .filter(
-                    (item: any) =>
-                      item.follow_up_question_group_id === parent_id
-                  )
-                  .map((item: any) => {
-                    return (
-                      <div
+              {Object.keys(getSingleQuestion).length ? (
+                // getSingleQuestion
+                //   .filter((item: any) => item._id === parent_id)
+                getSingleQuestion.followUp.map((item: any, i: any) => {
+                  return (
+                    <div
+                      style={{
+                        borderRadius: 5,
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        padding: 10,
+                        borderBottom: "0.25px solid rgb(211, 211, 211)",
+                      }}
+                    >
+                      <div>
+                        <div>
+                          Q {++i} :- {item.question}
+                          {/* <input
+                            type="text"
+                            value={item.question}
+                            onChange={(e) =>
+                              console.log("edit ques", e.target.value)
+                            }
+                          /> */}
+                        </div>
+                        <div>A: {item.answer}</div>
+                      </div>
+                      <Stack
+                        direction="row"
+                        spacing={1}
                         style={{
-                          borderRadius: 5,
                           display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          padding: 10,
-                          borderBottom: "0.25px solid rgb(211, 211, 211)",
+                          justifyContent: "flex-end",
                         }}
                       >
-                        {item.answer.map((e: any) => {
-                          return <div> {e.answer}</div>;
-                        })}
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                          }}
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => EditFollowupAns(item, parent_id)}
+                          size="small"
                         >
-                          {/* <IconButton
-                            aria-label="delete"
-                            // onClick={() => EditAnsewer(item)}
-                            size="small"
-                          >
-                            <EditIcon sx={{ width: 15, height: 15 }} />
-                          </IconButton> */}
-                          <IconButton
-                            aria-label="delete"
-                            size="small"
-                            onClick={() => DeleteAns(item?._id)}
-                            // onClick={() => console.log("del", item?._id)}
-                          >
-                            <DeleteIcon sx={{ width: 15, height: 15 }} />
-                          </IconButton>
-                        </Stack>
-                      </div>
-                    );
-                  })
+                          <EditIcon sx={{ width: 15, height: 15 }} />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          onClick={() => DeleteAns(item?._id, parent_id)}
+                          // onClick={() => console.log("del", item?._id)}
+                        >
+                          <DeleteIcon sx={{ width: 15, height: 15 }} />
+                        </IconButton>
+                      </Stack>
+                    </div>
+                  );
+                })
               ) : (
                 <textarea name="" id="" cols={30} rows={5} />
               )}
@@ -386,6 +395,11 @@ export default function EditQuestionBar() {
 
   return (
     <div>
+      <EditFollowupModel
+        editFollowUpModel={editFollowUpModel}
+        setEditFollowUpModel={setEditFollowUpModel}
+        editFollowUp={editFollowUp}
+      />
       <Drawer anchor={anchor} open={state[anchor]}>
         {list(anchor)}
       </Drawer>
@@ -397,7 +411,6 @@ export default function EditQuestionBar() {
         setNewQuestion={setNewQuestion}
         qna={qna}
         setQna={setQna}
-        UpdateQuestionsArray={UpdateQuestionsArray}
         QuestionType={QuestionType}
       />
     </div>
