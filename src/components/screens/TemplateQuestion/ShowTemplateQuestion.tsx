@@ -148,7 +148,10 @@ const ShowTemplateQuestion = () => {
     dispatch(ParentId_Fun(e._id));
   };
   const DeleteTemplateQuestion = async (id: any) => {
-    dispatch(DeleteQuestion(id))
+    let data = {
+      questionId: id,
+    };
+    dispatch(DeleteQuestion(data))
       .unwrap()
       .then((res) => {
         let data = {

@@ -114,9 +114,15 @@ export const getAnswerFunAPI = createAsyncThunk(
 
 export const DeleteQuestion = createAsyncThunk(
   "question/deleteQuestion",
-  async (id: any) => {
+  async (data: any) => {
+    console.log("id del", data);
+
     try {
-      const response = await axios.delete(Baseurl + `/question/question/${id}`);
+      const response = await axios.post(
+        // Baseurl + `/question/${data?.id}/${data?.followUpId}`
+        Baseurl + `/questionDelete`,
+        data
+      );
 
       return response.data;
     } catch (error) {

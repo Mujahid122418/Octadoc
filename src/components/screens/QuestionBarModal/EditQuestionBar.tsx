@@ -29,6 +29,7 @@ import AddIcon from "@mui/icons-material/Add";
 import {
   addQuestionFunAPI,
   DeleteAnswer,
+  DeleteQuestion,
   getAnswers,
   getQuestion,
   getSingleQuestionFun,
@@ -188,16 +189,34 @@ export default function EditQuestionBar() {
   const DeleteAns = async (e: any, parent_id: any) => {
     try {
       console.log("item id", e, parent_id);
+      let data = {
+        questionId: parent_id,
+        followUpId: e,
+      };
+      console.log("data", data);
 
-      // dispatch(DeleteAnswer(e)).then(() => {
-      //   let data = {
-      //     page: 1,
-      //     pageSize: 20,
-      //   };
-      //   dispatch(getAnswers(data));
-      // });
+      dispatch(DeleteQuestion(data))
+        .unwrap()
+        .then((res) => {
+          let data = {
+            page: 1,
+            pageSize: 20,
+          };
+          let data1 = {
+            id: EditSelectedQuestion?._id,
+            page: 1,
+            pageSize: 20,
+          };
+
+          dispatch(getSingleQuestionFun(data1));
+          dispatch(getQuestion(data));
+        })
+        .catch((e) => {
+          console.log("delete question", e);
+        });
     } catch (error) {}
   };
+
   // edit states of followup question start
   const [editFollowUpModel, setEditFollowUpModel] = useState(false);
   const [editFollowUp, setEditFollowUp] = useState({});

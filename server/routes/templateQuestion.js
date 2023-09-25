@@ -3,7 +3,7 @@ const express = require("express");
 const {
   addQuestion,
   getQuestion,
-  deleteQuestion,
+  // deleteQuestion,
   updateQuestion,
   singleQuestion,
   EditQuestions,
@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post("/question", addQuestion);
 router.put("/question/:id", EditQuestions);
-router.delete("/question/:questionId", DeleteQuestions);
+router.post("/questionDelete", DeleteQuestions);
 router.get("/question", getQuestion);
 // router.delete("/question/:id", deleteQuestion);
 router.put("/question/:id", updateQuestion);

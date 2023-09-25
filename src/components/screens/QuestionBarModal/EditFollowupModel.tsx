@@ -1,37 +1,24 @@
 import { useEffect, useState } from "react";
 import "./QuestionBar.css";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import Button2 from "../Button2/Button2";
-import HelpCenterIcon from "@mui/icons-material/HelpCenter";
-import HighlightAltIcon from "@mui/icons-material/HighlightAlt";
-import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
+import Button2 from "../Button2/Button2";
+
 import type { RootState } from "../../../redux/Store";
-import Stack from "@mui/material/Stack";
-import QuestionBar from "../QuestionBarModal/QuestionBar";
+
 import List from "@mui/material/List";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
 
-import CancelIcon from "@mui/icons-material/Cancel";
 import {
   getQuestion,
   getAnswers,
   DeleteQuestion,
   UpdateQuestionFunAPI,
+  getSingleQuestionFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestionAPI";
-import { useNavigate } from "react-router-dom";
-
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 
 import Box from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
-import AddIcon from "@mui/icons-material/Add";
+
 import {
   IconButton,
   Tooltip,
@@ -39,13 +26,6 @@ import {
   CircularProgress,
   Button,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteSection, getSection } from "../../../redux/Section/SectionAPI";
-
-import { activeSectionFun } from "../../../redux/Section/SectionSlice";
-import { toast } from "react-toastify";
-import axios from "axios";
 
 // ===== tabs =====
 
@@ -86,7 +66,7 @@ const EditFollowupModel: React.FC<IFollowupBar> = ({
     activeSection,
     isLoading: isLoadingSecton,
   } = useSelector((state: RootState) => state?.section);
-  const { parent_id } = useSelector(
+  const { parent_id, EditSelectedQuestion } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
   const DeleteTemplateQuestion = async (id: any) => {
@@ -125,14 +105,24 @@ const EditFollowupModel: React.FC<IFollowupBar> = ({
       answer: [newAnswer],
       questionType: QuestionType,
     };
+    console.log("data update", data);
 
     dispatch(UpdateQuestionFunAPI(data)).then(() => {
       let data = {
         page: 1,
         pageSize: 20,
       };
+      let data1 = {
+        id: EditSelectedQuestion?._id,
+        page: 1,
+        pageSize: 20,
+      };
+      console.log("data 1", data1);
+
+      dispatch(getSingleQuestionFun(data1));
       dispatch(getQuestion(data));
       setEditFollowUpModel(false);
+      // window.location.reload();
     });
   };
 
@@ -186,7 +176,6 @@ const EditFollowupModel: React.FC<IFollowupBar> = ({
                 className="form-select mt-1"
                 value={QuestionType}
                 onChange={(e) => {
-                  //   dispatch(questionTypeFun(e.target.value));
                   setQuestionType(e.target.value);
                 }}
               >

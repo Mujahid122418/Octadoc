@@ -70,7 +70,11 @@ exports.EditQuestions = async (req, res) => {
   try {
     const { id } = req.params;
     const { question, answer, followUpId, questionType } = req.body;
+
+    console.log("update api", req.body);
+
     const existingQuestion = await TemplateQuestions.findById(id);
+    // console.log("existingQuestion", existingQuestion);
     if (!existingQuestion) {
       return res.status(404).json({ error: "Question not found" });
     }
@@ -83,7 +87,7 @@ exports.EditQuestions = async (req, res) => {
       }
       followUpQuestion.question = question;
       followUpQuestion.answer = answer;
-      followUpQuestion.questionType = questionType;
+      // followUpQuestion.questionType = questionType;
 
       const updatedQuestion = await existingQuestion.save();
       return res.status(200).json({
@@ -93,7 +97,7 @@ exports.EditQuestions = async (req, res) => {
     }
     existingQuestion.question = question;
     existingQuestion.answer = answer;
-    existingQuestion.questionType = questionType;
+    // existingQuestion.questionType = questionType;
     const updatedQuestion = await existingQuestion.save();
     res.status(200).json({
       message: "Question and Answer updated successfully",
@@ -108,42 +112,39 @@ exports.EditQuestions = async (req, res) => {
 //Delet Questions
 exports.DeleteQuestions = async (req, res) => {
   try {
-    const { questionId } = req.params;
-    const { followUpId } = req.body;
-    console.log("follow up", followUpId);
-    const deletedQuestion = await TemplateQuestions.findById(questionId);
-    console.log("deletedQuestion", deletedQuestion);
-    // if (!deletedQuestion) {
-    //   return res.status(404).json({ error: "Question not found" });
-    // }
-    // if (followUpId && questionId) {
-    //   const updatedQuestion = await TemplateQuestions.findByIdAndUpdate(
-    //     questionId,
-    //     {
-    //       $pull: { followUp: { _id: mongoose.Types.ObjectId(followUpId) } },
-    //     },
-    //     { new: true }
-    //   );
+    const { questionId, followUpId } = req.body;
 
-    //   if (!updatedQuestion) {
-    //     return res.status(404).json({ error: "Question not found" });
-    //   }
+    if (followUpId && questionId) {
+      const updatedQuestion = await TemplateQuestions.findByIdAndUpdate(
+        questionId,
+        {
+          $pull: { followUp: { _id: followUpId } },
+        },
+        { new: true }
+      );
 
-    //   return res.status(200).json({
-    //     message: "Follow-up Question and Answer deleted successfully",
-    //   });
-    // }
-    // await deletedQuestion.remove();
-
-    return res.status(200).json({
-      message: "Question deleted successfully",
-    });
+      if (!updatedQuestion) {
+        return res.status(404).json({ error: "Question not found" });
+      }
+      return res.status(200).json({
+        message: "Follow-up Question and Answer deleted successfully",
+      });
+    } else {
+      const deletedQuestion = await TemplateQuestions.findByIdAndDelete(
+        questionId
+      );
+      if (!deletedQuestion) {
+        return res.status(404).json({ error: "Question not found" });
+      }
+      return res.status(200).json({
+        message: "Question deleted successfully",
+      });
+    }
   } catch (error) {
-    console.error(error);
+    console.error("error delm,", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 // Route to get paginated data
 exports.getQuestion = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
@@ -219,28 +220,28 @@ exports.getQuestion = async (req, res) => {
 };
 
 exports.deleteQuestion = async (req, res) => {
-  await FollowUp.deleteMany({ question_id: req.params?.id });
-  await Answer.deleteMany({ question_id: req.params?.id });
-  await TemplateQuestions.findByIdAndDelete(req.params?.id)
-    .then((deletedPost) => {
-      if (deletedPost) {
-        res.status(200).send({
-          success: true,
-          message: "Delete successfully",
-        });
-      } else {
-        res.status(400).send({
-          success: false,
-          message: "Not found ",
-        });
-      }
-    })
-    .catch((error) => {
-      res.status(500).send({
-        success: false,
-        message: error.message,
-      });
-    });
+  // await FollowUp.deleteMany({ question_id: req.params?.id });
+  // await Answer.deleteMany({ question_id: req.params?.id });
+  // await TemplateQuestions.findByIdAndDelete(req.params?.id)
+  //   .then((deletedPost) => {
+  //     if (deletedPost) {
+  //       res.status(200).send({
+  //         success: true,
+  //         message: "Delete successfully",
+  //       });
+  //     } else {
+  //       res.status(400).send({
+  //         success: false,
+  //         message: "Not found ",
+  //       });
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     res.status(500).send({
+  //       success: false,
+  //       message: error.message,
+  //     });
+  //   });
 };
 
 exports.updateQuestion = async (req, res) => {
