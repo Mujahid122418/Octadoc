@@ -110,16 +110,13 @@ exports.DeleteQuestions = async (req, res) => {
   try {
     const { questionId } = req.params;
     const { followUpId } = req.body;
-    const deletedQuestion = await TemplateQuestions.findById(questionId);
+    console.log(questionId, followUpId);
 
-    if (!deletedQuestion) {
-      return res.status(404).json({ error: "Question not found" });
-    }
     if (followUpId && questionId) {
       const updatedQuestion = await TemplateQuestions.findByIdAndUpdate(
         questionId,
         {
-          $pull: { followUp: { _id: mongoose.Types.ObjectId(followUpId) } },
+          $pull: { followUp: { _id: followUpId } },
         },
         { new: true }
       );
@@ -127,34 +124,25 @@ exports.DeleteQuestions = async (req, res) => {
       if (!updatedQuestion) {
         return res.status(404).json({ error: "Question not found" });
       }
-      // ----------------------------------------
-      // Update the followBy field of the next follow-up question
-      // const followUpIndex = updatedQuestion?.followUp?.findIndex(
-      //   (followUp) => followUp?._id.toString() === followUpId
-      // );
-      // if (followUpIndex < updatedQuestion?.followUp.length - 1) {
-      //   updatedQuestion.followUp[followUpIndex + 1].followBy =
-      //     followUpIndex > 0
-      //       ? updatedQuestion?.followUp[followUpIndex - 1]._id
-      //       : null;
-      // }
-      // await updatedQuestion.save();
-      // ------------------------------------------
       return res.status(200).json({
         message: "Follow-up Question and Answer deleted successfully",
       });
+    } else {
+      const deletedQuestion = await TemplateQuestions.findByIdAndDelete(
+        questionId
+      );
+      if (!deletedQuestion) {
+        return res.status(404).json({ error: "Question not found" });
+      }
+      return res.status(200).json({
+        message: "Question deleted successfully",
+      });
     }
-    await deletedQuestion.remove();
-
-    return res.status(200).json({
-      message: "Question deleted successfully",
-    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 // Route to get paginated data
 exports.getQuestion = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
