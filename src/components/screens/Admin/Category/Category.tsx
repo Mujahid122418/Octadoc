@@ -25,7 +25,6 @@ import {
 
 import { Box } from "@mui/system";
 
-
 interface CategoryState {
   selectedcategory: {
     _id: string; // Make sure to use the correct data type of _id
@@ -40,8 +39,6 @@ export default function Category() {
 
   const [open, setopen] = useState(false);
   const [id, setid] = useState();
-
-
 
   const [category, setcategory] = useState("");
   const [selectedcategory, setselectedcategory] = useState(null);
@@ -109,16 +106,14 @@ export default function Category() {
   };
 
   const actionHandler = (e: any) => {
-   
-  console.log(e);
-  
+    console.log(e);
 
     const editdata = {
       id: e?._id,
       enable: !e?.enable,
     };
-     console.log("edit data",editdata);
-    
+    console.log("edit data", editdata);
+
     dispatch(updatecategory(editdata)).then(() =>
       dispatch(getcategories(dataa))
     );
@@ -200,22 +195,32 @@ export default function Category() {
             <Fade bottom>
               {allcategory?.length > 0 &&
                 allcategory?.map((category) => (
-                  <span  className={`bandd d-flex ${category?.enable ? '' :  'lowww'}` } key={category?._id}>
+                  <span
+                    className={`bandd d-flex ${
+                      category?.enable ? "" : "lowww"
+                    }`}
+                    key={category?._id}
+                  >
                     <div className="d-flex align-items-center">
                       {category.category}
-
-                      <div className="actionn">
-                        <EditRoundedIcon
-                          className="edi"
-                          onClick={() => handleClick(category)}
-                        />
-                      </div>
-                      <div className="actionn">
-                        <DeleteIcon
-                          className="del"
-                          onClick={() => twofunction(category?._id)}
-                        />
-                      </div>
+                      {category?.enable ? (
+                        <>
+                          <div className="actionn">
+                            <EditRoundedIcon
+                              className="edi"
+                              onClick={() => handleClick(category)}
+                            />
+                          </div>
+                          <div className="actionn">
+                            <DeleteIcon
+                              className="del"
+                              onClick={() => twofunction(category?._id)}
+                            />
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
                       {category?.enable ? (
                         <div className="actionn">
                           <VisibilityIcon
