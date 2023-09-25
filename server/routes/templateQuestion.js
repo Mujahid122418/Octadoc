@@ -18,7 +18,7 @@ router.post("/question", addQuestion);
 router.put("/question/:id", EditQuestions);
 router.delete("/question/:questionId", DeleteQuestions);
 router.get("/question", getQuestion);
-router.delete("/question/:id", deleteQuestion);
+// router.delete("/question/:id", deleteQuestion);
 router.put("/question/:id", updateQuestion);
 router.get("/singleQueston/:id", singleQuestion);
 

@@ -110,41 +110,30 @@ exports.DeleteQuestions = async (req, res) => {
   try {
     const { questionId } = req.params;
     const { followUpId } = req.body;
+    console.log("follow up", followUpId);
     const deletedQuestion = await TemplateQuestions.findById(questionId);
+    console.log("deletedQuestion", deletedQuestion);
+    // if (!deletedQuestion) {
+    //   return res.status(404).json({ error: "Question not found" });
+    // }
+    // if (followUpId && questionId) {
+    //   const updatedQuestion = await TemplateQuestions.findByIdAndUpdate(
+    //     questionId,
+    //     {
+    //       $pull: { followUp: { _id: mongoose.Types.ObjectId(followUpId) } },
+    //     },
+    //     { new: true }
+    //   );
 
-    if (!deletedQuestion) {
-      return res.status(404).json({ error: "Question not found" });
-    }
-    if (followUpId && questionId) {
-      const updatedQuestion = await TemplateQuestions.findByIdAndUpdate(
-        questionId,
-        {
-          $pull: { followUp: { _id: mongoose.Types.ObjectId(followUpId) } },
-        },
-        { new: true }
-      );
+    //   if (!updatedQuestion) {
+    //     return res.status(404).json({ error: "Question not found" });
+    //   }
 
-      if (!updatedQuestion) {
-        return res.status(404).json({ error: "Question not found" });
-      }
-      // ----------------------------------------
-      // Update the followBy field of the next follow-up question
-      // const followUpIndex = updatedQuestion?.followUp?.findIndex(
-      //   (followUp) => followUp?._id.toString() === followUpId
-      // );
-      // if (followUpIndex < updatedQuestion?.followUp.length - 1) {
-      //   updatedQuestion.followUp[followUpIndex + 1].followBy =
-      //     followUpIndex > 0
-      //       ? updatedQuestion?.followUp[followUpIndex - 1]._id
-      //       : null;
-      // }
-      // await updatedQuestion.save();
-      // ------------------------------------------
-      return res.status(200).json({
-        message: "Follow-up Question and Answer deleted successfully",
-      });
-    }
-    await deletedQuestion.remove();
+    //   return res.status(200).json({
+    //     message: "Follow-up Question and Answer deleted successfully",
+    //   });
+    // }
+    // await deletedQuestion.remove();
 
     return res.status(200).json({
       message: "Question deleted successfully",
