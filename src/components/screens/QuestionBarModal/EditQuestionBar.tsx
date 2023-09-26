@@ -109,16 +109,24 @@ export default function EditQuestionBar() {
           question: newQuestion,
           template_id: template_id,
           questionType: QuestionType,
-        };
+          answer: EditSelectedQuestion?.answer,
 
-        dispatch(UpdateQuestionFunAPI(data))
-          .unwrap()
-          .then((response) => {
-            dispatch(getQuestion(data));
-          })
-          .catch((error) => {
-            toast.error(error);
-          });
+          // answer: [newAnswer],
+
+          // section_id: activeSection,
+
+          parentId: parent_id,
+        };
+        console.log("update", data);
+
+        // dispatch(UpdateQuestionFunAPI(data))
+        //   .unwrap()
+        //   .then((response) => {
+        //     dispatch(getQuestion(data));
+        //   })
+        //   .catch((error) => {
+        //     toast.error(error);
+        //   });
       } catch (error) {
         console.log("err", error);
       }
@@ -358,7 +366,7 @@ export default function EditQuestionBar() {
                             }
                           /> */}
                         </div>
-                        <div>A: {item.answer}</div>
+                        <div>A: {item?.answer}</div>
                       </div>
                       <Stack
                         direction="row"

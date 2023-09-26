@@ -19,9 +19,22 @@ import Contactt from "./components/screens/Contactt/Contactt";
 import Paymentss from "./components/screens/Paymentss/Paymentss";
 import Section from "./components/screens/Admin/Section.js/Section";
 import Profilee from "./components/screens/Profilee/Profilee";
-
+import Draggable from "react-draggable";
+import { useState } from "react";
+import Demo from "./Test";
 
 function App() {
+  const items = [
+    { id: 1, text: "Item 1", position: { x: 0, y: 0 } },
+    { id: 2, text: "Item 2", position: { x: 100, y: 100 } },
+    { id: 3, text: "Item 3", position: { x: 200, y: 200 } },
+  ];
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleDrag = (e: any, data: any, item: any) => {
+    // Handle drag for the specific item
+    console.log("Dragging Item", item.id);
+  };
   return (
     <div className="body">
       <BrowserRouter>
@@ -65,7 +78,7 @@ function App() {
               <div className="position-relative">
                 <Header />
                 <SideBar />
-                {/* <Template /> */}
+
                 <Home />
               </div>
             }

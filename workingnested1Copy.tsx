@@ -75,7 +75,7 @@ const App: React.FC = () => {
             />
             <input
               type="text"
-              value={item.answers}
+              value={item?.answers}
               placeholder="Answers"
               onChange={(e) => {
                 const value = e.target.value;

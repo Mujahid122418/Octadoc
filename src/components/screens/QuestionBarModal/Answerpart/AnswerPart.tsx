@@ -86,7 +86,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
     // EditSelectedQuestion.map((item: any) => {
     //   newData.push({
     //     question: item.question,
-    //     answer: item.answer,
+    //     answer: item?.answer,
     //     QuestionType: item.QuestionType,
     //     followUp: item.followUp,
     //     Qindex: item.Qindex,

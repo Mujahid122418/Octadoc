@@ -4,6 +4,7 @@ const {
   getSection,
   deleteSection,
   updateSection,
+  updateManySection,
   // getSectionTemplate
 } = require("../controller/section");
 
@@ -12,6 +13,8 @@ const router = express.Router();
 // const { protect } = require('../middleware/auth');
 
 router.post("/section", addSection);
+router.post("/sectionUpdateMany", updateManySection);
+
 router.get("/section", getSection);
 router.delete("/section/:id", deleteSection);
 router.put("/section/:id", updateSection);

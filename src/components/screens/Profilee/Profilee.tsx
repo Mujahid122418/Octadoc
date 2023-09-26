@@ -11,8 +11,6 @@ import { toast } from "react-toastify";
 import { Fade } from "react-reveal";
 import { countries } from "./country";
 
-console.log("countries", countries);
-
 const Profilee = () => {
   const dispatch = useDispatch<AppDispatch>();
 

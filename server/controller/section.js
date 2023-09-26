@@ -29,6 +29,7 @@ exports.getSection = async (req, res) => {
     const data = await Section.find({
       tempplate_id: req.query.template_id,
     });
+    let newData = data.sort((a, b) => a.order - b.order);
 
     // .skip(skip).limit(pageSize);
 
@@ -95,5 +96,41 @@ exports.updateSection = async (req, res) => {
 exports.getSectionTemplate = async (req, res) => {
   try {
     console.log("get ", req.body);
+  } catch (error) {}
+};
+
+exports.updateManySection = async (req, res) => {
+  try {
+    req.body.map(async (item) => {
+      const filter = { _id: item._id }; // Use the document's _id as the filter
+      const update = { $set: { order: item.order } };
+      console.log("filter", filter);
+      console.log("update", update);
+      try {
+        await Section.findByIdAndUpdate(filter, item, {
+          new: true,
+          runValidators: true,
+        }).then((updatedPost) => {
+          if (updatedPost) {
+            res.status(200).send({
+              success: true,
+              message: "Updated successfully",
+              // data: updatedPost,
+            });
+          } else {
+            res.status(400).send({
+              success: false,
+              message: "Not found",
+            });
+          }
+        });
+
+        // console.log(
+        //   `Updated document with _id ${item._id}, modified count: ${result.modifiedCount}`
+        // );
+      } catch (error) {
+        console.error(`Error updating document with _id ${item._id}:`, error);
+      }
+    });
   } catch (error) {}
 };

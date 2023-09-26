@@ -12,7 +12,6 @@ const Paymentss = () => {
   };
   return (
     <div>
-      <PaymentInfo />
       <div className="container mb-5">
         <div className="payments-cards_pay">
           <div className="row d-flex justify-content-around">
@@ -67,6 +66,11 @@ const Paymentss = () => {
                       <li></li>
                       <li></li>
                       <li></li>
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <PaymentInfo />
+                      </div>
                     </ul>
                   </div>
                 </div>
@@ -124,6 +128,11 @@ const Paymentss = () => {
                       <li></li>
                       <li></li>
                       <li></li>
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <PaymentInfo />
+                      </div>
                     </ul>
                   </div>
                 </div>
@@ -182,6 +191,11 @@ const Paymentss = () => {
                         <GrainIcon className="ion" />
                         Prompt support at the click of a button
                       </li>
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <PaymentInfo />
+                      </div>
                     </ul>
                   </div>
                 </div>
@@ -190,7 +204,7 @@ const Paymentss = () => {
           </div>
         </div>
 
-        <div className="form-box">
+        {/* <div className="form-box">
           <Fade bottom>
             <h4 className="mt-4 ms-3">Update Payment Method</h4>
           </Fade>
@@ -268,7 +282,7 @@ const Paymentss = () => {
               </div>
             </div>
           </Fade>
-        </div>
+        </div> */}
       </div>
     </div>
   );

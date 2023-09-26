@@ -71,8 +71,6 @@ exports.EditQuestions = async (req, res) => {
     const { id } = req.params;
     const { question, answer, followUpId, questionType } = req.body;
 
-    console.log("update api", req.body);
-
     const existingQuestion = await TemplateQuestions.findById(id);
     // console.log("existingQuestion", existingQuestion);
     if (!existingQuestion) {

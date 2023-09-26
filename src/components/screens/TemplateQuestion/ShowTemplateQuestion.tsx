@@ -13,7 +13,8 @@ import FormControl from "@mui/material/FormControl";
 import type { RootState } from "../../../redux/Store";
 import Stack from "@mui/material/Stack";
 import QuestionBar from "../QuestionBarModal/QuestionBar";
-
+import Draggable from "react-draggable";
+import ReactDragListView from "react-drag-listview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
 import {
@@ -33,11 +34,8 @@ import EditQuestionBar, {
   customRadioStyle,
 } from "../QuestionBarModal/EditQuestionBar";
 
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-
 import Box from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
+
 import AddIcon from "@mui/icons-material/Add";
 import {
   IconButton,
@@ -53,18 +51,13 @@ import SectionModal from "./SectionModel";
 import { activeSectionFun } from "../../../redux/Section/SectionSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { Baseurl } from "../../../utils/BaseUrl";
 
 // ===== tabs =====
 
 const tabscolor = "#F2EBEF";
 const activetabColor = "#9F496E";
 
-function a11yProps(index: any) {
-  return {
-    id: `vertical-tab-${index}`,
-    "aria-controls": `vertical-tabpanel-${index}`,
-  };
-}
 interface Item {
   _id: string;
   // Add other properties as needed
@@ -73,37 +66,75 @@ interface Item {
 
 const ShowTemplateQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
+
   const [section, setSection] = useState([1]);
   const [openSection, setOpenSection] = useState(false);
   // active tab
   const [activeTab, setActiveTab] = useState<Item[]>([]);
 
-  const {
-    isLoading,
-    addQuestionModel,
-    getQuestions,
-    editQuestionModel,
-    getAnswer,
-    EditSelectedQuestion,
-    parent_id,
-  } = useSelector((state: RootState) => state?.templateQuestion);
+  const { isLoading, addQuestionModel, getQuestions, editQuestionModel } =
+    useSelector((state: RootState) => state?.templateQuestion);
+  const { template } = useSelector((state: RootState) => state?.template);
   // model state start
   const [open, setOpen] = useState(false);
   const [delete_item, setDelete_item] = useState("");
-
+  // template name
+  const [TemplateName, setTemplateName] = useState("");
   const handleClose = () => {
     setOpen(false);
   };
 
   // model state end
-
+  // handel section start
   const {
     section: sectionData,
     activeSection,
     isLoading: isLoadingSecton,
   } = useSelector((state: RootState) => state?.section);
+  const [sectionArry, setSectionArry] = useState<any>([]);
+  useEffect(() => {
+    setSectionArry(sectionData);
+  }, [sectionData]);
+  const updateOrder = async (data: any) => {
+    console.log("data update", data);
 
+    let res = await axios.post(Baseurl + `/section/sectionUpdateMany`, data);
+    console.log("res.data", res.data);
+
+    if (res.data.success) {
+      toast.success(res.data.message);
+      console.log("res test", res.data);
+      let data = {
+        page: 1,
+        pageSize: 20,
+        tempplate_id: tem_id,
+      };
+
+      dispatch(getSection(data));
+    }
+  };
+  const dragProps = {
+    onDragEnd(fromIndex: any, toIndex: any) {
+      const newColumns = [...sectionArry];
+
+      const item = newColumns.splice(fromIndex, 1)[0];
+
+      newColumns.splice(toIndex, 0, item);
+      setSectionArry(newColumns);
+      const updatedItems = newColumns.map((item, index) => {
+        return {
+          ...item,
+          order: index + 1,
+        };
+      });
+
+      updateOrder(updatedItems);
+      // console.log("data", data);
+    },
+    nodeSelector: "div",
+  };
+
+  // handel section end
   let tem_id = window.location.href.split("/questions/")[1];
   useEffect(() => {
     let data = {
@@ -116,6 +147,8 @@ const ShowTemplateQuestion = () => {
     dispatch(getSection(data));
   }, []);
 
+  // console.log("tem_id", tem_id);
+
   const AddQuestionModel = async () => {
     if (!activeSection) {
       toast.error("Please Select Active Section.");
@@ -125,16 +158,6 @@ const ShowTemplateQuestion = () => {
         dispatch(addQuestionModelFun(!addQuestionModel));
       } catch (error) {}
     }
-  };
-  const CopyModel = () => {};
-
-  const AddSection = async (e: any) => {
-    setSection((current) => [...current, ++e]);
-  };
-
-  const EditSection = async (e: any) => {
-    // let id = window.location.href.split("/questions/")[1];
-    // navigate(`/questions/edit/${id}`);
   };
 
   // ====tabs======
@@ -164,6 +187,15 @@ const ShowTemplateQuestion = () => {
         console.log("delete question", e);
       });
   };
+  const init = async () => {
+    let data = await template.filter((item) => item?._id == tem_id);
+
+    let name = data[0]?.template_name;
+    setTemplateName(name ? name : "");
+  };
+  useEffect(() => {
+    init();
+  }, [tem_id]);
 
   const style = {
     position: "absolute" as "absolute",
@@ -178,6 +210,7 @@ const ShowTemplateQuestion = () => {
     px: 4,
     pb: 3,
   };
+
   const HandelDeleteSection = () => {
     dispatch(deleteSection(delete_item)).then((res) => {
       setOpen(!open);
@@ -190,21 +223,9 @@ const ShowTemplateQuestion = () => {
     });
   };
 
-  // let test = sectionData.some((item) => item._id !== activeTab);
-  // console.log("test", test);
-
-  const EditFollow = async (edit: { _id: string }, parentId: string) => {
-    console.log(edit?._id, "edit?._id", parentId, "----------------->");
-    // let res = await axios.put(`http://localhost:5051/question/${id}`, {
-    //   question: "what is your ages?",
-    //   answer: ["hassan", "habib tahir"],
-    //   // followUpId: edit?._id,
-    // });
-  };
-
   const SectionDetails = section?.map((item, index) => {
     return (
-      <>
+      <div key={index}>
         {/* handel model start */}
         <Modal
           open={open}
@@ -248,73 +269,80 @@ const ShowTemplateQuestion = () => {
             }}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
-              {sectionData?.length ? (
-                sectionData.map((item: any) => (
-                  <div style={{ width: 250 }}>
-                    <IconButton
-                      onClick={() => {
-                        setOpen(!open);
-                        setDelete_item(item._id);
-                      }}
-                      style={{
-                        position: "absolute",
-                        marginTop: "2px",
-                        marginLeft: "-15px",
+              <ReactDragListView {...dragProps}>
+                {sectionArry?.length ? (
+                  sectionArry.map((item: any, i: any) => (
+                    <div style={{ width: 220, marginTop: 15 }}>
+                      <IconButton
+                        onClick={() => {
+                          setOpen(!open);
+                          setDelete_item(item._id);
+                        }}
+                        style={{
+                          position: "absolute",
+                          marginTop: "-10px",
+                          marginLeft: "-15px",
+                          zIndex: 1,
+                        }}
+                      >
+                        <CancelIcon className="icon-size" />
+                      </IconButton>
+                      <button
+                        className="btn btn-template mx-2"
+                        onClick={() => {
+                          setValue(item?._id);
+                          setSectionName(item?.name);
+                          dispatch(activeSectionFun(item?._id));
+                          activeTab.includes(item)
+                            ? setActiveTab(activeTab.filter((i) => i !== item))
+                            : setActiveTab([item]);
+                        }}
+                        style={{
+                          border: "none",
+                          display: "flex",
+                          justifyItems: "center",
+                          alignItems: "center",
+                          height: 50,
+                          textAlign: "center",
+                          marginTop: "20px",
+                          justifyContent: "center",
+                          backgroundColor: activeTab.includes(item)
+                            ? activetabColor
+                            : tabscolor,
 
-                        zIndex: 1,
-                      }}
-                    >
-                      <CancelIcon className="icon-size" />
-                    </IconButton>
-                    <Box
-                      onClick={() => {
-                        setValue(item?._id);
-                        setSectionName(item?.name);
-                        dispatch(activeSectionFun(item?._id));
-                        activeTab.includes(item)
-                          ? setActiveTab(activeTab.filter((i) => i !== item))
-                          : setActiveTab([item]);
-                      }}
-                      sx={{
-                        display: "flex",
-                        justifyItems: "center",
-                        alignItems: "center",
-                        height: 50,
-                        textAlign: "center",
-                        marginTop: "20px",
-                        justifyContent: "center",
-                        backgroundColor: activeTab.includes(item)
-                          ? activetabColor
-                          : tabscolor,
+                          width: activeTab.includes(item) ? "100%" : "90%",
 
-                        width: activeTab.includes(item) ? "100%" : "90%",
-
-                        color: activeTab.includes(item) ? "white" : null,
-                        borderBottomColor: activeTab.includes(item)
-                          ? null
-                          : "#9d62f5",
-                        borderBottomWidth: "2px",
-                        borderRadius: activeTab.includes(item) ? "10px" : "5px",
-                        clipPath: activeTab.includes(item)
-                          ? "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)"
-                          : null,
-                      }}
-                    >
-                      {item?.name}
-                    </Box>
-                  </div>
-                ))
-              ) : (
-                <p>you did not have any tabs</p>
-              )}
+                          color: activeTab.includes(item) ? "white" : "black",
+                          borderBottomColor: activeTab.includes(item)
+                            ? "black"
+                            : "#9d62f5",
+                          borderBottomWidth: "2px",
+                          borderRadius: activeTab.includes(item)
+                            ? "10px"
+                            : "5px",
+                          clipPath: activeTab.includes(item)
+                            ? "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)"
+                            : "black",
+                        }}
+                      >
+                        {item?.name}
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <p>you did not have any tabs</p>
+                )}
+              </ReactDragListView>
             </div>
 
             <div style={{ width: "100%" }}>
               <div key={index}>
                 <div className="questions-box">
                   <div className="d-flex justify-content-between ">
-                    <h3 className="text-white">Questions</h3>
-                    <div
+                    <h3 className="text-white">
+                      {TemplateName ? TemplateName : "Template Name"}
+                    </h3>
+                    {/* <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -325,11 +353,11 @@ const ShowTemplateQuestion = () => {
                       }}
                     >
                       <Button2 name="Copy" onClick={CopyModel} />
-                      {/* <Button2 name="Edit" onClick={() => EditSection(item)} /> */}
-                    </div>
+                      <Button2 name="Edit" onClick={() => EditSection(item)} />
+                    </div> */}
                   </div>
                   <div className="question-head">
-                    <HelpOutlineIcon className="icon-size" />{" "}
+                    {/* <HelpOutlineIcon className="icon-size" />{" "} */}
                     <h5 className="mb-0 ms-1">
                       {sectionName ? sectionName : "Select Section"}{" "}
                     </h5>
@@ -502,11 +530,11 @@ const ShowTemplateQuestion = () => {
                                   </div>
                                 ) : item?.questionType === "Multiple Choice" ? (
                                   <div>
-                                    {item?.answer && (
+                                    {item?.answer.length > 0 && (
                                       <ul>
                                         {item?.answer.map(
                                           (item: any, index: any) => (
-                                            <li key={index}>{item}</li>
+                                            <li key={index}> {item}</li>
                                           )
                                         )}
                                       </ul>
@@ -548,7 +576,7 @@ const ShowTemplateQuestion = () => {
                                     {item?.answer && (
                                       <input
                                         disabled
-                                        value={item.answer}
+                                        value={item?.answer}
                                         type="text"
                                         placeholder="Free Text"
                                       />
@@ -561,7 +589,7 @@ const ShowTemplateQuestion = () => {
                                           <div className="first">
                                             <input
                                               disabled
-                                              value={e1.answer}
+                                              value={e1?.answer}
                                               type="text"
                                               placeholder="Free Text"
                                             />
@@ -601,7 +629,7 @@ const ShowTemplateQuestion = () => {
         </div>
 
         {/* =====tabs end ====== */}
-      </>
+      </div>
     );
   });
 

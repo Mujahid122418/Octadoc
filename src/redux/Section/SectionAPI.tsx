@@ -6,8 +6,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const getSection = createAsyncThunk(
   "section/getSection",
   async (data: any) => {
-    console.log("getSection ===> ", data);
-
     try {
       const response = await axios.get(
         Baseurl +

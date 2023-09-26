@@ -43,7 +43,7 @@
     border-radius: 5px;
 }
 .coll-band p{
-    font-weight: 300 !important;
+    font-weight: 400 !important;
     color: var(--color);
     font-size: var(--smaller-font);
     text-align: center;
