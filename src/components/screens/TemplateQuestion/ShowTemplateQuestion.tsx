@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import type { RootState } from "../../../redux/Store";
 import Stack from "@mui/material/Stack";
 import QuestionBar from "../QuestionBarModal/QuestionBar";
-import Draggable from "react-draggable";
+// import Draggable from "react-draggable";
 import ReactDragListView from "react-drag-listview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/Store";
@@ -69,6 +69,9 @@ const ShowTemplateQuestion = () => {
 
   const [section, setSection] = useState([1]);
   const [openSection, setOpenSection] = useState(false);
+  const [upSection, setupSection] = useState({});
+  
+  
   // active tab
   const [activeTab, setActiveTab] = useState<Item[]>([]);
 
@@ -251,10 +254,13 @@ const ShowTemplateQuestion = () => {
             </div>
           </Box>
         </Modal>
+
         {/* handel model end  */}
         <SectionModal
           openSection={openSection}
           setOpenSection={setOpenSection}
+          upSection={upSection}
+          setupSection={setupSection}
         />
 
         {/* ======= tabs ====== */}
@@ -269,10 +275,11 @@ const ShowTemplateQuestion = () => {
             }}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <ReactDragListView {...dragProps}>
+              <ReactDragListView
+              {...dragProps}>
                 {sectionArry?.length ? (
                   sectionArry.map((item: any, i: any) => (
-                    <div style={{ width: 220, marginTop: 15 }}>
+                    <div style={{ width: 220, marginTop: 15 , position:'relative' }}>
                       <IconButton
                         onClick={() => {
                           setOpen(!open);
@@ -287,6 +294,22 @@ const ShowTemplateQuestion = () => {
                       >
                         <CancelIcon className="icon-size" />
                       </IconButton>
+
+                      <IconButton
+                        onClick={() => {
+                          setOpenSection(true);
+                          setupSection(item)
+                        }}
+                        style={{
+                          position: "absolute",
+                          marginTop: "25px",
+                          marginLeft: "-15px",
+                          zIndex: 1,
+                        }}
+                      >
+                        <EditIcon className="icon-size" />
+                      </IconButton>
+
                       <button
                         className="btn btn-template mx-2"
                         onClick={() => {
