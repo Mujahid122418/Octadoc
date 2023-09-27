@@ -36,6 +36,23 @@ export const addSection = createAsyncThunk(
     }
   }
 );
+
+export const updateSection = createAsyncThunk(
+  "section/updateSection",
+  async (data: any) => {
+    console.log("send data section", data);
+
+    try {
+      const response = await axios.put(Baseurl + `/section/section/${data.id}`, data);
+      console.log("response.data?.data section", response.data?.data);
+
+      return response.data?.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const deleteSection = createAsyncThunk(
   "section/deleteSection",
   async (data: any) => {

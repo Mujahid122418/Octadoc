@@ -78,7 +78,6 @@ function App() {
               <div className="position-relative">
                 <Header />
                 <SideBar />
-
                 <Home />
               </div>
             }
