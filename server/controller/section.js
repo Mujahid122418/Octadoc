@@ -124,10 +124,6 @@ exports.updateManySection = async (req, res) => {
             });
           }
         });
-
-        // console.log(
-        //   `Updated document with _id ${item._id}, modified count: ${result.modifiedCount}`
-        // );
       } catch (error) {
         console.error(`Error updating document with _id ${item._id}:`, error);
       }
