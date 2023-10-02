@@ -155,7 +155,7 @@ const EditAnswerBar: React.FC<IAnswerBar> = ({
 
   // update answer
   useEffect(() => {
-    if (Object.keys(EditAnswer).length > 0) {
+    if (Object.keys(EditAnswer)?.length > 0) {
       setNewAnswer(EditAnswer?.ans);
     }
   }, [EditAnswer]);

@@ -20,7 +20,6 @@ import {
 import { getcategories } from "../../../redux/Admin/CategoryAPI";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-
 const AddTemplate: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -63,7 +62,7 @@ const AddTemplate: React.FC = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(selectedTemplate).length > 0) {
+    if (Object.keys(selectedTemplate)?.length > 0) {
       setName(selectedTemplate?.template_name);
       setdescription(selectedTemplate?.description);
       setCommunity(JSON.parse(selectedTemplate?.isapprove));
@@ -129,12 +128,9 @@ const AddTemplate: React.FC = () => {
 
   return (
     <div>
-     
       {/* <Button onClick={handleOpen}>Open Child Modal</Button> */}
       <Modal open={open} onClose={handleClose}>
-      
         <Box className="modalStyle">
-
           <div className="modal-header">
             <h1 className="modal-title fs-5">New Template</h1>
             <button
@@ -208,7 +204,7 @@ const AddTemplate: React.FC = () => {
             {/* ===== form end ==== */}
           </div>
           <div className="modal-footer">
-            {Object.keys(selectedTemplate).length > 0 ? (
+            {Object.keys(selectedTemplate)?.length > 0 ? (
               <Button2 name="Update" onClick={handleClickBtnUpdate} />
             ) : isLoading ? (
               <LoadingButton
@@ -223,11 +219,8 @@ const AddTemplate: React.FC = () => {
               <Button2 name="Submit" onClick={handleClickBtn} />
             )}
           </div>
-        
         </Box>
-        
       </Modal>
-      
     </div>
   );
 };

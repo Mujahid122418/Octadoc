@@ -119,14 +119,14 @@ export default function EditQuestionBar() {
         };
         console.log("update", data);
 
-        // dispatch(UpdateQuestionFunAPI(data))
-        //   .unwrap()
-        //   .then((response) => {
-        //     dispatch(getQuestion(data));
-        //   })
-        //   .catch((error) => {
-        //     toast.error(error);
-        //   });
+        dispatch(UpdateQuestionFunAPI(data))
+          .unwrap()
+          .then((response) => {
+            dispatch(getQuestion(data));
+          })
+          .catch((error) => {
+            toast.error(error);
+          });
       } catch (error) {
         console.log("err", error);
       }
@@ -166,7 +166,7 @@ export default function EditQuestionBar() {
   // handel qdit question
 
   useEffect(() => {
-    if (Object.keys(EditSelectedQuestion).length > 0) {
+    if (Object.keys(EditSelectedQuestion)?.length > 0) {
       let data = {
         id: EditSelectedQuestion?._id,
         page: 1,
@@ -340,7 +340,7 @@ export default function EditQuestionBar() {
                 borderRadius: 8,
               }}
             >
-              {Object.keys(getSingleQuestion).length ? (
+              {Object.keys(getSingleQuestion)?.length ? (
                 // getSingleQuestion
                 //   .filter((item: any) => item._id === parent_id)
                 getSingleQuestion.followUp.map((item: any, i: any) => {
