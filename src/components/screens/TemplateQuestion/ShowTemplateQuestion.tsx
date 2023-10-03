@@ -94,6 +94,8 @@ const ShowTemplateQuestion = () => {
     activeSection,
     isLoading: isLoadingSecton,
   } = useSelector((state: RootState) => state?.section);
+ 
+  
   const [sectionArry, setSectionArry] = useState<any>([]);
   useEffect(() => {
     setSectionArry(sectionData);
