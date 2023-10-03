@@ -167,8 +167,10 @@ const ShowTemplateQuestion = () => {
   };
 
   // ====tabs======
+
   const [value, setValue] = useState("");
   const [sectionName, setSectionName] = useState("");
+
   // ====tabs end======
 
   const updateTemplateQuestion = async (e: any) => {
@@ -279,16 +281,19 @@ const ShowTemplateQuestion = () => {
               bgcolor: "background.paper",
               display: "flex",
               width: "100%",
+              
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <ReactDragListView {...dragProps}>
+            <div className="bg">
+            <div className="tabs-scroll">
+              <ReactDragListView  {...dragProps}>
                 {sectionArry?.length ? (
                   sectionArry.map((item: any, i: any) => (
                     <div
                       style={{
                         width: 220,
                         // marginTop: 20,
+                        overflow: "hidden",
                         position: "relative",
                       }}
                     >
@@ -372,6 +377,7 @@ const ShowTemplateQuestion = () => {
                   <p>you did not have any tabs</p>
                 )}
               </ReactDragListView>
+            </div>
             </div>
 
             <div style={{ width: "100%" }}>
