@@ -88,7 +88,7 @@ export default function EditQuestionBar() {
   const [newAnswer, setNewAnswer] = useState<string>("");
 
   const [QuestionType, setQuestionType] = useState("");
-
+  const [tip, setTip] = useState("");
   // ===collpase====
   const [expanded, setExpanded] = useState(false);
 
@@ -116,13 +116,18 @@ export default function EditQuestionBar() {
           // section_id: activeSection,
 
           parentId: parent_id,
+          tip,
         };
-        console.log("update", data);
+        console.log("update question", data);
 
         dispatch(UpdateQuestionFunAPI(data))
           .unwrap()
           .then((response) => {
-            dispatch(getQuestion(data));
+            let d = {
+              page: 1,
+              pageSize: 20,
+            };
+            dispatch(getQuestion(d));
           })
           .catch((error) => {
             toast.error(error);
@@ -182,6 +187,7 @@ export default function EditQuestionBar() {
       setNewQuestion(getSingleQuestion?.question);
       setQuestionType(getSingleQuestion?.questionType);
       setNewAnswer(getSingleQuestion?.answer);
+      setTip(getSingleQuestion?.tip);
     }
   }, [getSingleQuestion]);
   // get all answers start
@@ -278,6 +284,8 @@ export default function EditQuestionBar() {
                   </p>
                 </div>
                 <input
+                  value={tip}
+                  onChange={(e) => setTip(e.target.value)}
                   className="mt-2 ms-0"
                   type="text"
                   placeholder="Question Help text"
@@ -387,7 +395,6 @@ export default function EditQuestionBar() {
                           aria-label="delete"
                           size="small"
                           onClick={() => DeleteAns(item?._id, parent_id)}
-                          // onClick={() => console.log("del", item?._id)}
                         >
                           <DeleteIcon sx={{ width: 15, height: 15 }} />
                         </IconButton>

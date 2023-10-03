@@ -14,6 +14,8 @@ dotenv.config({ path: "./config/config.env" });
 const auth = require("./routes/auth");
 const question = require("./routes/templateQuestion");
 const section = require("./routes/section");
+const interest = require("./routes/interest");
+
 const template = require("./routes/template");
 const answer = require("./routes/answer");
 const category = require("./routes/category");
@@ -35,6 +37,7 @@ app.use("/answer", answer);
 app.use("/category", category);
 app.use("/followup", followup);
 app.use("/stripe", stripe);
+app.use("/interest", interest);
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   next();

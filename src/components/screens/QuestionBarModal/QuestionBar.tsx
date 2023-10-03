@@ -82,7 +82,7 @@ export default function QuestionBar() {
   const [newAnswer, setNewAnswer] = useState<string>("");
 
   const [QuestionType, setQuestionType] = useState("");
-
+  const [tip, setTip] = useState("");
   // ===collpase====
   const [expanded, setExpanded] = useState(false);
 
@@ -113,6 +113,7 @@ export default function QuestionBar() {
           section_id: activeSection,
           questionType: questionType,
           parentId: "",
+          tip: tip,
         };
         console.log("add data", data);
 
@@ -120,7 +121,11 @@ export default function QuestionBar() {
           .unwrap()
           .then((response) => {
             // console.log("respoce", response);
-            dispatch(getQuestion(data));
+            let d = {
+              page: 1,
+              pageSize: 20,
+            };
+            dispatch(getQuestion(d));
             dispatch(addQuestionFollowupModelFun(false));
             dispatch(addQuestionModelFun(false));
 
@@ -215,6 +220,7 @@ export default function QuestionBar() {
                   </p>
                 </div>
                 <input
+                  onChange={(e) => setTip(e.target.value)}
                   className="mt-2 ms-0"
                   type="text"
                   placeholder="Question Help text"

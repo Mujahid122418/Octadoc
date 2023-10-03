@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button2 from "../Button2/Button2";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -10,12 +10,16 @@ import { updateProfile } from "../../../redux/Auth/AuthAPI";
 import { toast } from "react-toastify";
 import { Fade } from "react-reveal";
 import { countries } from "./country";
+import Tagify from "@yaireo/tagify";
+import { getinterest } from "../../../redux/interest/InterestAPI";
 
 const Profilee = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { user } = useSelector((state: RootState) => state?.auth);
-
+  const { interest: GetInterestData } = useSelector(
+    (state: RootState) => state?.interest
+  );
   const [name, setname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,8 +32,9 @@ const Profilee = () => {
   const [workingHours, setworkingHours] = useState(user?.workingHours || ""); // Initialize with user's workingHours
   const [yearsofPractice, setyearsofPractice] = useState(
     user?.yearsofPractice || ""
-  ); // Initialize with user's yearsofPractice
-  console.log("gen val => ", user);
+  );
+  const [interest, setInterest] = useState("");
+  // Initialize with user's yearsofPractice
 
   useEffect(() => {
     setname(user?.name);
@@ -40,6 +45,7 @@ const Profilee = () => {
     setcountryofTraining(user?.countryofTraining);
     setworkingHours(user?.workingHours);
     setyearsofPractice(user?.yearsofPractice);
+    setInterest(user?.interest);
   }, [user]);
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -59,15 +65,47 @@ const Profilee = () => {
           countryofTraining: countryofTraining,
           workingHours: workingHours,
           yearsofPractice: yearsofPractice,
-          // phone: "",
         };
         dispatch(updateProfile(data));
-
-        console.log("data ==>", data);
       } catch (error) {}
     }
   };
+  // handel tagify
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (inputRef.current) {
+      // Initialize Tagify when the component mounts
+      const tagify = new Tagify(inputRef.current, {
+        enforceWhitelist: true,
+        whitelist: ["tag1", "tag2", "tag3"],
+        dropdown: {
+          maxItems: 5,
+        },
+      });
+
+      // Optionally, handle events or modify the tags dynamically
+      tagify.on("add", (e: any) => console.log("Tag added:", e.detail));
+      tagify.on("remove", (e: any) => console.log("Tag removed:", e.detail));
+
+      // Cleanup Tagify when the component unmounts
+      return () => {
+        tagify.destroy();
+      };
+    }
+  }, []);
+  // get interest
+  const [rowsPerPage, setRowsPerPage] = React.useState(100);
+
+  let dataa = {
+    page: 1,
+    pagesize: rowsPerPage.toString(),
+  };
+
+  useEffect(() => {
+    dispatch(getinterest(dataa));
+  }, [rowsPerPage]);
+  // get interest end
   return (
     <div>
       <div className="container mb-5">
@@ -84,7 +122,7 @@ const Profilee = () => {
           </Fade>
 
           <Fade bottom>
-            <h4 className="mt-4">Contact Information</h4>
+            <h4 className="mt-4">Profile Information</h4>
           </Fade>
 
           <Fade bottom>
@@ -94,6 +132,13 @@ const Profilee = () => {
                   <form className="bg-white w-100">
                     <div className="form-group">
                       <input
+                        ref={inputRef}
+                        placeholder="Type and press Enter"
+                      />
+                      <label style={{ marginLeft: "0px" }} htmlFor="user">
+                        Email
+                      </label>
+                      <input
                         type="email"
                         className="form-control"
                         id="exampleInputEmail1"
@@ -101,9 +146,13 @@ const Profilee = () => {
                         placeholder="Enter email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        style={{ marginTop: "0px" }}
                       />
                     </div>
                     <div className="form-group">
+                      <label style={{ marginLeft: "0px" }} htmlFor="user">
+                        Name
+                      </label>
                       <input
                         type="Text"
                         className="form-control"
@@ -111,15 +160,37 @@ const Profilee = () => {
                         placeholder="name"
                         value={name}
                         onChange={(e) => setname(e.target.value)}
+                        style={{ marginTop: "0px" }}
                       />
                     </div>
-
                     <div className="position-relative">
+                      <label style={{ marginLeft: "0px" }} htmlFor="user">
+                        Interest
+                      </label>
+                      <select
+                        className="form-control select-arrow"
+                        id="customSelect"
+                        value={interest}
+                        onChange={(e) => setInterest(e.target.value)}
+                        style={{ marginTop: "0px" }}
+                      >
+                        <option value="">Select Interest</option>
+                        {GetInterestData.map((e, index) => (
+                          <option key={index}>{e.name}</option>
+                        ))}
+                      </select>
+                      <ArrowDropDownIcon className="mui-select-arrow" />
+                    </div>
+                    <div className="position-relative">
+                      <label style={{ marginLeft: "0px" }} htmlFor="user">
+                        Gender
+                      </label>
                       <select
                         className="form-control select-arrow"
                         id="customSelect"
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
+                        style={{ marginTop: "0px" }}
                       >
                         <option value="">Gender</option>
                         <option>Male</option>
@@ -130,11 +201,15 @@ const Profilee = () => {
                     </div>
 
                     <div className="position-relative">
+                      <label style={{ marginLeft: "0px" }} htmlFor="user">
+                        State
+                      </label>
                       <select
                         className="form-control select-arrow"
                         id="customSelect"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
+                        style={{ marginTop: "0px" }}
                       >
                         <option value="">State</option>
                         {countries.map((country, index) => (
@@ -145,11 +220,15 @@ const Profilee = () => {
                     </div>
 
                     <div className="position-relative">
+                      <label style={{ marginLeft: "0px" }} htmlFor="user">
+                        Language
+                      </label>
                       <select
                         className="form-control select-arrow"
                         id="customSelect"
                         value={language}
                         onChange={(e) => setLanguage(e.target.value)}
+                        style={{ marginTop: "0px" }}
                       >
                         <option value="">Language</option>
                         <option>Urdu</option>
@@ -162,28 +241,32 @@ const Profilee = () => {
                     </div>
 
                     <div className="position-relative">
+                      <label style={{ marginLeft: "0px" }} htmlFor="user">
+                        Country Of Traning
+                      </label>
                       <select
                         className="form-control select-arrow"
                         id="customSelect"
                         value={countryofTraining}
                         onChange={(e) => setcountryofTraining(e.target.value)}
+                        style={{ marginTop: "0px" }}
                       >
                         <option value="">Country Of Traning</option>
-                        <option>Dubai</option>
-                        <option>Pakistan</option>
-                        <option>India</option>
-                        <option>Oman</option>
-                        <option>United Kindom</option>
+                        {countries.map((country, index) => (
+                          <option key={index}>{country.name}</option>
+                        ))}
                       </select>
                       <ArrowDropDownIcon className="mui-select-arrow" />
                     </div>
 
                     <div className="position-relative">
+                      Working hours
                       <select
                         className="form-control select-arrow"
                         id="customSelect"
                         value={workingHours}
                         onChange={(e) => setworkingHours(e.target.value)}
+                        style={{ marginTop: "0px" }}
                       >
                         <option value="">Working hours</option>
                         <option>Part Time</option>

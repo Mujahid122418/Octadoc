@@ -34,7 +34,7 @@ import { useNavigate } from "react-router-dom";
 import EditQuestionBar, {
   customRadioStyle,
 } from "../QuestionBarModal/EditQuestionBar";
-
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import Box from "@mui/material/Box";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -100,14 +100,11 @@ const ShowTemplateQuestion = () => {
     setSectionArry(sectionData);
   }, [sectionData]);
   const updateOrder = async (data: any) => {
-    console.log("data update", data);
-
     let res = await axios.post(Baseurl + `/section/sectionUpdateMany`, data);
-    console.log("res.data", res.data);
 
     if (res.data.success) {
       toast.success(res.data.message);
-      console.log("res test", res.data);
+
       let data = {
         page: 1,
         pageSize: 20,
@@ -413,6 +410,25 @@ const ShowTemplateQuestion = () => {
                                     <li>
                                       <ArrowForwardIosRoundedIcon className="icon-size" />
                                       {item?.question}
+                                      {item?.tip && (
+                                        <Tooltip title={item?.tip}>
+                                          <IconButton
+                                            style={{
+                                              backgroundColor: "#949396",
+                                              width: 20,
+                                              height: 20,
+                                              marginLeft: 5,
+                                            }}
+                                          >
+                                            <PriorityHighIcon
+                                              sx={{
+                                                width: 15,
+                                                color: "white",
+                                              }}
+                                            />
+                                          </IconButton>
+                                        </Tooltip>
+                                      )}
                                     </li>
                                   </div>
 

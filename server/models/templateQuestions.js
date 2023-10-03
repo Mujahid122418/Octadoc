@@ -5,6 +5,9 @@ const FollowUpSchema = new mongoose.Schema({
   question: {
     type: String,
   },
+  tip: {
+    type: String,
+  },
   answer: [
     {
       type: String,
@@ -65,6 +68,9 @@ const template_Schema = new schema(
     question: {
       type: String,
       required: true,
+    },
+    tip: {
+      type: String,
     },
     answer: [
       {

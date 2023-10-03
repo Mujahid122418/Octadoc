@@ -104,8 +104,7 @@ exports.updateManySection = async (req, res) => {
     req.body.map(async (item) => {
       const filter = { _id: item._id }; // Use the document's _id as the filter
       const update = { $set: { order: item.order } };
-      console.log("filter", filter);
-      console.log("update", update);
+
       try {
         await Section.findByIdAndUpdate(filter, item, {
           new: true,

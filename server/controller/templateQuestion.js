@@ -13,6 +13,7 @@ exports.addQuestion = async (req, res) => {
       template_id,
       section_id,
       questionType,
+      tip,
     } = req.body;
     let savedQuestion;
     if (parentId) {
@@ -42,6 +43,7 @@ exports.addQuestion = async (req, res) => {
           template_id,
           section_id,
           questionType,
+          tip,
         });
         savedQuestion = await newQuestion.save();
       }
@@ -52,6 +54,7 @@ exports.addQuestion = async (req, res) => {
         template_id,
         section_id,
         questionType,
+        tip,
       });
       savedQuestion = await newQuestion.save();
     }
@@ -69,7 +72,7 @@ exports.addQuestion = async (req, res) => {
 exports.EditQuestions = async (req, res) => {
   try {
     const { id } = req.params;
-    const { question, answer, followUpId, questionType } = req.body;
+    const { question, answer, followUpId, questionType, tip } = req.body;
 
     const existingQuestion = await TemplateQuestions.findById(id);
     // console.log("existingQuestion", existingQuestion);
@@ -86,6 +89,7 @@ exports.EditQuestions = async (req, res) => {
       followUpQuestion.question = question;
       followUpQuestion.answer = answer;
       // followUpQuestion.questionType = questionType;
+      followUpQuestion.tip = tip;
 
       const updatedQuestion = await existingQuestion.save();
       return res.status(200).json({
@@ -96,6 +100,8 @@ exports.EditQuestions = async (req, res) => {
     existingQuestion.question = question;
     existingQuestion.answer = answer;
     // existingQuestion.questionType = questionType;
+    existingQuestion.tip = tip;
+
     const updatedQuestion = await existingQuestion.save();
     res.status(200).json({
       message: "Question and Answer updated successfully",

@@ -5,6 +5,8 @@ import AuthReducer from "./Auth/AuthSlice";
 import categoryReducer from "./Admin/CategorySlice";
 import SectionReducer from "./Section/SectionSlice";
 
+import InterestReducer from "./interest/InterestSlice";
+
 export const store = configureStore({
   reducer: {
     template: TemplateReducer,
@@ -12,6 +14,7 @@ export const store = configureStore({
     templateQuestion: TemplateQuestionReducer,
     category: categoryReducer,
     section: SectionReducer,
+    interest: InterestReducer,
   },
 });
 
