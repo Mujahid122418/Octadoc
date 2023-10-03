@@ -5,7 +5,8 @@ import Button2 from "../Button2/Button2";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import HighlightAltIcon from "@mui/icons-material/HighlightAlt";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-
+import ViewStreamIcon from "@mui/icons-material/ViewStream";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -52,6 +53,7 @@ import { activeSectionFun } from "../../../redux/Section/SectionSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Baseurl } from "../../../utils/BaseUrl";
+import { getTemplates } from "../../../redux/Template/TemplateAPI";
 
 // ===== tabs =====
 
@@ -70,8 +72,7 @@ const ShowTemplateQuestion = () => {
   const [section, setSection] = useState([1]);
   const [openSection, setOpenSection] = useState(false);
   const [upSection, setupSection] = useState({});
-  
-  
+
   // active tab
   const [activeTab, setActiveTab] = useState<Item[]>([]);
 
@@ -192,15 +193,19 @@ const ShowTemplateQuestion = () => {
         console.log("delete question", e);
       });
   };
+  useEffect(() => {
+    dispatch(getTemplates());
+  }, [dispatch]);
   const init = async () => {
     let data = await template.filter((item) => item?._id == tem_id);
 
     let name = data[0]?.template_name;
+
     setTemplateName(name ? name : "");
   };
   useEffect(() => {
     init();
-  }, [tem_id]);
+  }, [tem_id, template]);
 
   const style = {
     position: "absolute" as "absolute",
@@ -277,41 +282,16 @@ const ShowTemplateQuestion = () => {
             }}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <ReactDragListView
-              {...dragProps}>
+              <ReactDragListView {...dragProps}>
                 {sectionArry?.length ? (
                   sectionArry.map((item: any, i: any) => (
-                    <div style={{ width: 220, marginTop: 15 , position:'relative' }}>
-                      <IconButton
-                        onClick={() => {
-                          setOpen(!open);
-                          setDelete_item(item._id);
-                        }}
-                        style={{
-                          position: "absolute",
-                          marginTop: "-10px",
-                          marginLeft: "-15px",
-                          zIndex: 1,
-                        }}
-                      >
-                        <CancelIcon className="icon-size" />
-                      </IconButton>
-
-                      <IconButton
-                        onClick={() => {
-                          setOpenSection(true);
-                          setupSection(item)
-                        }}
-                        style={{
-                          position: "absolute",
-                          marginTop: "25px",
-                          marginLeft: "-15px",
-                          zIndex: 1,
-                        }}
-                      >
-                        <EditIcon className="icon-size" />
-                      </IconButton>
-
+                    <div
+                      style={{
+                        width: 220,
+                        // marginTop: 20,
+                        position: "relative",
+                      }}
+                    >
                       <button
                         className="btn btn-template mx-2"
                         onClick={() => {
@@ -352,6 +332,40 @@ const ShowTemplateQuestion = () => {
                       >
                         {item?.name}
                       </button>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+
+                          marginRight: "8%",
+                        }}
+                      >
+                        <div style={{ marginTop: -15 }}>
+                          <IconButton
+                            className="action-btn"
+                            aria-label="delete"
+                            onClick={() => {
+                              setOpenSection(true);
+                              setupSection(item);
+                            }}
+                            sx={{ width: 30, height: 30 }}
+                          >
+                            <EditIcon sx={{ width: 15, height: 15 }} />
+                          </IconButton>
+
+                          <IconButton
+                            aria-label="delete"
+                            className="action-btn"
+                            sx={{ width: 30, height: 30 }}
+                            onClick={() => {
+                              setOpen(!open);
+                              setDelete_item(item._id);
+                            }}
+                          >
+                            <DeleteIcon sx={{ width: 15, height: 15 }} />
+                          </IconButton>
+                        </div>
+                      </div>
                     </div>
                   ))
                 ) : (
@@ -367,19 +381,6 @@ const ShowTemplateQuestion = () => {
                     <h3 className="text-white">
                       {TemplateName ? TemplateName : "Template Name"}
                     </h3>
-                    {/* <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginBottom: 2,
-                        backgroundColor: "white",
-                        padding: "5px",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <Button2 name="Copy" onClick={CopyModel} />
-                      <Button2 name="Edit" onClick={() => EditSection(item)} />
-                    </div> */}
                   </div>
                   <div className="question-head">
                     {/* <HelpOutlineIcon className="icon-size" />{" "} */}
@@ -392,7 +393,7 @@ const ShowTemplateQuestion = () => {
                     <ul className="mt-4 mb-4">
                       {getQuestions?.filter(
                         (item: any) => item?.template_id === tem_id
-                      ).length > 0 ? (
+                      )?.length > 0 ? (
                         getQuestions
                           ?.filter(
                             (item: any) =>
@@ -416,6 +417,7 @@ const ShowTemplateQuestion = () => {
                                       {item?.question}
                                     </li>
                                   </div>
+
                                   <div>
                                     <Stack
                                       direction="row"
@@ -555,7 +557,7 @@ const ShowTemplateQuestion = () => {
                                   </div>
                                 ) : item?.questionType === "Multiple Choice" ? (
                                   <div>
-                                    {item?.answer.length > 0 && (
+                                    {item?.answer?.length > 0 && (
                                       <ul>
                                         {item?.answer.map(
                                           (item: any, index: any) => (

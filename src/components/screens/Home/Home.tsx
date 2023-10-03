@@ -21,7 +21,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Card from "./Card";
 import { getcategories } from "../../../redux/Admin/CategoryAPI";
 import SummarizeRoundedIcon from "@mui/icons-material/SummarizeRounded";
-import { Fade } from 'react-reveal';
+import { Fade } from "react-reveal";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
     let newList = [];
     // If the search bar isn't empty
 
-    if (search !== "") {
+    if (search !== "" && template.length > 0) {
       newList = template;
 
       newList = template.filter((item) => {
@@ -69,7 +69,7 @@ const Home: React.FC = () => {
     // Set the filtered state based on what our rules added to newList
   }, [search]);
   useEffect(() => {
-    if (template.length > 0) {
+    if (template?.length > 0) {
       setFilterData(template);
     }
   }, [template]);
@@ -106,50 +106,101 @@ const Home: React.FC = () => {
     <div className="home">
       <div className="container">
         <Fade bottom>
-        <Search />
-        <AddTemplate />
+          <Search />
+          <AddTemplate />
         </Fade>
         <Fade bottom>
-        <div className="card-sec mt-5">
-          <div className="row d-flex  justify-content-between">
-            <div className="col-md-6 col-lg-4">
-              <h2 className="card-heading">
-                <SummarizeRoundedIcon sx={{ fontSize: 40 }} />
-                My Template
-              </h2>
-            </div>
-            <div className="col-md-6 col-lg-4">
-              <div className="position-relative">
-                <select
-                  className="form-control select-arrow"
-                  id="customSelect"
-                  value={category}
-                  onChange={(e) => setcategory(e.target.value)}
-                >
-                  <option value="">Select</option>
-                  {allcategory.length > 0 &&
-                    allcategory.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.category}
-                      </option>
-                    ))}
-                </select>
-                <ArrowDropDownIcon className="mui-select-arrow" />
+          <div className="card-sec mt-5">
+            <div className="row d-flex  justify-content-between">
+              <div className="col-md-6 col-lg-4">
+                <h2 className="card-heading">
+                  <SummarizeRoundedIcon sx={{ fontSize: 40 }} />
+                  My Template
+                </h2>
+              </div>
+              <div className="col-md-6 col-lg-4">
+                <div className="position-relative">
+                  <select
+                    className="form-control select-arrow"
+                    id="customSelect"
+                    value={category}
+                    onChange={(e) => setcategory(e.target.value)}
+                  >
+                    <option value="">Select</option>
+                    {allcategory?.length > 0 &&
+                      allcategory?.map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.category}
+                        </option>
+                      ))}
+                  </select>
+                  <ArrowDropDownIcon className="mui-select-arrow" />
+                </div>
               </div>
             </div>
-          </div>
 
-          {window.location.pathname === "/" ? (
-            <div className="row">
-              {filterData?.length > 0 ? (
-                filterData.filter((item: any) =>
-                  category ? item?.category_id === category : item
-                ).length > 0 ? (
+            {window.location.pathname === "/" ? (
+              <div className="row">
+                {filterData?.length > 0 ? (
+                  filterData.filter((item: any) =>
+                    category ? item?.category_id === category : item
+                  ).length > 0 ? (
+                    filterData
+                      .filter((item: any) =>
+                        category ? item?.category_id === category : item
+                      )
+                      ?.map((item: any, i: any) => (
+                        <Card
+                          item={item}
+                          key={item?.category_id}
+                          updateTemplate={updateTemplate}
+                          DeleteTemplate={DeleteTemplate}
+                        />
+                      ))
+                  ) : (
+                    <p style={{ textAlign: "center" }}>Category No Found</p>
+                  )
+                ) : (
+                  <p style={{ textAlign: "center" }}>No Record Found</p>
+                )}
+              </div>
+            ) : window.location.pathname === "/template" ? (
+              <div className="row">
+                {filterData?.filter((item: any) => item?.user_id === user?._id)
+                  ?.length > 0 ? (
+                  filterData.filter((item: any) =>
+                    item?.isapprove === "true" && category
+                      ? item?.category_id === category
+                      : item
+                  )?.length > 0 ? (
+                    filterData
+                      .filter((item: any) =>
+                        item?.user_id === user?._id && category
+                          ? item?.category_id === category
+                          : item?.user_id === user?._id
+                      )
+                      ?.map((item: any, i: any) => (
+                        <Card
+                          item={item}
+                          key={item?.category_id}
+                          updateTemplate={updateTemplate}
+                          DeleteTemplate={DeleteTemplate}
+                        />
+                      ))
+                  ) : (
+                    <p style={{ textAlign: "center" }}>category No Found</p>
+                  )
+                ) : (
+                  <p style={{ textAlign: "center" }}>No Record Found</p>
+                )}
+              </div>
+            ) : (
+              <div className="row">
+                {filterData?.filter((item: any) => item?.isapprove === "true")
+                  ?.length > 0 ? (
                   filterData
-                    .filter((item: any) =>
-                      category ? item?.category_id === category : item
-                    )
-                    ?.map((item: any, i: any) => (
+                    .filter((item: any) => item?.isapprove === "true")
+                    .map((item: any, i: any) => (
                       <Card
                         item={item}
                         key={item?.category_id}
@@ -158,62 +209,11 @@ const Home: React.FC = () => {
                       />
                     ))
                 ) : (
-                  <p style={{ textAlign: "center" }}>Category No Found</p>
-                )
-              ) : (
-                <p style={{ textAlign: "center" }}>No Record Found</p>
-              )}
-            </div>
-          ) : window.location.pathname === "/template" ? (
-            <div className="row">
-              {filterData?.filter((item: any) => item?.user_id === user?._id)
-                ?.length > 0 ? (
-                filterData.filter((item: any) =>
-                  item?.isapprove === "true" && category
-                    ? item?.category_id === category
-                    : item
-                ).length > 0 ? (
-                  filterData
-                    .filter((item: any) =>
-                      item?.user_id === user?._id && category
-                        ? item?.category_id === category
-                        : item?.user_id === user?._id
-                    )
-                    ?.map((item: any, i: any) => (
-                      <Card
-                        item={item}
-                        key={item?.category_id}
-                        updateTemplate={updateTemplate}
-                        DeleteTemplate={DeleteTemplate}
-                      />
-                    ))
-                ) : (
-                  <p style={{ textAlign: "center" }}>category No Found</p>
-                )
-              ) : (
-                <p style={{ textAlign: "center" }}>No Record Found</p>
-              )}
-            </div>
-          ) : (
-            <div className="row">
-              {filterData?.filter((item: any) => item?.isapprove === "true")
-                ?.length > 0 ? (
-                filterData
-                  .filter((item: any) => item?.isapprove === "true")
-                  .map((item: any, i: any) => (
-                    <Card
-                      item={item}
-                      key={item?.category_id}
-                      updateTemplate={updateTemplate}
-                      DeleteTemplate={DeleteTemplate}
-                    />
-                  ))
-              ) : (
-                <p style={{ textAlign: "center" }}>No Record Found</p>
-              )}
-            </div>
-          )}
-        </div>
+                  <p style={{ textAlign: "center" }}>No Record Found</p>
+                )}
+              </div>
+            )}
+          </div>
         </Fade>
       </div>
     </div>

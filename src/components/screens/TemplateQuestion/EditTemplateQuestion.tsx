@@ -89,7 +89,7 @@ const EditTemplateQuestion = () => {
                 {getQuestions?.length > 0 &&
                 getQuestions?.filter(
                   (item: any) => item?.template_id === tem_id
-                ).length > 0 ? (
+                )?.length > 0 ? (
                   getQuestions
                     ?.filter((item: any) => item?.template_id === tem_id)
                     .map((item: any, i: Number, ques: any) => {
