@@ -18,6 +18,7 @@ exports.register = asyncHandler(async (req, res, next) => {
       workingHours,
       yearsofPractice,
       phone,
+      isPurchased,
     } = req.body;
 
     //  Create user
@@ -42,6 +43,7 @@ exports.register = asyncHandler(async (req, res, next) => {
         workingHours,
         yearsofPractice,
         phone,
+        isPurchased,
       });
       sendTokenResponse(user, 200, res);
     }
@@ -216,6 +218,8 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     workingHours,
     role,
     status,
+    isPurchased,
+    isPurchasedPlan,
   } = req.body;
   const fieldsToUpdate = {
     name: name,
@@ -229,8 +233,8 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     role: role,
     status: status,
   };
-  console.log("fieldsToUpdate", id, fieldsToUpdate);
-  const user = await User.findByIdAndUpdate(id, fieldsToUpdate, {
+  console.log("fieldsToUpdate", id, req.body);
+  const user = await User.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
   });

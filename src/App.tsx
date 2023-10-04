@@ -20,6 +20,7 @@ import Paymentss from "./components/screens/Paymentss/Paymentss";
 import Section from "./components/screens/Admin/Section.js/Section";
 import Profilee from "./components/screens/Profilee/Profilee";
 import Interest from "./components/screens/Admin/Interest/Interest";
+import Subscription from "./components/screens/Admin/Subscription/Subscription";
 
 function App() {
   return (
@@ -154,7 +155,16 @@ function App() {
               </div>
             }
           />
-
+          <Route
+            path="/subscription"
+            element={
+              <div className="position-relative">
+                <Header />
+                <SideBar />
+                <Subscription />
+              </div>
+            }
+          />
           <Route
             path="/contact"
             element={

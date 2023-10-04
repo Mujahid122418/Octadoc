@@ -129,3 +129,16 @@ exports.updateManySection = async (req, res) => {
     });
   } catch (error) {}
 };
+
+exports.countSection = async (req, res) => {
+  const { id } = req.params;
+
+  await Section.countDocuments({ tempplate_id: id })
+    .then((item) => {
+      res.json({ success: true, count: item });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.status(500).json({ error: error.message });
+    });
+};

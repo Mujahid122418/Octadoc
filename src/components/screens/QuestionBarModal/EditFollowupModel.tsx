@@ -129,15 +129,6 @@ const EditFollowupModel: React.FC<IFollowupBar> = ({
   // let test = sectionData.some((item) => item._id !== activeTab);
   // console.log("test", test);
 
-  const EditFollow = async (edit: { _id: string }, parentId: string) => {
-    console.log(edit?._id, "edit?._id", parentId, "----------------->");
-    // let res = await axios.put(`http://localhost:5051/question/${id}`, {
-    //   question: "what is your ages?",
-    //   answer: ["hassan", "habib tahir"],
-    //   // followUpId: edit?._id,
-    // });
-  };
-
   return (
     <div>
       <Modal

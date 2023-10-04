@@ -43,7 +43,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["user", "admin" ,"superadmin"],
+    enum: ["user", "admin", "superadmin"],
     default: "user",
   },
   status: {
@@ -56,6 +56,15 @@ const UserSchema = new mongoose.Schema({
 
     minlength: 6,
     select: false,
+  },
+  isPurchased: {
+    type: Boolean,
+  },
+  isPurchasedPlan: {
+    type: String,
+  },
+  isPurchasedTime: {
+    type: String,
   },
   otp: { type: String, default: "0000" },
   resetPasswordToken: String,

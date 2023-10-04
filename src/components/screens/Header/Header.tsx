@@ -124,6 +124,9 @@ const Header = () => {
           <Link to="/payment">
             <MenuItem onClick={handleClose}>Payment Method</MenuItem>
           </Link>
+          <Link to="/subscription">
+            <MenuItem onClick={handleClose}>Subscription</MenuItem>
+          </Link>
           <MenuItem onClick={Logout}>Logout</MenuItem>
         </Menu>
       </div>

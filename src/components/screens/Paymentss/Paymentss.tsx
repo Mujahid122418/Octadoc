@@ -7,76 +7,11 @@ import PaymentInfo from "./PAY";
 import GrainIcon from "@mui/icons-material/Grain";
 
 const Paymentss = () => {
-  const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
   return (
     <div>
       <div className="container mb-5">
         <div className="payments-cards_pay">
           <div className="row d-flex justify-content-around">
-            <div className="col-lg-4 col-md-6 col-sm-12">
-              <Fade bottom>
-                <div className="payment-card_pay">
-                  <div className="card-head_pay">
-                    <h5 className="mb-0">Weekly Subscription</h5>
-                  </div>
-                  <div className="card-bodyy_pay">
-                    <center>
-                      <div className="d-flex justify-content-center prise_pay">
-                        <b>$5.00</b>
-                        <p className="mb-0">/Weekly</p>
-                      </div>
-                    </center>
-                    <ul>
-                      <li>
-                        <GrainIcon className="ion" />
-                        <i>
-                          <p className="lead ">7 days Trail</p>
-                        </i>
-                      </li>
-                      <li>
-                        <GrainIcon className="ion" />
-                        Build interactive templates
-                      </li>
-                      <li>
-                        <GrainIcon className="ion" />
-                        Access to a public template library
-                      </li>
-                      <li>
-                        <GrainIcon className="ion" />
-                        Add critical questions
-                      </li>
-                      <li>
-                        <GrainIcon className="ion" />
-                        Complete your notes with the patient in the room
-                      </li>
-                      <li>
-                        <GrainIcon className="ion" />
-                        Easy Medicare compliance
-                      </li>
-                      <li>
-                        <GrainIcon className="ion" />
-                        Cancel anytime
-                      </li>
-                      <li>
-                        <GrainIcon className="ion" />
-                        Prompt support at the click of a button
-                      </li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <div
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <PaymentInfo />
-                      </div>
-                    </ul>
-                  </div>
-                </div>
-              </Fade>
-            </div>
-
             <div className="col-lg-4 col-md-6 col-sm-12">
               <Fade>
                 <div className="payment-card_pay">
@@ -87,7 +22,7 @@ const Paymentss = () => {
                     <center>
                       <div className="d-flex justify-content-center prise_pay">
                         <b>$10.00</b>
-                        <p className="mb-0">/Weekly</p>
+                        <p className="mb-0">/Monthly</p>
                       </div>
                     </center>
                     <ul>
@@ -131,7 +66,7 @@ const Paymentss = () => {
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <PaymentInfo />
+                        <PaymentInfo plan="Monthly" />
                       </div>
                     </ul>
                   </div>
@@ -149,7 +84,7 @@ const Paymentss = () => {
                     <center>
                       <div className="d-flex justify-content-center prise_pay">
                         <b>$15.00</b>
-                        <p className="mb-0">/Weekly</p>
+                        <p className="mb-0">/Yearly</p>
                       </div>
                     </center>
                     <ul>
@@ -194,7 +129,7 @@ const Paymentss = () => {
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <PaymentInfo />
+                        <PaymentInfo plan="Yearly" />
                       </div>
                     </ul>
                   </div>

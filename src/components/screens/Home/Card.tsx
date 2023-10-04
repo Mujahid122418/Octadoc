@@ -25,14 +25,15 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
   const [template, setTemplate] = useState("");
   const [question, setQuestion] = useState("");
   const initTemplate = async () => {
-    let { data } = await axios.get(Baseurl + `/question?page=1&pageSize=20`);
-
+    let { data } = await axios.get(
+      Baseurl + `/section/countSection/${item?._id}`
+    );
     let { count } = data;
 
     setQuestion(count);
   };
   const initQuestion = async () => {
-    let { data } = await axios.get(Baseurl + `/template/template`);
+    let { data } = await axios.get(Baseurl + `/countQuestion/${item?._id}`);
 
     let { count } = data;
 
@@ -41,7 +42,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
   useEffect(() => {
     initTemplate();
     initQuestion();
-  }, []);
+  }, [item]);
   return (
     <div className="col-lg-4 col-md-6 mt-4">
       <div className="card-box">
@@ -60,7 +61,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
                   <ViewStreamIcon />
                 </IconButton>
                 <div className="band">
-                  <p>{template}</p>
+                  <p>{question}</p>
                 </div>
               </div>
               <div className="icon-box">
@@ -68,7 +69,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
                   <QuestionMarkIcon />
                 </IconButton>
                 <div className="band">
-                  <p>{question}</p>
+                  <p>{template}</p>
                 </div>
               </div>
             </div>

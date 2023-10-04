@@ -339,4 +339,16 @@ exports.singleQuestion = async (req, res) => {
   }
 };
 
-exports.Add_Update_Answer = async () => {};
+exports.countQuestion = async (req, res) => {
+  const { id } = req.params;
+  console.log("params", id);
+  await TemplateQuestions.countDocuments({ template_id: id })
+    .then((item) => {
+      console.log("check item question", item);
+      res.json({ success: true, count: item });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.status(500).json({ error: error.message });
+    });
+};

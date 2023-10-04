@@ -7,7 +7,11 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Button2 from "../Button2/Button2";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../../redux/Store";
-import { addSection, getSection, updateSection } from "../../../redux/Section/SectionAPI";
+import {
+  addSection,
+  getSection,
+  updateSection,
+} from "../../../redux/Section/SectionAPI";
 import { AppDispatch } from "../../../redux/Store";
 
 interface ModelProps {
@@ -21,29 +25,24 @@ const SectionModal: React.FC<ModelProps> = ({
   openSection,
   setOpenSection,
   upSection,
-  setupSection
+  setupSection,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-
-  const { isLoading, section } = useSelector(
-    (state: RootState) => state?.section
-  );
+  const { isLoading } = useSelector((state: RootState) => state?.section);
   // console.log("section ", section);
-    const [newname , setnewname] = React.useState('')
-    React.useEffect(() => {
-      setnewname(upSection.name || '');
-    }, [upSection]);
-
-    
+  const [newname, setnewname] = React.useState("");
+  React.useEffect(() => {
+    setnewname(upSection.name || "");
+  }, [upSection]);
 
   const [name, setName] = React.useState("");
   // const [open, setOpen] = React.useState(false);
   //   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpenSection(false);
-    setupSection('');
-  } 
+    setupSection("");
+  };
   const onSubmit = () => {
     let template_id =
       window.location.href.split("/questions/edit/")[1] ||
@@ -66,12 +65,12 @@ const SectionModal: React.FC<ModelProps> = ({
 
   const onUpdate = () => {
     let template_id =
-    window.location.href.split("/questions/edit/")[1] ||
-    window.location.href.split("/questions/")[1];
-      const data = {
-        id : upSection._id ,
-        name : newname 
-      }
+      window.location.href.split("/questions/edit/")[1] ||
+      window.location.href.split("/questions/")[1];
+    const data = {
+      id: upSection._id,
+      name: newname,
+    };
     let d1 = {
       page: 1,
       pageSize: 20,
@@ -80,7 +79,7 @@ const SectionModal: React.FC<ModelProps> = ({
     dispatch(updateSection(data)).then(() => {
       dispatch(getSection(d1));
       setOpenSection(false);
-      setupSection('');
+      setupSection("");
     });
   };
 
@@ -106,11 +105,12 @@ const SectionModal: React.FC<ModelProps> = ({
                 <input
                   type="text"
                   className="form-control mt-2"
-                  value={ upSection ? newname : name}
+                  value={upSection ? newname : name}
                   onChange={(e) => {
-                    upSection ? setnewname(e.target.value)  :
-                    setName(e.target.value)
-                  } }
+                    upSection
+                      ? setnewname(e.target.value)
+                      : setName(e.target.value);
+                  }}
                   placeholder="What is this template for?"
                 />
               </div>
@@ -118,24 +118,21 @@ const SectionModal: React.FC<ModelProps> = ({
             {/* ===== form end ==== */}
           </div>
           <div className="modal-footer">
-  {isLoading ? (
-    <LoadingButton
-      loading
-      variant="outlined"
-      disabled
-      sx={{ padding: "5px 30px" }}
-    >
-      <span>Submit</span>
-    </LoadingButton>
-  ) : (
-    upSection ? (
-      <Button2 name="Update" onClick={onUpdate} />
-    ) : (
-      <Button2 name="Submit" onClick={onSubmit} />
-    )
-  )}
-</div>
-
+            {isLoading ? (
+              <LoadingButton
+                loading
+                variant="outlined"
+                disabled
+                sx={{ padding: "5px 30px" }}
+              >
+                <span>Submit</span>
+              </LoadingButton>
+            ) : upSection ? (
+              <Button2 name="Update" onClick={onUpdate} />
+            ) : (
+              <Button2 name="Submit" onClick={onSubmit} />
+            )}
+          </div>
         </Box>
       </Modal>
     </div>
