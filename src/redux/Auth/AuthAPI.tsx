@@ -3,19 +3,16 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Baseurl } from "../../utils/BaseUrl";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { headers } from "../Template/TemplateAPI";
 
-
-export const getAllUsers = createAsyncThunk(
-  "/auth/allUser",
-  async () => {
-    try {
-      const response = await axios.get(Baseurl + "/auth/allUser");  
-      return response.data?.data;
-    } catch (error) {
-      console.log(error);
-    }
+export const getAllUsers = createAsyncThunk("/auth/allUser", async () => {
+  try {
+    const response = await axios.get(Baseurl + "/auth/allUser", { headers });
+    return response.data?.data;
+  } catch (error) {
+    console.log(error);
   }
-);
+});
 // export const deleteEmployee = createAsyncThunk(
 //   "template/deleteTemplate",
 //   async (id: string) => {
@@ -33,7 +30,11 @@ export const SignupFun = createAsyncThunk(
   "auth/register",
   async (data: any) => {
     try {
-      const response = await axios.post(Baseurl + `/auth/register`, data);
+      const response = await axios.post(
+        Baseurl + `/auth/register`,
+        { headers },
+        data
+      );
 
       if (response?.data?.success) {
         // localStorage.setItem("token", response?.data?.token);
@@ -51,7 +52,11 @@ export const SignupFun = createAsyncThunk(
 );
 export const LoginFun = createAsyncThunk("auth/login", async (data: any) => {
   try {
-    const response = await axios.post(Baseurl + `/auth/login`, data);
+    const response = await axios.post(
+      Baseurl + `/auth/login`,
+      { headers },
+      data
+    );
 
     if (response?.data?.success) {
       localStorage.setItem("token", response?.data?.token);
@@ -67,7 +72,11 @@ export const LoginFun = createAsyncThunk("auth/login", async (data: any) => {
 });
 export const getMeFun = createAsyncThunk("auth/getme", async (data: any) => {
   try {
-    const response = await axios.post(Baseurl + `/auth/getme`, data);
+    const response = await axios.post(
+      Baseurl + `/auth/getme`,
+      { headers },
+      data
+    );
 
     if (response?.data?.success) {
       return response.data.data;
@@ -83,7 +92,11 @@ export const updateProfile = createAsyncThunk(
     try {
       console.log("data update", data);
 
-      const response = await axios.put(Baseurl + `/auth/updatedetails`, data);
+      const response = await axios.put(
+        Baseurl + `/auth/updatedetails`,
+        { headers },
+        data
+      );
       console.log("ressss", response.data);
       if (response.data?.success) {
         toast.success("Profile Updated Successfully");
@@ -97,15 +110,14 @@ export const updateProfile = createAsyncThunk(
 
 export const checkEmail = createAsyncThunk(
   "auth/forgotPassword",
-  async (data: any ) => {
-
+  async (data: any) => {
     let d = {
-      email : data.email
-    }
+      email: data.email,
+    };
     try {
       const response = await axios.post(Baseurl + `/auth/forgotPassword`, d);
       // console.log("e",response?.data);
-      
+
       if (response?.data?.success) {
         toast.success("OTP Code Send On Your Gmail Successfully");
         localStorage.setItem("user-id", response?.data?.user?._id);
@@ -121,16 +133,18 @@ export const checkEmail = createAsyncThunk(
   }
 );
 
-
 export const updatePassword = createAsyncThunk(
   "auth/updatepassword",
   async (data: any) => {
     try {
-      const response = await axios.put(Baseurl + `/auth/updatepassword`, data);
+      const response = await axios.put(
+        Baseurl + `/auth/updatepassword`,
+        { headers },
+        data
+      );
       console.log("ressss", response.data);
       if (response.data?.success) {
         toast.success("Password Updated Successfully");
-        
       }
       return response.data;
     } catch (error) {
@@ -139,26 +153,25 @@ export const updatePassword = createAsyncThunk(
   }
 );
 
-
 export const sendOtp = createAsyncThunk(
   "auth/resetpassword",
-  async (data: any ) => {
-
-
+  async (data: any) => {
     let d = {
-      user_id : data._id,
-      otp : data.otp
-    }
+      user_id: data._id,
+      otp: data.otp,
+    };
     try {
-      const response = await axios.put(Baseurl + `/auth/resetpassword/${d?.user_id}`, d);
-    
+      const response = await axios.put(
+        Baseurl + `/auth/resetpassword/${d?.user_id}`,
+        d
+      );
+
       if (response?.data?.success) {
         toast.success("OTP Code Send On Your Gmail Successfully");
         data.navigate("/forgot");
       } else {
         console.log("error signup api false", response?.data);
         toast.error("OTP is incorrect");
-
       }
       return response.data.user;
     } catch (error) {
@@ -168,21 +181,22 @@ export const sendOtp = createAsyncThunk(
   }
 );
 
-
 // =========update role ========
-
 
 export const updaterole = createAsyncThunk(
   "auth/updatedetails",
   async (data: any) => {
-    console.log('update data',data);
-    
+    console.log("update data", data);
+
     try {
-      const response = await axios.put(Baseurl + `/auth/updatedetails`, data);
+      const response = await axios.put(
+        Baseurl + `/auth/updatedetails`,
+        { headers },
+        data
+      );
       console.log("ressss", response.data);
       if (response.data?.success) {
         toast.success("Updated Successfully");
-        
       }
       return response.data;
     } catch (error) {

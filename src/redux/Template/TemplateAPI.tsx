@@ -9,7 +9,7 @@ export interface ITemplate {
   isapprove: any;
   user_id: string;
 }
-const headers = {
+export const headers = {
   "Access-Control-Allow-Origin": "*",
   "Content-Type": "application/json",
 };

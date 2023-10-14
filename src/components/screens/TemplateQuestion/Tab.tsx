@@ -15,6 +15,8 @@ import { getSection, deleteSection } from "../../../redux/Section/SectionAPI";
 import { activeSectionFun } from "../../../redux/Section/SectionSlice";
 import Button2 from "../Button2/Button2";
 import SectionModal from "./SectionModel";
+import { isPurchasedModelFun } from "../../../redux/Auth/AuthSlice";
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -51,7 +53,7 @@ const SectionTabs: React.FC<ModelProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   let tem_id = window.location.href.split("/questions/")[1];
-
+  const { user } = useSelector((state: RootState) => state?.auth);
   // ====tabs======
 
   const [value, setValue] = useState("");
@@ -219,12 +221,17 @@ const SectionTabs: React.FC<ModelProps> = ({
                   <div style={{ marginTop: -15 }}>
                     <IconButton
                       className="action-btn"
+                      disabled={user?.isPurchased ? false : true}
                       aria-label="delete"
                       onClick={() => {
                         setOpenSection(true);
                         setupSection(item);
                       }}
-                      sx={{ width: 30, height: 30 }}
+                      sx={{
+                        width: 30,
+                        height: 30,
+                        opacity: user?.isPurchased ? 1 : 0.7,
+                      }}
                     >
                       <EditIcon sx={{ width: 15, height: 15 }} />
                     </IconButton>
@@ -232,7 +239,12 @@ const SectionTabs: React.FC<ModelProps> = ({
                     <IconButton
                       aria-label="delete"
                       className="action-btn"
-                      sx={{ width: 30, height: 30 }}
+                      disabled={user?.isPurchased ? false : true}
+                      sx={{
+                        width: 30,
+                        height: 30,
+                        opacity: user?.isPurchased ? 1 : 0.7,
+                      }}
                       onClick={() => {
                         setOpen(!open);
                         setDelete_item(item._id);

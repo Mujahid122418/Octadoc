@@ -1,13 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { LoginFun, getMeFun, updateProfile, SignupFun , getAllUsers , checkEmail ,sendOtp , updatePassword } from "./AuthAPI";
+import {
+  LoginFun,
+  getMeFun,
+  updateProfile,
+  SignupFun,
+  getAllUsers,
+  checkEmail,
+  sendOtp,
+  updatePassword,
+} from "./AuthAPI";
 interface Login {
   user: any;
   isLoading: Boolean;
   error: string;
   status: string;
-  allUsers :any[];
-  checkEmail:string;
+  allUsers: any[];
+  checkEmail: string;
+  isPurchasedModel: Boolean;
 }
 
 const initialState: Login = {
@@ -15,8 +25,9 @@ const initialState: Login = {
   isLoading: false,
   status: "",
   error: "",
-  allUsers : [],
-  checkEmail : "",
+  allUsers: [],
+  checkEmail: "",
+  isPurchasedModel: false,
 };
 
 export const authSlice = createSlice({
@@ -25,6 +36,9 @@ export const authSlice = createSlice({
   reducers: {
     handelUpdateUser: (state, action) => {
       state.allUsers = action.payload;
+    },
+    isPurchasedModelFun: (state, action) => {
+      state.isPurchasedModel = action.payload;
     },
   },
   extraReducers: {
@@ -123,7 +137,7 @@ export const authSlice = createSlice({
       state.status = "pending";
       state.isLoading = true;
     },
-    [getAllUsers.fulfilled.type]: (state,  payload ) => {
+    [getAllUsers.fulfilled.type]: (state, payload) => {
       state.status = "success";
       state.allUsers = payload.payload;
       state.isLoading = false;
@@ -137,7 +151,6 @@ export const authSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 
-export const { handelUpdateUser,  } =
-authSlice.actions;
+export const { handelUpdateUser, isPurchasedModelFun } = authSlice.actions;
 
 export default authSlice.reducer;

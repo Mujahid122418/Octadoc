@@ -29,10 +29,11 @@ import { toast } from "react-toastify";
 import { getTemplates } from "../../../redux/Template/TemplateAPI";
 import SectionTabs from "./Tab";
 import ItemsRender from "./Items";
+import { isPurchasedModelFun } from "../../../redux/Auth/AuthSlice";
 
 const ShowTemplateQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const { user } = useSelector((state: RootState) => state?.auth);
   const [section, setSection] = useState([1]);
   const [openSection, setOpenSection] = useState(false);
 
@@ -178,13 +179,20 @@ const ShowTemplateQuestion = () => {
                   <div className="question-footer">
                     <Button2
                       name="Add Question"
-                      onClick={AddQuestionModel}
+                      onClick={() =>
+                        user?.isPurchased
+                          ? AddQuestionModel()
+                          : dispatch(isPurchasedModelFun(true))
+                      }
                       icon={<HelpCenterIcon />}
                     />
                     <Button2
                       name="Add Section"
-                      // onClick={() => AddSection(item)}
-                      onClick={() => setOpenSection(true)}
+                      onClick={() => {
+                        user?.isPurchased
+                          ? setOpenSection(true)
+                          : dispatch(isPurchasedModelFun(true));
+                      }}
                       icon={<HighlightAltIcon />}
                     />
                     <QuestionBar />

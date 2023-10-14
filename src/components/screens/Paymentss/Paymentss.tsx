@@ -1,7 +1,7 @@
 import "./Paymentss.css";
-import Button2 from "../Button2/Button2";
+
 import { Fade } from "react-reveal";
-import InputMask from "react-input-mask";
+
 import PaymentInfo from "./PAY";
 
 import GrainIcon from "@mui/icons-material/Grain";

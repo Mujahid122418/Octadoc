@@ -15,7 +15,7 @@ import { addTemplateModelFun } from "../../../redux/Template/TemplateSlice";
 import { useNavigate } from "react-router-dom";
 import { getMeFun } from "../../../redux/Auth/AuthAPI";
 import { AppDispatch } from "../../../redux/Store";
-import { Fade } from "react-reveal";
+import SubscriptionModel from "../Admin/Subscription/SubscriptionModel";
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,7 +23,9 @@ const Header = () => {
   const navigate = useNavigate(); // Use useNavigate hook to access navigation
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { user } = useSelector((state: RootState) => state?.auth);
+  const { user, isPurchasedModel } = useSelector(
+    (state: RootState) => state?.auth
+  );
 
   const init = async () => {
     let token = await localStorage.getItem("token");
@@ -66,8 +68,10 @@ const Header = () => {
     window.location.pathname === "/" ||
     window.location.pathname === "/template" ||
     window.location.pathname === "/community";
+
   return (
     <div className="header">
+      <SubscriptionModel isPurchasedModel={isPurchasedModel} />
       <div className="d-flex align-items-center justify-content-end">
         <IconButton>
           <HelpOutlineIcon />

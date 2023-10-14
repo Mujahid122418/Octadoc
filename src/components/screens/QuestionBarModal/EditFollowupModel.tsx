@@ -19,13 +19,7 @@ import {
 
 import Box from "@mui/material/Box";
 
-import {
-  IconButton,
-  Tooltip,
-  Modal,
-  CircularProgress,
-  Button,
-} from "@mui/material";
+import { Modal, CircularProgress } from "@mui/material";
 
 // ===== tabs =====
 
@@ -69,20 +63,20 @@ const EditFollowupModel: React.FC<IFollowupBar> = ({
   const { parent_id, EditSelectedQuestion } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
-  const DeleteTemplateQuestion = async (id: any) => {
-    dispatch(DeleteQuestion(id))
-      .unwrap()
-      .then((res) => {
-        let data = {
-          page: 1,
-          pageSize: 20,
-        };
-        dispatch(getQuestion(data));
-      })
-      .catch((e) => {
-        console.log("delete question", e);
-      });
-  };
+  // const DeleteTemplateQuestion = async (id: any) => {
+  //   dispatch(DeleteQuestion(id))
+  //     .unwrap()
+  //     .then((res) => {
+  //       let data = {
+  //         page: 1,
+  //         pageSize: 20,
+  //       };
+  //       dispatch(getQuestion(data));
+  //     })
+  //     .catch((e) => {
+  //       console.log("delete question", e);
+  //     });
+  // };
 
   const style = {
     position: "absolute" as "absolute",

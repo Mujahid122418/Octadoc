@@ -163,7 +163,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 // @desc      Reset password
 // @route     PUT /api/v1/auth/resetpassword/:resettoken
 // @access    Public
-exports.resetPassword = asyncHandler(async (req, res, next) => {
+exports.resetPassword = asyncHandler(async (req, res) => {
   const user = await User.findOne({ otp: req.body.otp, _id: req.body.user_id });
   if (!user) {
     return res.status(200).send({
@@ -177,63 +177,14 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     user: user,
     success: true,
   });
-
-  // Get hashed token
-  // const resetPasswordToken = crypto
-  //   .createHash("sha256")
-  //   .update(req.params.resettoken)
-  //   .digest("hex");
-
-  // const user = await User.findOne({
-  //   resetPasswordToken,
-  //   resetPasswordExpire: { $gt: Date.now() },
-  // });
-
-  // if (!user) {
-  //   res.status(400).send({ success: false, message: "Invalid token" });
-  // }
-
-  // // Set new password
-  // user.password = req.body.password;
-  // user.resetPasswordToken = undefined;
-  // user.resetPasswordExpire = undefined;
-  // await user.save();
-
-  // sendTokenResponse(user, 200, res);
 });
 
 // @desc      Update user details
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-  const {
-    id,
-    name,
-    email,
-    gender,
-    state,
-    language,
-    countryofTraining,
-    yearsofPractice,
-    workingHours,
-    role,
-    status,
-    isPurchased,
-    isPurchasedPlan,
-  } = req.body;
-  const fieldsToUpdate = {
-    name: name,
-    email: email,
-    gender: gender,
-    state: state,
-    language: language,
-    countryofTraining: countryofTraining,
-    workingHours: workingHours,
-    yearsofPractice: yearsofPractice,
-    role: role,
-    status: status,
-  };
-  console.log("fieldsToUpdate", id, req.body);
+  const { id } = req.body;
+
   const user = await User.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
@@ -309,7 +260,6 @@ const sendTokenResponse = (user, statusCode, res) => {
     user,
   });
 };
-// module.exports = router;
 
 exports.AllUser = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
