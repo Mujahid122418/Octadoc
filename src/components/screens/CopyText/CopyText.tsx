@@ -1,8 +1,14 @@
 import React from "react";
 import "./CopyText.css";
 import Button2 from "../Button2/Button2";
+interface SecData {
+  sectionName: string;
+}
 
-const CopyText = () => {
+interface CopyTextProps {
+  data: SecData;
+}
+const CopyText: React.FC<CopyTextProps> = ({ data }) => {
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
@@ -13,7 +19,7 @@ const CopyText = () => {
         <h3 className="text-white fw-bold">Patient Notes</h3>
         <div className="copy-text">
           <div className="head-text">
-            <u>Sec-Name</u>
+            <u>{data.sectionName}</u>
           </div>
           <ul className="uper-list">
             <li className="uper-li">sadas</li>

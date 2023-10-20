@@ -30,6 +30,7 @@ import { getTemplates } from "../../../redux/Template/TemplateAPI";
 import SectionTabs from "./Tab";
 import ItemsRender from "./Items";
 import { isPurchasedModelFun } from "../../../redux/Auth/AuthSlice";
+import CopyText from "../CopyText/CopyText";
 
 const ShowTemplateQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -179,10 +180,11 @@ const ShowTemplateQuestion = () => {
                   <div className="question-footer">
                     <Button2
                       name="Add Question"
-                      onClick={() =>
-                        user?.isPurchased
-                          ? AddQuestionModel()
-                          : dispatch(isPurchasedModelFun(true))
+                      onClick={
+                        () => AddQuestionModel()
+                        // user?.isPurchased
+                        //   ? AddQuestionModel()
+                        //   : dispatch(isPurchasedModelFun(true))
                       }
                       icon={<HelpCenterIcon />}
                     />
@@ -201,8 +203,12 @@ const ShowTemplateQuestion = () => {
                 </div>
               </div>
             </div>
-            <div style={{ width: "20%" }}>
-              <h2>Patient Notes</h2>
+            <div style={{ width: "30%" }}>
+              <CopyText
+                data={{
+                  sectionName: sectionName,
+                }}
+              />
             </div>
           </Box>
         </div>

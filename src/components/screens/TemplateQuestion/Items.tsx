@@ -23,6 +23,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { customRadioStyle } from "../QuestionBarModal/EditQuestionBar";
+import { useState } from "react";
 
 interface ModelProps {
   item: any;
@@ -31,7 +32,14 @@ interface ModelProps {
 
 const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const [hours, setHours] = useState("");
+  const [selectedOption, setSelectedOption] = useState("1");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [textInput, setTextInput] = useState("");
+  const [selectedRadioValue, setSelectedRadioValue] = useState("top");
+  console.log("hours", hours);
+  console.log("selectedOption", selectedOption);
+  console.log("selectedDate", selectedDate);
   const { editQuestionModel } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
@@ -149,14 +157,28 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
         <div className="answer mt-3 mb-2 ms-3">
           <div className="first">
             <label>When did this start?</label>
-            <input type="date" className="date-input" />
+            <input
+              type="date"
+              className="date-input"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
           </div>
           <h6 className="mx-3 mb-0">OR</h6>
           <div className="time">
             <label htmlFor="">How long age?</label>
             <div className="time-in">
-              <input type="text" />
-              <select className="ms-2" aria-label="Default select example">
+              <input
+                type="text"
+                value={hours}
+                onChange={(e) => setHours(e.target.value)}
+              />
+              <select
+                className="ms-2"
+                aria-label="Default select example"
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
+              >
                 <option selected>Hours</option>
                 <option value="1">days</option>
                 <option value="2">Weeks</option>
@@ -170,7 +192,11 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
         <div className="answer mt-3 mb-2 ms-3">
           <div className="first">
             <label>When did this start?</label>
-            <input type="text" />
+            <input
+              type="text"
+              value={textInput}
+              onChange={(e) => setTextInput(e.target.value)}
+            />
             <b className="mg"> mg</b>
           </div>
           <FormControl>
@@ -178,7 +204,8 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
               row
               aria-labelledby="demo-form-control-label-placement"
               name="position"
-              defaultValue="top"
+              value={selectedRadioValue}
+              onChange={(e) => setSelectedRadioValue(e.target.value)}
               sx={{
                 border: "1px solid #6049cd",
                 borderRadius: "20px",

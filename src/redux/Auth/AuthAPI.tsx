@@ -30,12 +30,8 @@ export const SignupFun = createAsyncThunk(
   "auth/register",
   async (data: any) => {
     try {
-      const response = await axios.post(
-        Baseurl + `/auth/register`,
-        { headers },
-        data
-      );
-
+      const response = await axios.post(Baseurl + `/auth/register`, data);
+      console.log("error signup api false", response?.data);
       if (response?.data?.success) {
         // localStorage.setItem("token", response?.data?.token);
         // localStorage.setItem("user", response?.data?.user?._id);
@@ -52,12 +48,8 @@ export const SignupFun = createAsyncThunk(
 );
 export const LoginFun = createAsyncThunk("auth/login", async (data: any) => {
   try {
-    const response = await axios.post(
-      Baseurl + `/auth/login`,
-      { headers },
-      data
-    );
-
+    const response = await axios.post(Baseurl + `/auth/login`, data);
+    console.log("error signup api false", response?.data);
     if (response?.data?.success) {
       localStorage.setItem("token", response?.data?.token);
       localStorage.setItem("user", response?.data?.data?._id);
