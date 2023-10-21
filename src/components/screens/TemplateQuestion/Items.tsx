@@ -195,9 +195,7 @@ const ItemsRender: React.FC<ModelProps> = ({
                   setStates({ ...states, selectedOption: e.target.value })
                 }
               >
-                <option selected value="Hours">
-                  Hours
-                </option>
+                <option value="Hours">Hours</option>
                 <option value="Days">Days</option>
                 <option value="Weeks">Weeks</option>
                 <option value="Months">Months</option>

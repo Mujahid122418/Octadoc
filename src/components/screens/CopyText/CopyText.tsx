@@ -28,8 +28,10 @@ const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
       singeldRadioValue,
       selectedRadioValue,
     ];
-    // const nonEmptyNoteItems = noteItems.filter((item) => item.trim() !== "");
-    const copiedText = noteItems.map((item) => `- ${item}`).join("\n");
+    const filteredList = noteItems?.filter(
+      (item) => item !== undefined && item !== false && item !== ""
+    );
+    const copiedText = filteredList?.map((item) => `- ${item}`).join("\n");
     try {
       await navigator.clipboard.writeText(copiedText);
       console.log("Notes copied to clipboard!");
@@ -51,21 +53,23 @@ const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
               if (!states[i]) {
                 return null;
               }
+              const formattedItem =
+                i === "selectedDate"
+                  ? `Since ${states[i]}`
+                  : i === "hours"
+                  ? `Last ${states[i]} ${selectedOption.toLowerCase()}`
+                  : i === "checkboxValues"
+                  ? states[i]
+                    ? "yes"
+                    : "no"
+                  : i === "singeldRadioValue"
+                  ? states[i]
+                    ? "PRN yes"
+                    : "PRN no"
+                  : states[i];
               return (
                 <li className="uper-li" key={i}>
-                  {i === "selectedDate"
-                    ? `Since ${states[i]}`
-                    : i === "hours"
-                    ? `Last ${states[i]} ${selectedOption.toLowerCase()}`
-                    : i === "checkboxValues"
-                    ? states[i]
-                      ? "yes"
-                      : "no"
-                    : i === "singeldRadioValue"
-                    ? states[i]
-                      ? "PRN yes"
-                      : "PRN no"
-                    : states[i]}
+                  {formattedItem}
                 </li>
               );
             })}
