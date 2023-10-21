@@ -1,16 +1,41 @@
 import React from "react";
 import "./CopyText.css";
 import Button2 from "../Button2/Button2";
-interface SecData {
+interface CopyTextProps {
   sectionName: string;
+  states: any;
 }
 
-interface CopyTextProps {
-  data: SecData;
-}
-const CopyText: React.FC<CopyTextProps> = ({ data }) => {
-  const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
+  const {
+    hours,
+    textInput,
+    selectedDate,
+    selectedOption,
+    checkboxValues,
+    singeldRadioValue,
+    selectedRadioValue,
+  } = states;
+  const handleClickBtn = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    const noteItems = [
+      hours,
+      textInput,
+      sectionName,
+      selectedDate,
+      selectedOption,
+      checkboxValues,
+      singeldRadioValue,
+      selectedRadioValue,
+    ];
+    // const nonEmptyNoteItems = noteItems.filter((item) => item.trim() !== "");
+    const copiedText = noteItems.map((item) => `- ${item}`).join("\n");
+    try {
+      await navigator.clipboard.writeText(copiedText);
+      console.log("Notes copied to clipboard!");
+    } catch (error) {
+      console.error("Unable to copy notes to clipboard: ", error);
+    }
   };
 
   return (
@@ -19,18 +44,31 @@ const CopyText: React.FC<CopyTextProps> = ({ data }) => {
         <h3 className="text-white fw-bold">Patient Notes</h3>
         <div className="copy-text">
           <div className="head-text">
-            <u>{data.sectionName}</u>
+            <u>{sectionName}</u>
           </div>
           <ul className="uper-list">
-            <li className="uper-li">sadas</li>
-            <li className="uper-li">dssdfsdfsf</li>
-            <li className="uper-li">
-              Yes
-              <ul>
-                <li>Yes</li>
-              </ul>
-            </li>
-            <li className="uper-li">sadsas</li>
+            {Object.keys(states).map((i) => {
+              if (!states[i]) {
+                return null;
+              }
+              return (
+                <li className="uper-li" key={i}>
+                  {i === "selectedDate"
+                    ? `Since ${states[i]}`
+                    : i === "hours"
+                    ? `Last ${states[i]} ${selectedOption.toLowerCase()}`
+                    : i === "checkboxValues"
+                    ? states[i]
+                      ? "yes"
+                      : "no"
+                    : i === "singeldRadioValue"
+                    ? states[i]
+                      ? "PRN yes"
+                      : "PRN no"
+                    : states[i]}
+                </li>
+              );
+            })}
           </ul>
           <Button2 name="Copy Notes" onClick={handleClickBtn} />
           <div className="download-btn mt-2">

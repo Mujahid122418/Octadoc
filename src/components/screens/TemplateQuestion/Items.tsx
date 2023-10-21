@@ -23,23 +23,32 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { customRadioStyle } from "../QuestionBarModal/EditQuestionBar";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface ModelProps {
   item: any;
   checkLink: any;
+  states: any;
+  setStates: any;
 }
 
-const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
+const ItemsRender: React.FC<ModelProps> = ({
+  item,
+  checkLink,
+  setStates,
+  states,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [hours, setHours] = useState("");
-  const [selectedOption, setSelectedOption] = useState("1");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [textInput, setTextInput] = useState("");
-  const [selectedRadioValue, setSelectedRadioValue] = useState("top");
-  console.log("hours", hours);
-  console.log("selectedOption", selectedOption);
-  console.log("selectedDate", selectedDate);
+  const {
+    hours,
+    dosageInput,
+    selectedDate,
+    checkboxValues,
+    selectedOption,
+    singeldRadioValue,
+    selectedRadioValue,
+  } = states;
+
   const { editQuestionModel } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
@@ -66,6 +75,7 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
         console.log("delete question", e);
       });
   };
+
   return (
     <div>
       <div
@@ -161,7 +171,9 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
               type="date"
               className="date-input"
               value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
+              onChange={(e) =>
+                setStates({ ...states, selectedDate: e.target.value })
+              }
             />
           </div>
           <h6 className="mx-3 mb-0">OR</h6>
@@ -171,19 +183,25 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
               <input
                 type="text"
                 value={hours}
-                onChange={(e) => setHours(e.target.value)}
+                onChange={(e) =>
+                  setStates({ ...states, hours: e.target.value })
+                }
               />
               <select
                 className="ms-2"
                 aria-label="Default select example"
                 value={selectedOption}
-                onChange={(e) => setSelectedOption(e.target.value)}
+                onChange={(e) =>
+                  setStates({ ...states, selectedOption: e.target.value })
+                }
               >
-                <option selected>Hours</option>
-                <option value="1">days</option>
-                <option value="2">Weeks</option>
-                <option value="3">Months</option>
-                <option value="3">Years</option>
+                <option selected value="Hours">
+                  Hours
+                </option>
+                <option value="Days">Days</option>
+                <option value="Weeks">Weeks</option>
+                <option value="Months">Months</option>
+                <option value="Years">Years</option>
               </select>
             </div>
           </div>
@@ -194,8 +212,10 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
             <label>When did this start?</label>
             <input
               type="text"
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
+              value={dosageInput}
+              onChange={(e) =>
+                setStates({ ...states, dosageInput: e.target.value })
+              }
             />
             <b className="mg"> mg</b>
           </div>
@@ -205,7 +225,9 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
               aria-labelledby="demo-form-control-label-placement"
               name="position"
               value={selectedRadioValue}
-              onChange={(e) => setSelectedRadioValue(e.target.value)}
+              onChange={(e) =>
+                setStates({ ...states, setSelectedRadioValue: e.target.value })
+              }
               sx={{
                 border: "1px solid #6049cd",
                 borderRadius: "20px",
@@ -241,7 +263,15 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
 
           <FormControlLabel
             value="end"
-            control={<Radio style={customRadioStyle} />}
+            control={
+              <Radio
+                style={customRadioStyle}
+                value={states.singeldRadioValue}
+                onChange={(e) =>
+                  setStates({ ...states, singeldRadioValue: e.target.value })
+                }
+              />
+            }
             label="PRN"
             labelPlacement="start"
           />
@@ -259,7 +289,18 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
               {item?.answer.map((item: any, index: any) => (
                 <FormControlLabel
                   className="ms-1"
-                  control={<Checkbox defaultChecked style={customRadioStyle} />}
+                  control={
+                    <Checkbox
+                      style={customRadioStyle}
+                      onChange={(e) =>
+                        setStates({
+                          ...states,
+                          checkboxValues: e.target.checked,
+                        })
+                      }
+                      defaultChecked={checkboxValues}
+                    />
+                  }
                   label={item}
                 />
               ))}
@@ -272,11 +313,20 @@ const ItemsRender: React.FC<ModelProps> = ({ item, checkLink }) => {
                   <li>
                     {++i}:- {e1.question}
                   </li>
-                  {e1?.answer.map((item: any) => (
+                  {e1?.answer.map((item: any, index: any) => (
                     <FormControlLabel
                       className="ms-1"
                       control={
-                        <Checkbox defaultChecked style={customRadioStyle} />
+                        <Checkbox
+                          defaultChecked={checkboxValues}
+                          style={customRadioStyle}
+                          onChange={(e) =>
+                            setStates({
+                              ...states,
+                              checkboxValues: e.target.checked,
+                            })
+                          }
+                        />
                       }
                       label={item}
                     />

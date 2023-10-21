@@ -38,6 +38,15 @@ const ShowTemplateQuestion = () => {
   const [section, setSection] = useState([1]);
   const [openSection, setOpenSection] = useState(false);
 
+  const [formData, setFormData] = useState({
+    hours: "",
+    dosageInput: "",
+    selectedDate: "",
+    selectedOption: "",
+    selectedRadioValue: "",
+    checkboxValues: false,
+    singeldRadioValue: false,
+  });
   const { addQuestionModel, getQuestions, editQuestionModel } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
@@ -131,7 +140,7 @@ const ShowTemplateQuestion = () => {
               />
             </div>
 
-            <div style={{ width: "100%", marginRight: 20, marginLeft: 20 }}>
+            <div style={{ width: "80%", marginRight: 20, marginLeft: 20, zIndex:1000 }}>
               <div key={index}>
                 <div className="questions-box">
                   <div className="d-flex justify-content-between ">
@@ -168,6 +177,8 @@ const ShowTemplateQuestion = () => {
                                 <ItemsRender
                                   item={item}
                                   checkLink={checkLink}
+                                  states={formData}
+                                  setStates={setFormData}
                                 />
                               </div>
                             );
@@ -204,11 +215,7 @@ const ShowTemplateQuestion = () => {
               </div>
             </div>
             <div style={{ width: "30%" }}>
-              <CopyText
-                data={{
-                  sectionName: sectionName,
-                }}
-              />
+              <CopyText sectionName={sectionName} states={formData} />
             </div>
           </Box>
         </div>
