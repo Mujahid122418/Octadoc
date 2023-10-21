@@ -11,7 +11,7 @@ export interface ITemplate {
 }
 export const headers = {
   "Access-Control-Allow-Origin": "*",
-  "Content-Type": "application/json",
+  // "Content-Type": "application/json",
 };
 
 export const getTemplates = createAsyncThunk(
