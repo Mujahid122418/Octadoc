@@ -148,7 +148,7 @@ label{
 }
 .tabs-scroll{
     position: fixed;
-    width: 220px;
+    /* width: 220px; */
     overflow-X: hidden !important;
     overflow-y: scroll !important;
     max-height: 500px !important;

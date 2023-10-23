@@ -16,6 +16,7 @@ interface ModelProps {
 const TakeMoney: React.FC<ModelProps> = ({ plan }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state?.auth);
+console.log("user" , user);
 
   const onToken = async (token: Token) => {
     console.log("plan 2", plan);
@@ -32,8 +33,10 @@ const TakeMoney: React.FC<ModelProps> = ({ plan }) => {
         isPurchasedPlan: plan,
         isPurchasedTime: currentTimeInMilliseconds,
       };
+      console.log("saveInfo" , saveInfo);
+      
       dispatch(updateProfile(saveInfo));
-      console.log("save info", saveInfo);
+      
       toast.success(res.data.message);
     }
   };

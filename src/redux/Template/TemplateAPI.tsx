@@ -18,9 +18,8 @@ export const getTemplates = createAsyncThunk(
   "template/getTemplates",
   async () => {
     try {
-      const response = await axios.get(Baseurl + "/template/template", {
-        headers,
-      });
+      const response = await axios.get(Baseurl + "/template/template", 
+      );
       return response.data?.data;
     } catch (error) {
       console.log(error);

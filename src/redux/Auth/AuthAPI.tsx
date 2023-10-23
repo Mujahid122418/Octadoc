@@ -3,11 +3,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Baseurl } from "../../utils/BaseUrl";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { headers } from "../Template/TemplateAPI";
+// import { headers } from "../Template/TemplateAPI";
 
 export const getAllUsers = createAsyncThunk("/auth/allUser", async () => {
   try {
-    const response = await axios.get(Baseurl + "/auth/allUser", { headers });
+    const response = await axios.get(Baseurl + "/auth/allUser", );
     return response.data?.data;
   } catch (error) {
     console.log(error);
@@ -30,12 +30,8 @@ export const SignupFun = createAsyncThunk(
   "auth/register",
   async (data: any) => {
     try {
-      const response = await axios.post(
-        Baseurl + `/auth/register`,
-        { headers },
-        data
-      );
-
+      const response = await axios.post(Baseurl + `/auth/register`, data);
+      console.log("error signup api false", response?.data);
       if (response?.data?.success) {
         // localStorage.setItem("token", response?.data?.token);
         // localStorage.setItem("user", response?.data?.user?._id);
@@ -52,12 +48,8 @@ export const SignupFun = createAsyncThunk(
 );
 export const LoginFun = createAsyncThunk("auth/login", async (data: any) => {
   try {
-    const response = await axios.post(
-      Baseurl + `/auth/login`,
-      { headers },
-      data
-    );
-
+    const response = await axios.post(Baseurl + `/auth/login`, data);
+    console.log("error signup api false", response?.data);
     if (response?.data?.success) {
       localStorage.setItem("token", response?.data?.token);
       localStorage.setItem("user", response?.data?.data?._id);
@@ -74,7 +66,7 @@ export const getMeFun = createAsyncThunk("auth/getme", async (data: any) => {
   try {
     const response = await axios.post(
       Baseurl + `/auth/getme`,
-      { headers },
+     
       data
     );
 
@@ -94,7 +86,7 @@ export const updateProfile = createAsyncThunk(
 
       const response = await axios.put(
         Baseurl + `/auth/updatedetails`,
-        { headers },
+        
         data
       );
       console.log("ressss", response.data);
@@ -139,7 +131,7 @@ export const updatePassword = createAsyncThunk(
     try {
       const response = await axios.put(
         Baseurl + `/auth/updatepassword`,
-        { headers },
+       
         data
       );
       console.log("ressss", response.data);
@@ -191,7 +183,7 @@ export const updaterole = createAsyncThunk(
     try {
       const response = await axios.put(
         Baseurl + `/auth/updatedetails`,
-        { headers },
+        
         data
       );
       console.log("ressss", response.data);

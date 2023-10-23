@@ -160,7 +160,11 @@ const SectionTabs: React.FC<ModelProps> = ({
       </Modal>
 
       {/* handel model end  */}
-      <div className="tabs-scroll">
+      <div 
+      
+      className="tabs-scroll"
+      
+      >
         <ReactDragListView {...dragProps}>
           {sectionArry?.length ? (
             sectionArry.map((item: any, i: any) => (
