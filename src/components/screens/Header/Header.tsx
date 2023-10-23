@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {  useEffect } from "react";
 
 import "./Header.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -18,6 +18,7 @@ import { AppDispatch } from "../../../redux/Store";
 import SubscriptionModel from "../Admin/Subscription/SubscriptionModel";
 
 const Header = () => {
+
   const dispatch = useDispatch<AppDispatch>();
 
   const navigate = useNavigate(); // Use useNavigate hook to access navigation
@@ -70,7 +71,7 @@ const Header = () => {
     window.location.pathname === "/community";
 
   return (
-    <div className="header">
+    <div className="header" >
       <SubscriptionModel isPurchasedModel={isPurchasedModel} />
       <div className="d-flex align-items-center justify-content-end">
         <IconButton>

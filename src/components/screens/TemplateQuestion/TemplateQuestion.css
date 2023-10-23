@@ -3,6 +3,45 @@
 /* .css-19kzrtu {
     padding: 0px !important;
 } */
+.tabb{
+    margin-top: -40px;
+
+}
+.tabs-bg{
+    position: relative;
+    background-color: var( --theme-color);
+    width: 220px;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+.btn-tabs{
+    width: 200px;
+    height: 45px;
+    border-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+}
+.active-t{
+    background: white;
+    height: 10px;
+    width: 200px;
+}
+.inner-active-t{
+    height: 100%;
+    width: 100%;
+    background: var(--theme-color);
+    border-bottom-right-radius: 10px !important;
+}
+.bottom-active-t{
+    height: 100%;
+    width: 100%;
+    background: var(--theme-color);
+    border-top-right-radius: 10px !important;
+}
+
 .btn-template{
 margin: 0px !important;
 }
@@ -148,11 +187,10 @@ label{
 }
 .tabs-scroll{
     position: fixed;
-    /* width: 220px; */
+
     overflow-X: hidden !important;
     overflow-y: scroll !important;
-    max-height: 500px !important;
-    /* position: fixed; */
+    background-color: var(--theme-color) !important;
 }
 .tabs-scroll::-webkit-scrollbar {
     width: 2px;
@@ -160,11 +198,11 @@ label{
     
 
     .tabs-scroll::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #ffffff;
     }
 
     .tabs-scroll::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #ffffff;
     }
 @media (max-width: 1151px) {
     .answer{
