@@ -217,7 +217,7 @@ const ShowTemplateQuestion = () => {
               </div>
             </div>
             <div style={{ width: "30%" }}>
-              <CopyText sectionName={sectionName} states={formData} />
+              {/* <CopyText sectionName={sectionName} states={formData} /> */}
             </div>
           </Box>
         </div>

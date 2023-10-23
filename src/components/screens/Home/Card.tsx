@@ -36,13 +36,13 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
     let { data } = await axios.get(Baseurl + `/countQuestion/${item?._id}`);
 
     let { count } = data;
-
     setTemplate(count);
   };
   useEffect(() => {
     initTemplate();
     initQuestion();
   }, [item]);
+  
   return (
     <div className="col-lg-4 col-md-6 mt-4">
       <div className="card-box">
