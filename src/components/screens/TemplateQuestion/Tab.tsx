@@ -51,6 +51,14 @@ const SectionTabs: React.FC<ModelProps> = ({
   setOpenSection,
   setSectionName,
 }) => {
+
+  // ====== tabs Height ======
+  const initialScreenHeight = window.innerHeight;
+ const newh = initialScreenHeight -70 ;
+  // ======End tabs Height ======
+
+
+
   const dispatch = useDispatch<AppDispatch>();
   let tem_id = window.location.href.split("/questions/")[1];
   const { user } = useSelector((state: RootState) => state?.auth);
@@ -126,8 +134,9 @@ const SectionTabs: React.FC<ModelProps> = ({
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
-    <div>
+    <div  className="bg-dark tabb">
       <SectionModal
         openSection={openSection}
         setOpenSection={setOpenSection}
@@ -163,21 +172,23 @@ const SectionTabs: React.FC<ModelProps> = ({
       <div 
       
       className="tabs-scroll"
-      
+      style={{ height: newh,}}
       >
         <ReactDragListView {...dragProps}>
           {sectionArry?.length ? (
             sectionArry.map((item: any, i: any) => (
               <div
-                style={{
-                  width: 220,
-                  // marginTop: 20,
-                  overflow: "hidden",
-                  position: "relative",
-                }}
+                className="tabs-bg"
               >
+                {
+                    activeTab.includes(item) &&   activeTab.includes(item) ? <div className="active-t">
+                  <div className="inner-active-t">
+                  </div>
+                  </div> : ''
+                }
+              
                 <button
-                  className="btn btn-template mx-2"
+                  className="btn  btn-tabs "
                   onClick={() => {
                     setValue(item?._id);
                     setSectionName(item?.name);
@@ -187,38 +198,29 @@ const SectionTabs: React.FC<ModelProps> = ({
                       : setActiveTab([item]);
                   }}
                   style={{
-                    border: "none",
-                    display: "flex",
-                    justifyItems: "center",
-                    alignItems: "center",
-                    height: 50,
-                    textAlign: "center",
-                    marginTop: "20px",
-                    justifyContent: "center",
+                   
                     backgroundColor: activeTab.includes(item)
-                      ? activetabColor
-                      : tabscolor,
+                      ?
+                      'white'
+                      //  activetabColor
+                      : '#474EDB',
 
-                    width: activeTab.includes(item) ? "100%" : "90%",
-
-                    color: activeTab.includes(item) ? "white" : "black",
-                    borderBottomColor: activeTab.includes(item)
-                      ? "black"
-                      : "#9d62f5",
-                    borderBottomWidth: "2px",
-                    borderRadius: activeTab.includes(item) ? "10px" : "5px",
-                    clipPath: activeTab.includes(item)
-                      ? "polygon(0% 0%, 91% 0, 100% 50%, 90% 100%, 0% 100%)"
-                      : "black",
+                    color: activeTab.includes(item) ? "black" : "white",
+                   
                   }}
                 >
                   {item?.name}
                 </button>
+                {
+                    activeTab.includes(item) &&   activeTab.includes(item) ? <div className="active-t">
+                  <div className="bottom-active-t">
+                  </div>
+                  </div> : ''
+                }
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "flex-end",
-
                     marginRight: "8%",
                   }}
                 >

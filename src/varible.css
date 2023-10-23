@@ -7,15 +7,15 @@
     --medium-font: 22px;
     --Large-font: 26px;
     /* --theme-color: linear-gradient(90deg, #9d62f5 0%, #6049cd 100%); */
-    --theme-color: #9F496E;
+    --theme-color: #474EDB;
     /* --color:#6049cd; */
-    --color:#9F496E;
+    --color:#474EDB;
     --white: #ffffff;
     --dark: #222222;
     --gray:#6A6F8C;
     /* --rgba : rgba(201, 152, 245, 0.2); */
-    --rgba : #F2EBEF;
-    --box-shadow: 0 0 5px rgb(160, 75, 127);
+    --rgba : #ebeef2;
+    --box-shadow: 0 0 5px #7279f3;
     --font: 'Poppins', sans-serif;
     --lower-weight: 400 ; 
     --normal-weight:500 ;
