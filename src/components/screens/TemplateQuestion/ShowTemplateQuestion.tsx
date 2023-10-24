@@ -39,6 +39,7 @@ const ShowTemplateQuestion = () => {
   const [openSection, setOpenSection] = useState(false);
 
   const [formData, setFormData] = useState({
+    id:0,
     hours: "",
     dosageInput: "",
     selectedDate: "",
@@ -112,6 +113,7 @@ const ShowTemplateQuestion = () => {
         key={index}
         style={{
           display: "flex",
+
           justifyContent: "center",
         }}
       >
@@ -120,19 +122,21 @@ const ShowTemplateQuestion = () => {
         <div
           style={{
             width: "100%",
+            backgroundColor:'#F8F9FB',
           }}
           // className="container"
         >
           <Box
             sx={{
               flexGrow: 1,
-              bgcolor: "background.paper",
+              bgcolor:'#F8F9FB',
               display: "flex",
               width: "100%",
+
             }}
+
           >
-            <div className="bg">
-             
+            <div className="bg" >
               <SectionTabs
                 openSection={openSection}
                 setOpenSection={setOpenSection}
@@ -140,7 +144,7 @@ const ShowTemplateQuestion = () => {
               />
             </div>
 
-            <div style={{ width: "60%", marginRight: 20, marginLeft: 20, zIndex:1000 }}>
+            <div style={{ width: "50%", marginRight: 20, marginLeft: 20, zIndex:1000 }}>
               <div key={index}>
                 <div className="questions-box">
                   <div className="d-flex justify-content-between ">
@@ -175,6 +179,7 @@ const ShowTemplateQuestion = () => {
                             return (
                               <div key={item._id}>
                                 <ItemsRender
+                                index={i}
                                   item={item}
                                   checkLink={checkLink}
                                   states={formData}
@@ -215,7 +220,7 @@ const ShowTemplateQuestion = () => {
                 </div>
               </div>
             </div>
-            <div style={{ width: "30%" }}>
+            <div style={{ width: "30%" , display:'flex' , justifyContent:'center' , background:'#F8F9FB'}}>
               <CopyText sectionName={sectionName} states={formData} />
             </div>
           </Box>

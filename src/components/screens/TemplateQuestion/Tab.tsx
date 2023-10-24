@@ -15,8 +15,8 @@ import { getSection, deleteSection } from "../../../redux/Section/SectionAPI";
 import { activeSectionFun } from "../../../redux/Section/SectionSlice";
 import Button2 from "../Button2/Button2";
 import SectionModal from "./SectionModel";
-import { isPurchasedModelFun } from "../../../redux/Auth/AuthSlice";
 
+import Avatar from '../../../assets/avatar.jpg'
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -33,8 +33,6 @@ const style = {
 
 // ===== tabs =====
 
-const tabscolor = "#F2EBEF";
-const activetabColor = "#9F496E";
 interface Item {
   _id: string;
   // Add other properties as needed
@@ -54,7 +52,7 @@ const SectionTabs: React.FC<ModelProps> = ({
 
   // ====== tabs Height ======
   const initialScreenHeight = window.innerHeight;
- const newh = initialScreenHeight -70 ;
+ const newh = initialScreenHeight -88  ;
   // ======End tabs Height ======
 
 
@@ -136,13 +134,16 @@ const SectionTabs: React.FC<ModelProps> = ({
   };
 
   return (
-    <div  className="bg-dark tabb">
+    <div   className="bg-dark tabb"
+    
+    >
       <SectionModal
         openSection={openSection}
         setOpenSection={setOpenSection}
         upSection={upSection}
         setupSection={setupSection}
       />
+     
       {/* handel model start */}
       <Modal
         open={open}
@@ -170,10 +171,31 @@ const SectionTabs: React.FC<ModelProps> = ({
 
       {/* handel model end  */}
       <div 
-      
-      className="tabs-scroll"
+      className="tabs-scroll m-2"
       style={{ height: newh,}}
       >
+        <div className="des">
+              <div className="in-des">
+
+              </div>
+        </div>
+        <div className="mx-4 pt-3">
+        <Box display={'flex'} alignItems={'center'}>
+        <img src={Avatar} style={{width:50 , height:50 , borderRadius:10}} />
+        <Box color={'white'} p={1}> 
+          <Box fontWeight={'bold'}>{user?.name}</Box>
+          <Box>{user?.role}</Box>
+
+        </Box>
+        <Box>
+       
+          
+         
+          
+        
+        </Box>
+      </Box>
+        </div>
         <ReactDragListView {...dragProps}>
           {sectionArry?.length ? (
             sectionArry.map((item: any, i: any) => (
@@ -201,7 +223,7 @@ const SectionTabs: React.FC<ModelProps> = ({
                    
                     backgroundColor: activeTab.includes(item)
                       ?
-                      'white'
+                      '#F8F9FB'
                       //  activetabColor
                       : '#474EDB',
 

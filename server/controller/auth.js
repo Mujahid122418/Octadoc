@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const asyncHandler = require("../middleware/async");
 const bcrypt = require("bcrypt");
 const sendEmail = require("../utils/sendEmail");
+const WellcomeSendEmail =  require("../utils/WellcomeEmail");
 const User = require("../models/user");
 
 exports.register = asyncHandler(async (req, res, next) => {
@@ -44,6 +45,10 @@ exports.register = asyncHandler(async (req, res, next) => {
         yearsofPractice,
         phone,
         isPurchased,
+      });
+      WellcomeSendEmail({
+        email: email,
+        subject: "Wellcome Email",
       });
       sendTokenResponse(user, 200, res);
     }
@@ -118,18 +123,18 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       .status(404)
       .send({ success: false, message: "There is no user with that email" });
   }
-  console.log("user  ", user);
+  // console.log("user  ==> s", user);
   // Get reset token
-  const resetToken = user.getResetPasswordToken();
+   const resetToken = user.getResetPasswordToken();
 
-  await user.save({ validateBeforeSave: false });
+  // await user.save({ validateBeforeSave: false });
 
   // Create reset url
   const resetUrl = `${req.protocol}://${req.get(
     "host"
   )}/auth/resetpassword/${resetToken}`;
 
-  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
   try {
     let randomNumber = getRandomNumber();

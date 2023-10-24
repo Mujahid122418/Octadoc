@@ -16,6 +16,8 @@ const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
     singeldRadioValue,
     selectedRadioValue,
   } = states;
+  
+  
   const handleClickBtn = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const noteItems = [
@@ -42,12 +44,11 @@ const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
 
   return (
     <div  
-    
     // className="tabs-scroll"
     style={{position:'fixed' , width:"22%"}}
     >
       <div className="copy-box">
-        <h3 className="text-white fw-bold">Patient Notes</h3>
+        <h3 className="fw-bold">Patient Notes</h3>
         <div className="copy-text">
           <div className="head-text">
             <u>{sectionName}</u>

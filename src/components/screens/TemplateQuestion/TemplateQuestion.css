@@ -3,16 +3,18 @@
 /* .css-19kzrtu {
     padding: 0px !important;
 } */
+body{
+    background-color: #F8F9FB;
+}
 .tabb{
     margin-top: -40px;
-
 }
 .tabs-bg{
     position: relative;
     background-color: var( --theme-color);
-    width: 220px;
+    width: 250px;
     height: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -62,11 +64,11 @@ margin: 0px !important;
 }
 .questions-box{
     font-family: var(--font) !important;
-    border-radius: 10px;
-    /* border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px; */
+    border-radius: 30px;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    background: var(--theme-color) !important;
+    background-color: white;
+    /* background: var(--theme-color) !important; */
 }
 .question-head{
     border-bottom: 1px solid var(--color);
@@ -175,7 +177,7 @@ label{
     border-bottom-right-radius: 10px !important;
     display: flex;
     justify-content: end;
-    border-top:1px solid var(--color) ;
+    /* border-top:1px solid var(--color) ; */
 }
 
 /* ===== tabs ====== */
@@ -184,13 +186,15 @@ label{
     background-color: white;
     position: relative;
     width: 270px;
+
 }
 .tabs-scroll{
     position: fixed;
-
-    overflow-X: hidden !important;
-    overflow-y: scroll !important;
+    /* overflow-X: hidden !important; */
+    /* overflow-y: scroll !important; */
     background-color: var(--theme-color) !important;
+    border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px;
 }
 .tabs-scroll::-webkit-scrollbar {
     width: 2px;
@@ -203,6 +207,20 @@ label{
 
     .tabs-scroll::-webkit-scrollbar-thumb {
     background: #ffffff;
+    }
+    .des{
+        position: absolute;
+        width: 50px;
+        height: 100%;
+        background-color:var(--theme-color);
+        right: -50px;
+    }
+    .in-des{
+        width: 100%;
+        height: 100%;
+        background-color: #F8F9FB;
+        border-top-left-radius: 40px;
+        border-bottom-left-radius: 40px;
     }
 @media (max-width: 1151px) {
     .answer{

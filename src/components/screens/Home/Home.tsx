@@ -115,7 +115,7 @@ const Home: React.FC = () => {
               <div className="col-md-6 col-lg-4">
                 <h2 className="card-heading">
                   <SummarizeRoundedIcon sx={{ fontSize: 40 }} />
-                  My Template
+                  My Template 
                 </h2>
               </div>
               <div className="col-md-6 col-lg-4">
