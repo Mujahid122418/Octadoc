@@ -39,6 +39,7 @@ const ShowTemplateQuestion = () => {
   const [openSection, setOpenSection] = useState(false);
 
   const [formData, setFormData] = useState({
+    id:0,
     hours: "",
     dosageInput: "",
     selectedDate: "",
@@ -112,6 +113,7 @@ const ShowTemplateQuestion = () => {
         key={index}
         style={{
           display: "flex",
+
           justifyContent: "center",
         }}
       >
@@ -131,8 +133,7 @@ const ShowTemplateQuestion = () => {
               width: "100%",
             }}
           >
-            <div className="bg">
-             
+            <div className="bg" style={{padding:8 , }}>
               <SectionTabs
                 openSection={openSection}
                 setOpenSection={setOpenSection}
@@ -140,7 +141,7 @@ const ShowTemplateQuestion = () => {
               />
             </div>
 
-            <div style={{ width: "70%", marginRight: 20, marginLeft: 20, zIndex:1000 }}>
+            <div style={{ width: "80%", marginRight: 20, marginLeft: 20, zIndex:1000 }}>
               <div key={index}>
                 <div className="questions-box">
                   <div className="d-flex justify-content-between ">
@@ -175,6 +176,7 @@ const ShowTemplateQuestion = () => {
                             return (
                               <div key={item._id}>
                                 <ItemsRender
+                                index={i}
                                   item={item}
                                   checkLink={checkLink}
                                   states={formData}
@@ -216,7 +218,7 @@ const ShowTemplateQuestion = () => {
               </div>
             </div>
             <div style={{ width: "30%" }}>
-              {/* <CopyText sectionName={sectionName} states={formData} /> */}
+              <CopyText sectionName={sectionName} states={formData} />
             </div>
           </Box>
         </div>

@@ -23,9 +23,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { customRadioStyle } from "../QuestionBarModal/EditQuestionBar";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
+import { create_UUID } from "../../../utils/UUID";
 
 interface ModelProps {
+  index:any;
   item: any;
   checkLink: any;
   states: any;
@@ -33,6 +35,7 @@ interface ModelProps {
 }
 
 const ItemsRender: React.FC<ModelProps> = ({
+  index,
   item,
   checkLink,
   setStates,
@@ -48,7 +51,19 @@ const ItemsRender: React.FC<ModelProps> = ({
     singeldRadioValue,
     selectedRadioValue,
   } = states;
-
+  const [formData1, setFormData1] = useState([{
+    index:0,
+    id:create_UUID(),
+    hours: "",
+    dosageInput: "",
+    selectedDate: "",
+    selectedOption: "",
+    selectedRadioValue: "",
+    checkboxValues: false,
+    singeldRadioValue: false,
+  }]);
+  console.log("formData1" , formData1);
+  
   const { editQuestionModel } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
@@ -59,9 +74,11 @@ const ItemsRender: React.FC<ModelProps> = ({
     dispatch(ParentId_Fun(e._id));
   };
   const DeleteTemplateQuestion = async (id: any) => {
+
     let data = {
       questionId: id,
-    };
+    }
+    
     dispatch(DeleteQuestion(data))
       .unwrap()
       .then((res) => {
@@ -76,6 +93,10 @@ const ItemsRender: React.FC<ModelProps> = ({
       });
   };
 
+const selectDateChange = (e:any)=>{
+// console.log("ee" , e.target.value);
+setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate: e.target.value } :e1 ))
+}
   return (
     <div>
       <div
@@ -171,8 +192,11 @@ const ItemsRender: React.FC<ModelProps> = ({
               type="date"
               className="date-input"
               value={selectedDate}
-              onChange={(e) =>
-                setStates({ ...states, selectedDate: e.target.value })
+              onChange={(e:any) => 
+                selectDateChange(e)
+              //  setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate: e.target.value } :e1 ))
+                
+                
               }
             />
           </div>
@@ -183,17 +207,18 @@ const ItemsRender: React.FC<ModelProps> = ({
               <input
                 type="text"
                 value={hours}
-                onChange={(e) =>
-                  setStates({ ...states, hours: e.target.value })
-                }
+                onChange={(e:any) => 
+                  setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,hours: e.target.value } :e1 ))
+                   
+                 }
               />
               <select
                 className="ms-2"
                 aria-label="Default select example"
                 value={selectedOption}
-                onChange={(e) =>
-                  setStates({ ...states, selectedOption: e.target.value })
-                }
+                onChange={(e:any) => 
+                  setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedOption: e.target.value } :e1 )) 
+                 }
               >
                 <option value="Hours">Hours</option>
                 <option value="Days">Days</option>
@@ -211,9 +236,9 @@ const ItemsRender: React.FC<ModelProps> = ({
             <input
               type="text"
               value={dosageInput}
-              onChange={(e) =>
-                setStates({ ...states, dosageInput: e.target.value })
-              }
+              onChange={(e:any) => 
+                setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,dosageInput: e.target.value } :e1 ))
+               }
             />
             <b className="mg"> mg</b>
           </div>
@@ -223,9 +248,9 @@ const ItemsRender: React.FC<ModelProps> = ({
               aria-labelledby="demo-form-control-label-placement"
               name="position"
               value={selectedRadioValue}
-              onChange={(e) =>
-                setStates({ ...states, setSelectedRadioValue: e.target.value })
-              }
+              onChange={(e:any) => 
+                setFormData1(state =>  state.map(e1 => e1?.index === index ? {...e1 ,setSelectedRadioValue: e.target.value } :e1 ))
+                  }
               sx={{
                 border: "1px solid #6049cd",
                 borderRadius: "20px",
@@ -266,7 +291,14 @@ const ItemsRender: React.FC<ModelProps> = ({
                 style={customRadioStyle}
                 value={states.singeldRadioValue}
                 onChange={(e) =>
-                  setStates({ ...states, singeldRadioValue: e.target.value })
+                  setFormData1(state =>({
+                    ...state ,
+                    id:create_UUID(),
+                    singeldRadioValue:e
+                  })
+                
+                  )
+                  // setStates({ ...states, singeldRadioValue: e.target.value })
                 }
               />
             }
@@ -284,17 +316,22 @@ const ItemsRender: React.FC<ModelProps> = ({
         <div>
           {item?.answer?.length > 0 && (
             <ul>
-              {item?.answer.map((item: any, index: any) => (
+              {item?.answer?.map((item: any, index: any) => (
                 <FormControlLabel
                   className="ms-1"
                   control={
                     <Checkbox
                       style={customRadioStyle}
                       onChange={(e) =>
-                        setStates({
-                          ...states,
-                          checkboxValues: e.target.checked,
-                        })
+                        setFormData1(state =>({
+                          ...state,
+                          id:create_UUID(),
+                          checkboxValues:e
+                        }))
+                        // setStates({
+                        //   ...states,
+                        //   checkboxValues: e.target.checked,
+                        // })
                       }
                       defaultChecked={checkboxValues}
                     />
@@ -319,10 +356,17 @@ const ItemsRender: React.FC<ModelProps> = ({
                           defaultChecked={checkboxValues}
                           style={customRadioStyle}
                           onChange={(e) =>
-                            setStates({
-                              ...states,
-                              checkboxValues: e.target.checked,
+                            setFormData1(state =>({
+                              ...state ,
+                              id:create_UUID(),
+                              checkboxValues:e
                             })
+                          
+                            )
+                            // setStates({
+                            //   ...states,
+                            //   checkboxValues: e.target.checked,
+                            // })
                           }
                         />
                       }
