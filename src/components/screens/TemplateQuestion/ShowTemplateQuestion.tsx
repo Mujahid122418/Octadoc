@@ -140,7 +140,7 @@ const ShowTemplateQuestion = () => {
               />
             </div>
 
-            <div style={{ width: "70%", marginRight: 20, marginLeft: 20, zIndex:1000 }}>
+            <div style={{ width: "60%", marginRight: 20, marginLeft: 20, zIndex:1000 }}>
               <div key={index}>
                 <div className="questions-box">
                   <div className="d-flex justify-content-between ">
