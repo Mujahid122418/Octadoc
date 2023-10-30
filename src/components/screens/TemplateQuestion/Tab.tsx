@@ -134,9 +134,7 @@ const SectionTabs: React.FC<ModelProps> = ({
   };
 
   return (
-    <div   className="bg-dark tabb"
-    
-    >
+    <div className="bg-dark tabb">
       <SectionModal
         openSection={openSection}
         setOpenSection={setOpenSection}
@@ -187,13 +185,7 @@ const SectionTabs: React.FC<ModelProps> = ({
           <Box>{user?.role}</Box>
 
         </Box>
-        <Box>
        
-          
-         
-          
-        
-        </Box>
       </Box>
         </div>
         <ReactDragListView {...dragProps}>
@@ -210,7 +202,7 @@ const SectionTabs: React.FC<ModelProps> = ({
                 }
               
                 <button
-                  className="btn  btn-tabs "
+                  className="btn  btn-tabs"
                   onClick={() => {
                     setValue(item?._id);
                     setSectionName(item?.name);
@@ -220,15 +212,12 @@ const SectionTabs: React.FC<ModelProps> = ({
                       : setActiveTab([item]);
                   }}
                   style={{
-                   
                     backgroundColor: activeTab.includes(item)
                       ?
                       '#F8F9FB'
                       //  activetabColor
                       : '#474EDB',
-
-                    color: activeTab.includes(item) ? "black" : "white",
-                   
+                    color: activeTab.includes(item) ? "black" : "white"
                   }}
                 >
                   {item?.name}
@@ -285,7 +274,7 @@ const SectionTabs: React.FC<ModelProps> = ({
               </div>
             ))
           ) : (
-            <p>you did not have any tabs</p>
+            <p style={{color:'white' , textAlign:'center'}}>you did not have any tabs</p>
           )}
         </ReactDragListView>
       </div>

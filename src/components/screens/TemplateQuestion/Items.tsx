@@ -9,6 +9,7 @@ import type { RootState } from "../../../redux/Store";
 import {
   EditSelectedQuestionFun,
   ParentId_Fun,
+  UpdateGetQuestionArray,
   editQuestionModelFun,
 } from "../../../redux/TemplateQuestion/TemplateQuestion";
 import { useSelector, useDispatch } from "react-redux";
@@ -53,7 +54,7 @@ const ItemsRender: React.FC<ModelProps> = ({
   } = states;
   const [formData1, setFormData1] = useState([{
     index:0,
-    id:create_UUID(),
+    key:create_UUID(),
     hours: "",
     dosageInput: "",
     selectedDate: "",
@@ -62,11 +63,13 @@ const ItemsRender: React.FC<ModelProps> = ({
     checkboxValues: false,
     singeldRadioValue: false,
   }]);
-  console.log("formData1" , formData1);
+  // console.log("formData1" , formData1);
   
-  const { editQuestionModel } = useSelector(
+  const { editQuestionModel , getQuestions} = useSelector(
     (state: RootState) => state?.templateQuestion
   );
+const [selected , setSelected] = useState<any[]>([])
+
 
   const updateTemplateQuestion = async (e: any) => {
     dispatch(EditSelectedQuestionFun(e));
@@ -92,11 +95,56 @@ const ItemsRender: React.FC<ModelProps> = ({
         console.log("delete question", e);
       });
   };
+ 
+const selectDateChange = (id:any ,e:any)=>{
 
-const selectDateChange = (e:any)=>{
-// console.log("ee" , e.target.value);
-setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate: e.target.value } :e1 ))
+
+
+
+let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,selectedDate: e.target.value } :element)
+// console.log("newdata time" , newdata);
+dispatch(UpdateGetQuestionArray(newdata))
+// setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate: e.target.value } :e1 ))
+
 }
+
+const onChangeHours = (id:any ,e:any)=>{
+
+
+  let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,hours: e.target.value } :element)
+  // console.log("newdata time" , newdata);
+dispatch(UpdateGetQuestionArray(newdata))
+
+
+}
+const onChangeHoursDuration = (id:any ,e:any)=>{
+ 
+let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,selectedOption: e} :element)
+dispatch(UpdateGetQuestionArray(newdata))
+
+}
+const onChangeDosageInput = (id:any ,e:any)=>{
+  let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,dosageInput: e} :element)
+
+dispatch(UpdateGetQuestionArray(newdata))
+}
+
+const onChangeDosageInputType = (id:any ,e:any)=>{
+
+  let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,selectedRadioValue: e} :element)
+  
+  dispatch(UpdateGetQuestionArray(newdata))
+
+}
+
+const onChangeFreeText = (id:any ,e:any)=>{
+  let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,freeText: e} :element)
+  dispatch(UpdateGetQuestionArray(newdata))
+}
+const onChangeMultiText = (id:any ,e:any)=>{
+  
+}
+
   return (
     <div>
       <div
@@ -191,11 +239,10 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
             <input
               type="date"
               className="date-input"
-              value={selectedDate}
+              value={item?.selectedDate}
               onChange={(e:any) => 
-                selectDateChange(e)
-              //  setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate: e.target.value } :e1 ))
-                
+                selectDateChange(item?._id, e)
+              
                 
               }
             />
@@ -206,20 +253,18 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
             <div className="time-in">
               <input
                 type="text"
-                value={hours}
-                onChange={(e:any) => 
-                  setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,hours: e.target.value } :e1 ))
-                   
-                 }
+                value={item?.hours}
+                onChange={(e:any) => onChangeHours(item?._id , e)}
               />
               <select
                 className="ms-2"
                 aria-label="Default select example"
-                value={selectedOption}
+                value={item?.selectedOption}
                 onChange={(e:any) => 
-                  setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedOption: e.target.value } :e1 )) 
+                  onChangeHoursDuration(item?._id , e.target.value)
                  }
               >
+                <option value="">Select</option>
                 <option value="Hours">Hours</option>
                 <option value="Days">Days</option>
                 <option value="Weeks">Weeks</option>
@@ -235,10 +280,8 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
             <label>When did this start?</label>
             <input
               type="text"
-              value={dosageInput}
-              onChange={(e:any) => 
-                setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,dosageInput: e.target.value } :e1 ))
-               }
+              value={item?.dosageInput}
+              onChange={(e:any) => onChangeDosageInput(item?._id , e.target.value)}
             />
             <b className="mg"> mg</b>
           </div>
@@ -247,10 +290,8 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
               row
               aria-labelledby="demo-form-control-label-placement"
               name="position"
-              value={selectedRadioValue}
-              onChange={(e:any) => 
-                setFormData1(state =>  state.map(e1 => e1?.index === index ? {...e1 ,setSelectedRadioValue: e.target.value } :e1 ))
-                  }
+              value={item?.selectedRadioValue}
+              onChange={(e:any) =>  onChangeDosageInputType(item?._id , e.target.value)}
               sx={{
                 border: "1px solid #6049cd",
                 borderRadius: "20px",
@@ -258,25 +299,26 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
               }}
             >
               <FormControlLabel
-                value="top"
+
+                value="OD"
                 control={<Radio style={customRadioStyle} />}
                 label="OD"
                 labelPlacement="top"
               />
               <FormControlLabel
-                value="start"
+                value="BD"
                 control={<Radio style={customRadioStyle} />}
                 label="BD"
                 labelPlacement="top"
               />
               <FormControlLabel
-                value="bottom"
+                value="TDS"
                 control={<Radio style={customRadioStyle} />}
                 label="TDS"
                 labelPlacement="top"
               />
               <FormControlLabel
-                value="end"
+                value="QDS"
                 control={<Radio style={customRadioStyle} />}
                 label="QDS"
                 labelPlacement="top"
@@ -296,9 +338,7 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
                     id:create_UUID(),
                     singeldRadioValue:e
                   })
-                
                   )
-                  // setStates({ ...states, singeldRadioValue: e.target.value })
                 }
               />
             }
@@ -309,7 +349,7 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
       ) : item?.questionType === "Free Text" ? (
         <div className="answer mt-3 mb-2 ms-3">
           <div className="first">
-            <input type="text" placeholder="Free Text" />
+            <input value={item?.freeText} onChange={(e)=>onChangeFreeText(item?._id , e.target.value)} type="text" placeholder="Free Text" />
           </div>
         </div>
       ) : item?.questionType === "Multiple Choice" ? (
@@ -317,27 +357,19 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
           {item?.answer?.length > 0 && (
             <ul>
               {item?.answer?.map((item: any, index: any) => (
-                <FormControlLabel
-                  className="ms-1"
-                  control={
-                    <Checkbox
-                      style={customRadioStyle}
-                      onChange={(e) =>
-                        setFormData1(state =>({
-                          ...state,
-                          id:create_UUID(),
-                          checkboxValues:e
-                        }))
-                        // setStates({
-                        //   ...states,
-                        //   checkboxValues: e.target.checked,
-                        // })
-                      }
-                      defaultChecked={checkboxValues}
-                    />
-                  }
-                  label={item}
-                />
+
+<div  style={{marginTop:10}}>
+                  <span  onClick={(e) => {
+        selected.includes(item)
+          ? setSelected(selected.filter((i: any) => i !== item))
+          : setSelected([...selected, item]);
+      }} style={{border:'0.25px solid black' , padding:5 , borderRadius:10 , backgroundColor:selected.includes(item) ? ' #6049cd' :  "white" , color:selected.includes(item) ? 'white': 'black' }}>
+                  {item}
+                  </span>
+               
+                </div>
+
+               
               ))}
             </ul>
           )}
@@ -349,29 +381,16 @@ setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate
                     {++i}:- {e1.question}
                   </li>
                   {e1?.answer.map((item: any, index: any) => (
-                    <FormControlLabel
-                      className="ms-1"
-                      control={
-                        <Checkbox
-                          defaultChecked={checkboxValues}
-                          style={customRadioStyle}
-                          onChange={(e) =>
-                            setFormData1(state =>({
-                              ...state ,
-                              id:create_UUID(),
-                              checkboxValues:e
-                            })
-                          
-                            )
-                            // setStates({
-                            //   ...states,
-                            //   checkboxValues: e.target.checked,
-                            // })
-                          }
-                        />
-                      }
-                      label={item}
-                    />
+                     <div  style={{marginTop:10}}>
+                     <span  onClick={(e) => {
+           selected.includes(item)
+             ? setSelected(selected.filter((i: any) => i !== item))
+             : setSelected([...selected, item]);
+         }} style={{border:'0.25px solid black' , padding:5 , borderRadius:10 , backgroundColor:selected.includes(item) ? ' #6049cd' :  "white" , color:selected.includes(item) ? 'white': 'black' }}>
+                     {item}
+                     </span>
+                  
+                   </div>
                   ))}
                 </div>
               </>

@@ -115,6 +115,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
             aria-label="delete"
             className="action-btn"
             onClick={() => DeleteTemplate(item?._id)}
+            
           >
             <DeleteIcon />
           </IconButton>

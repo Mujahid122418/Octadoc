@@ -49,7 +49,7 @@ interface StateType {
   right: any; // Change 'any' to the appropriate type
 }
 export const customRadioStyle = {
-  color: "#9F496E", // Your custom color code
+  color: "#6049cd", // Your custom color code
 };
 type Anchor = "right";
 

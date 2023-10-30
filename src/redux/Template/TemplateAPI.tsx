@@ -18,6 +18,7 @@ export const getTemplates = createAsyncThunk(
   "template/getTemplates",
   async () => {
     try {
+      
       const response = await axios.get(Baseurl + "/template/template", 
       );
       return response.data?.data;

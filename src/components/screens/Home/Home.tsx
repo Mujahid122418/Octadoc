@@ -85,10 +85,12 @@ const Home: React.FC = () => {
   const DeleteTemplate = async (e: any) => {
     if (e) {
       dispatch(deleteEmployee(e))
-        .unwrap()
+        // .unwrap()
         .then((response) => {
           toast.success("Delete successfully");
-          dispatch(getTemplates());
+          setTimeout(() => {
+            dispatch(getTemplates());
+          }, 1000);
         })
         .catch((error) => {
           toast.error(error);

@@ -1,6 +1,9 @@
 import React from "react";
 import "./CopyText.css";
 import Button2 from "../Button2/Button2";
+import type { RootState } from "../../../redux/Store";
+import { useSelector } from "react-redux";
+
 interface CopyTextProps {
   sectionName: string;
   states: any;
@@ -16,7 +19,10 @@ const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
     singeldRadioValue,
     selectedRadioValue,
   } = states;
-  
+  const {  getQuestions} = useSelector(
+    (state: RootState) => state?.templateQuestion
+  );
+
   
   const handleClickBtn = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -53,7 +59,51 @@ const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
           <div className="head-text">
             <u>{sectionName}</u>
           </div>
-          <ul className="uper-list">
+          <ul className="uper-list">   
+{getQuestions.map((item:any  , i:number)=>{
+  console.log("item " , item);
+
+    {/* <li className="uper-li" key={i}>
+      {item?.selectedDate ?  `Since ${item.selectedDate}` : null}
+    </li>
+    <li className="uper-li">
+   { item?.hours ? `Since ${item?.hours}` : null }
+    </li> */}
+
+   const formattedItem = item?.selectedDate ?  `Since ${item.selectedDate}` : item?.hours ? `Since ${item?.hours}` : null
+
+  
+
+   return (
+     <li className="uper-li" key={i}>
+      {formattedItem} 
+     </li>
+  );
+
+
+
+//  const formattedItem =
+//  i === "selectedDate"
+//    ? `Since ${item[i]}`
+//    : i === "hours"
+//    ? `Last ${item[i]} ${selectedOption.toLowerCase()}`
+//    : i === "checkboxValues"
+//    ? item[i]
+//      ? "yes"
+//      : "no"
+//    : i === "singeldRadioValue"
+//    ? item[i]
+//      ? "PRN yes"
+//      : "PRN no"
+//    : item[i];
+//    return (
+//     <li className="uper-li" key={i}>
+//       {formattedItem}
+//     </li>
+ // );
+})}</ul>
+           
+          {/* <ul className="uper-list">
             {Object.keys(states).map((i) => {
               if (!states[i]) {
                 return null;
@@ -78,7 +128,7 @@ const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
                 </li>
               );
             })}
-          </ul>
+          </ul> */}
           <Button2 name="Copy Notes" onClick={handleClickBtn} />
           <div className="download-btn mt-2">
             <Button2 name="Download Formatted" onClick={handleClickBtn} />

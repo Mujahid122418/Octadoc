@@ -48,6 +48,7 @@ const ShowTemplateQuestion = () => {
     checkboxValues: false,
     singeldRadioValue: false,
   });
+  
   const { addQuestionModel, getQuestions, editQuestionModel } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
@@ -58,6 +59,7 @@ const ShowTemplateQuestion = () => {
   const [TemplateName, setTemplateName] = useState("");
 
   // model state end
+
   // handel section start
   const { activeSection } = useSelector((state: RootState) => state?.section);
 
