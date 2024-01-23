@@ -30,6 +30,7 @@ const CopyText: React.FC<CopyTextProps> = ({ states, sectionName }) => {
       singeldRadioValue,
       selectedRadioValue,
     ];
+    
     const filteredList = noteItems?.filter(
       (item) => item !== undefined && item !== false && item !== ""
     );
