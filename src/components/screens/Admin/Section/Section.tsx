@@ -20,7 +20,7 @@ import {
   deleteSection,
 } from "../../../../redux/Section/SectionAPI";
 
-export default function Section() {
+export default function SectionTab() {
   const dispatch = useDispatch<AppDispatch>();
   const { allcategory } = useSelector((state: RootState) => state?.category);
 

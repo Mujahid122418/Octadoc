@@ -17,13 +17,15 @@ import OTP from "./components/screens/Auth/OTP";
 import Category from "./components/screens/Admin/Category/Category";
 import Contactt from "./components/screens/Contactt/Contactt";
 import Paymentss from "./components/screens/Paymentss/Paymentss";
-import Section from "./components/screens/Admin/Section.js/Section";
+import Section from "./components/screens/Admin/Section/Section";
 import Profilee from "./components/screens/Profilee/Profilee";
 import Interest from "./components/screens/Admin/Interest/Interest";
 import Subscription from "./components/screens/Admin/Subscription/Subscription";
+import SectionTab from "./components/screens/Admin/Section/Section";
 
 function App() {
   return (
+
     <div className="body">
       <BrowserRouter>
         <Routes>
@@ -103,7 +105,6 @@ function App() {
               </div>
             }
           />
-
           <Route
             path="/admin"
             element={
@@ -135,6 +136,7 @@ function App() {
               </div>
             }
           />
+
           <Route
             path="/section"
             element={

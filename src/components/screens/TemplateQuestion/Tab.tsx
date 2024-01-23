@@ -43,16 +43,19 @@ interface ModelProps {
   openSection: boolean;
   setOpenSection: (value: any) => void;
   setSectionName: (value: any) => void;
+  editSection: boolean
 }
 const SectionTabs: React.FC<ModelProps> = ({
   openSection,
   setOpenSection,
   setSectionName,
+  editSection
+
 }) => {
 
   // ====== tabs Height ======
   const initialScreenHeight = window.innerHeight;
- const newh = initialScreenHeight -88  ;
+  const newh = initialScreenHeight - 88;
   // ======End tabs Height ======
 
 
@@ -134,21 +137,25 @@ const SectionTabs: React.FC<ModelProps> = ({
   };
 
   return (
-    <div className="bg-dark tabb">
+    <div
+      className="bg-dark tabb"
+    >
       <SectionModal
         openSection={openSection}
         setOpenSection={setOpenSection}
         upSection={upSection}
         setupSection={setupSection}
       />
-     
+
       {/* handel model start */}
       <Modal
         open={open}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style }}>
+        <Box
+          sx={{ ...style }}
+        >
           <h2 id="parent-modal-title">
             Are you sure you want to delete this Section?
           </h2>
@@ -168,26 +175,25 @@ const SectionTabs: React.FC<ModelProps> = ({
       </Modal>
 
       {/* handel model end  */}
-      <div 
-      className="tabs-scroll m-2"
-      style={{ height: newh,}}
+      <div
+        className="tabs-scroll m-2"
+        style={{ height: newh, }}
       >
         <div className="des">
-              <div className="in-des">
+          <div className="in-des">
 
-              </div>
+          </div>
         </div>
         <div className="mx-4 pt-3">
-        <Box display={'flex'} alignItems={'center'}>
-        <img src={Avatar} style={{width:50 , height:50 , borderRadius:10}} />
-        <Box color={'white'} p={1}> 
-          <Box fontWeight={'bold'}>{user?.name}</Box>
-          <Box>{user?.role}</Box>
-
-        </Box>
-       
-      </Box>
+          <Box display={'flex'} alignItems={'center'}>
+            <img src={Avatar} style={{ width: 50, height: 50, borderRadius: 10 }} />
+            <Box color={'white'} p={1}>
+              <Box fontWeight={'bold'}>{user?.name}</Box>
+              <Box>{user?.role}</Box>
+            </Box>
+          </Box>
         </div>
+        <div style={{ backgroundColor: 'white', height: 1, marginTop: 20, marginBottom: 20 }}></div>
         <ReactDragListView {...dragProps}>
           {sectionArry?.length ? (
             sectionArry.map((item: any, i: any) => (
@@ -195,12 +201,12 @@ const SectionTabs: React.FC<ModelProps> = ({
                 className="tabs-bg"
               >
                 {
-                    activeTab.includes(item) &&   activeTab.includes(item) ? <div className="active-t">
-                  <div className="inner-active-t">
-                  </div>
+                  activeTab.includes(item) && activeTab.includes(item) ? <div className="active-t">
+                    <div className="inner-active-t">
+                    </div>
                   </div> : ''
                 }
-              
+
                 <button
                   className="btn  btn-tabs"
                   onClick={() => {
@@ -223,12 +229,12 @@ const SectionTabs: React.FC<ModelProps> = ({
                   {item?.name}
                 </button>
                 {
-                    activeTab.includes(item) &&   activeTab.includes(item) ? <div className="active-t">
-                  <div className="bottom-active-t">
-                  </div>
+                  activeTab.includes(item) && activeTab.includes(item) ? <div className="active-t">
+                    <div className="bottom-active-t">
+                    </div>
                   </div> : ''
                 }
-                <div
+                {editSection && <div
                   style={{
                     display: "flex",
                     justifyContent: "flex-end",
@@ -270,11 +276,11 @@ const SectionTabs: React.FC<ModelProps> = ({
                       <DeleteIcon sx={{ width: 15, height: 15 }} />
                     </IconButton>
                   </div>
-                </div>
+                </div>}
               </div>
             ))
           ) : (
-            <p style={{color:'white' , textAlign:'center'}}>you did not have any tabs</p>
+            <p style={{ color: 'white', textAlign: 'center' }}>you did not have any tabs</p>
           )}
         </ReactDragListView>
       </div>

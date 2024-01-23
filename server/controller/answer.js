@@ -45,7 +45,7 @@ exports.getAnswer = async (req, res) => {
 };
 
 exports.deleteAnswer = async (req, res) => {
-  console.log("params ans", req.params?.id);
+ 
   Answer.findOneAndDelete({ _id: req.params?.id })
     .then((deletedPost) => {
       if (deletedPost) {

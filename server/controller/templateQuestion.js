@@ -4,7 +4,7 @@ const FollowUp = require("../models/followup");
 const { v4: uuidv4 } = require("uuid");
 const { default: mongoose } = require("mongoose");
 exports.addQuestion = async (req, res) => {
-  const payload = req.body;
+ console.log("add req.body" , req.body);
   try {
     const {
       question,
@@ -14,6 +14,8 @@ exports.addQuestion = async (req, res) => {
       section_id,
       questionType,
       tip,
+      questionOutput,
+      answerOutput
     } = req.body;
     let savedQuestion;
     if (parentId) {
@@ -26,7 +28,9 @@ exports.addQuestion = async (req, res) => {
 
         const followUp = {
           question,
+          questionOutput,
           answer,
+          answerOutput,
           newId,
           template_id,
           section_id,
@@ -39,7 +43,9 @@ exports.addQuestion = async (req, res) => {
       } else {
         const newQuestion = new TemplateQuestions({
           question,
+          questionOutput,
           answer,
+          answerOutput,
           template_id,
           section_id,
           questionType,
@@ -50,7 +56,9 @@ exports.addQuestion = async (req, res) => {
     } else {
       const newQuestion = new TemplateQuestions({
         question,
+        questionOutput,
         answer,
+        answerOutput,
         template_id,
         section_id,
         questionType,
@@ -341,10 +349,10 @@ exports.singleQuestion = async (req, res) => {
 
 exports.countQuestion = async (req, res) => {
   const { id } = req.params;
-  console.log("params", id);
+ 
   await TemplateQuestions.countDocuments({ template_id: id })
     .then((item) => {
-      console.log("check item question", item);
+      
       res.json({ success: true, count: item });
     })
     .catch((error) => {

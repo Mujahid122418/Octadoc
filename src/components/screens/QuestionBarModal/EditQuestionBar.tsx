@@ -60,7 +60,6 @@ export default function EditQuestionBar() {
     editQuestionModel,
     editQuestionFollowupModel,
     questionType,
-
     EditSelectedQuestion,
     getSingleQuestion,
     isLoading,
@@ -182,6 +181,7 @@ export default function EditQuestionBar() {
     }
   }, [EditSelectedQuestion]);
 
+
   useEffect(() => {
     if (getSingleQuestion) {
       setNewQuestion(getSingleQuestion?.question);
@@ -228,7 +228,7 @@ export default function EditQuestionBar() {
         .catch((e) => {
           console.log("delete question", e);
         });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   // edit states of followup question start
@@ -326,9 +326,9 @@ export default function EditQuestionBar() {
           label="Hide this from your clinical notes"
         />
         {questionType === "Multiple Choice" ||
-        QuestionType === "Multiple Choice" ||
-        questionType === "Single Choice" ||
-        QuestionType === "Single Choice" ? (
+          QuestionType === "Multiple Choice" ||
+          questionType === "Single Choice" ||
+          QuestionType === "Single Choice" ? (
           <div>
             <div className="label-button">
               <label htmlFor="">Answer </label>

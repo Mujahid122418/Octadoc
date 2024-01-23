@@ -38,7 +38,6 @@ const UserSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-
     message: "{VALUE} is not a valid  number!",
   },
   role: {
@@ -53,7 +52,6 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-
     minlength: 6,
     select: false,
   },
@@ -66,7 +64,16 @@ const UserSchema = new mongoose.Schema({
   isPurchasedTime: {
     type: String,
   },
+  interest: [{
+    type: String,
+  }],
   otp: { type: String, default: "0000" },
+  picture: {
+    type: String,
+  },
+  sub: {
+    type: String,
+  },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {

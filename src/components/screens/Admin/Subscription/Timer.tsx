@@ -26,11 +26,23 @@ const TimeCounter: React.FC<TimeCounterProps> = ({ targetUnixTimestamp }) => {
     return { months, days, hours, minutes, seconds };
   };
 
-  const [timeDifference, setTimeDifference] = useState(calculateTimeDifference);
+  const [timeDifference, setTimeDifference] = useState<any>({});
 
   useEffect(() => {
+
     const intervalId = setInterval(() => {
-      setTimeDifference(calculateTimeDifference);
+
+      if (
+        calculateTimeDifference().months < 0
+      ) {
+
+        setTimeDifference({ months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+      } else {
+
+        setTimeDifference(calculateTimeDifference);
+      }
+
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -39,37 +51,37 @@ const TimeCounter: React.FC<TimeCounterProps> = ({ targetUnixTimestamp }) => {
   return (
     <div className="main-timer mt-3">
       <h1>Time Counter</h1>
-     <div className="timer mt-3">
-     <QueryBuilderIcon className="class-icon" />
-      <div className="time">
-      <div className="mon tim">
-      <p className="mb-3">Months </p>
-      <p>{timeDifference.months}</p>
+      <div className="timer mt-3">
+        <QueryBuilderIcon className="class-icon" />
+        <div className="time">
+          <div className="mon tim">
+            <p className="mb-3">Months </p>
+            <p>{timeDifference?.months}</p>
+          </div>
+          :
+          <div className="day tim">
+            <p className="mb-3">Days</p>
+            <p> {timeDifference?.days}</p>
+          </div>
+          :
+          <div className="hours tim">
+            <p className="mb-3">Hours</p>
+            <p>{timeDifference?.hours}</p>
+          </div>
+          :
+          <div className="mints tim">
+            <p className="mb-3">Minutes</p>
+            <p> {timeDifference?.minutes}</p>
+          </div>
+          :
+          <div className="sec tim">
+            <p className="mb-3">Seconds </p>
+            <p>{timeDifference?.seconds}</p>
+          </div>
+
+        </div>
+
       </div>
-      :
-      <div className="day tim">
-      <p className="mb-3">Days</p>
-      <p> {timeDifference.days}</p>
-      </div>
-      :
-      <div className="hours tim">
-      <p className="mb-3">Hours</p>
-      <p>{timeDifference.hours}</p>
-      </div>
-      :
-      <div className="mints tim">
-      <p className="mb-3">Minutes</p>
-      <p> {timeDifference.minutes}</p>
-      </div>
-      :
-      <div className="sec tim">
-      <p className="mb-3">Seconds </p>
-      <p>{timeDifference.seconds}</p>
-      </div>
-      
-      </div>
-      
-     </div>
     </div>
   );
 };

@@ -193,8 +193,9 @@ label{
     /* overflow-X: hidden !important; */
     /* overflow-y: scroll !important; */
     background-color: var(--theme-color) !important;
-    border-bottom-left-radius: 30px;
-    border-top-left-radius: 30px;
+    /* border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px; */
+    border-radius: 30px;
 }
 .tabs-scroll::-webkit-scrollbar {
     width: 2px;
@@ -219,8 +220,8 @@ label{
         width: 100%;
         height: 100%;
         background-color: #F8F9FB;
-        border-top-left-radius: 40px;
-        border-bottom-left-radius: 40px;
+        /* border-top-left-radius: 40px;
+        border-bottom-left-radius: 40px; */
     }
 @media (max-width: 1151px) {
     .answer{

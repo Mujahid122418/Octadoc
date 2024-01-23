@@ -29,7 +29,6 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
       Baseurl + `/section/countSection/${item?._id}`
     );
     let { count } = data;
-
     setQuestion(count);
   };
   const initQuestion = async () => {
@@ -42,7 +41,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
     initTemplate();
     initQuestion();
   }, [item]);
-  
+
   return (
     <div className="col-lg-4 col-md-6 mt-4">
       <div className="card-box">
@@ -51,7 +50,7 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
             <div className="text">
               <h6 className="mb-0">{item?.template_name}</h6>
               <p className="mt-2">
-                By <b>{item?.template_type}Ahmad</b>{" "}
+                By <b>{item?.template_type} Ahmad</b>{" "}
                 <span className="cat-name">category name</span>
               </p>
             </div>
@@ -101,21 +100,21 @@ const Card: React.FC<ICard> = ({ item, DeleteTemplate, updateTemplate }) => {
           <IconButton
             disabled={
               item?.user_id === user?._id &&
-              window.location.pathname === "/template"
+                window.location.pathname === "/template"
                 ? false
                 : true
             }
             sx={{
               opacity:
                 item?.user_id === user?._id &&
-                window.location.pathname === "/template"
+                  window.location.pathname === "/template"
                   ? 1
                   : 0.8,
             }}
             aria-label="delete"
             className="action-btn"
             onClick={() => DeleteTemplate(item?._id)}
-            
+
           >
             <DeleteIcon />
           </IconButton>

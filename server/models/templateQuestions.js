@@ -5,6 +5,9 @@ const FollowUpSchema = new mongoose.Schema({
   question: {
     type: String,
   },
+  questionOutput :{
+    type: String,
+  },
   tip: {
     type: String,
   },
@@ -13,6 +16,11 @@ const FollowUpSchema = new mongoose.Schema({
       type: String,
     },
   ],
+  answerOutput:
+    {
+      type: String,
+    },
+  
   questionType: {
     type: String,
   },
@@ -69,6 +77,9 @@ const template_Schema = new schema(
       type: String,
       required: true,
     },
+    questionOutput :{
+      type: String,
+    },
     tip: {
       type: String,
     },
@@ -77,22 +88,20 @@ const template_Schema = new schema(
         type: String,
       },
     ],
+    answerOutput:
+    {
+      type: String,
+    },
     followUp: [FollowUpSchema],
     parentId: {
       type: String,
     },
-    // answers: {
-    //   type: String,
-    // },
+   
     index: {
       type: String,
     },
-    // Question: {
-    //   type: [Questions_Schema],
-    // },
-    // followUp: [
-    //   { type: mongoose.Schema.Types.ObjectId, ref: "templatequestion" },
-    // ], // Use ObjectId reference
+  
+   
   },
   { timestamps: true }
 );

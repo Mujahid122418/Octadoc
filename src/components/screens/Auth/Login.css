@@ -54,11 +54,12 @@ a{color:inherit;text-decoration:none}
 }
 .login-html{
 	width:100%;
-	height:100%;
+	height:110%;
 	position:absolute;
 	padding:90px 70px 50px 70px;
 	background: var(--theme-color) !important;
     border-radius: 30px;
+	overflow: hidden;
 }
 .login-html .sign-in-htm,
 .login-html .sign-up-htm{

@@ -25,10 +25,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { customRadioStyle } from "../QuestionBarModal/EditQuestionBar";
 import { useState } from "react";
-import { create_UUID } from "../../../utils/UUID";
+
 
 interface ModelProps {
-  index:any;
+  index: any;
   item: any;
   checkLink: any;
   states: any;
@@ -39,37 +39,18 @@ const ItemsRender: React.FC<ModelProps> = ({
   index,
   item,
   checkLink,
-  setStates,
-  states,
+
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    hours,
-    dosageInput,
-    selectedDate,
-    checkboxValues,
-    selectedOption,
-    singeldRadioValue,
-    selectedRadioValue,
-  } = states;
-  const [formData1, setFormData1] = useState([{
-    index:0,
-    key:create_UUID(),
-    hours: "",
-    dosageInput: "",
-    selectedDate: "",
-    selectedOption: "",
-    selectedRadioValue: "",
-    checkboxValues: false,
-    singeldRadioValue: false,
-  }]);
-  // console.log("formData1" , formData1);
-  
-  const { editQuestionModel , getQuestions} = useSelector(
+
+
+
+
+  const { editQuestionModel, getQuestions } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
-const [selected , setSelected] = useState<any[]>([])
-
+  const [selected, setSelected] = useState<any[]>([])
+  const [selectedDose, setSelectedDose] = useState(false)
 
   const updateTemplateQuestion = async (e: any) => {
     dispatch(EditSelectedQuestionFun(e));
@@ -81,7 +62,7 @@ const [selected , setSelected] = useState<any[]>([])
     let data = {
       questionId: id,
     }
-    
+
     dispatch(DeleteQuestion(data))
       .unwrap()
       .then((res) => {
@@ -95,55 +76,86 @@ const [selected , setSelected] = useState<any[]>([])
         console.log("delete question", e);
       });
   };
- 
-const selectDateChange = (id:any ,e:any)=>{
+
+  const selectDateChange = (id: any, e: any) => {
+
+    let newdata = getQuestions?.map((element: any) => element?._id === id ? { ...element, selectedDate: e.target.value, selectedOption: "" } : element)
+    dispatch(UpdateGetQuestionArray(newdata))
+
+  }
+
+  const onChangeHours = (id: any, e: any) => {
 
 
+    let newdata = getQuestions?.map((element: any) => element?._id === id ? { ...element, hours: e.target.value } : element)
+
+    dispatch(UpdateGetQuestionArray(newdata))
 
 
-let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,selectedDate: e.target.value } :element)
-// console.log("newdata time" , newdata);
-dispatch(UpdateGetQuestionArray(newdata))
-// setFormData1(state => state.map(e1 => e1?.index === index ? {...e1 ,selectedDate: e.target.value } :e1 ))
+  }
+  const onChangeHoursDuration = (id: any, e: any) => {
 
-}
+    let newdata = getQuestions?.map((element: any) => element?._id === id ? { ...element, selectedOption: e } : element)
+    dispatch(UpdateGetQuestionArray(newdata))
 
-const onChangeHours = (id:any ,e:any)=>{
+  }
+  const onChangeDosageInput = (id: any, e: any) => {
+    let newdata = getQuestions?.map((element: any) => element?._id === id ? { ...element, dosageInput: e } : element)
+
+    dispatch(UpdateGetQuestionArray(newdata))
+  }
+
+  const onChangeDosageInputType = (id: any, e: any) => {
 
 
-  let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,hours: e.target.value } :element)
-  // console.log("newdata time" , newdata);
-dispatch(UpdateGetQuestionArray(newdata))
+    let newdata = getQuestions?.map((element: any) => element?._id === id ? { ...element, selectedRadioValue: e } : element)
+
+    dispatch(UpdateGetQuestionArray(newdata))
+
+  }
+  const onChangeDosageInputType2 = (id: any, e: any) => {
+    let newdata = getQuestions?.map((element: any) => element?._id === id ? { ...element, selectedRadioValue2: e } : element)
+
+    dispatch(UpdateGetQuestionArray(newdata))
+
+  }
+
+  const onChangeFreeText = (id: any, e: any) => {
+    let newdata = getQuestions?.map((element: any) => element?._id === id ? { ...element, freeText: e } : element)
+    dispatch(UpdateGetQuestionArray(newdata))
+  }
+  const onChangeSingleText = (id: any, e: any) => {
+
+    let newdata = getQuestions?.map((element: any) => element?._id === id ? { ...element, singleText: e } : element)
 
 
-}
-const onChangeHoursDuration = (id:any ,e:any)=>{
- 
-let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,selectedOption: e} :element)
-dispatch(UpdateGetQuestionArray(newdata))
+    dispatch(UpdateGetQuestionArray(newdata))
+  }
+  const onChangeMultiText = async (id: any, e: any, arr: any, item: any, selectedIndex: any, selectedValue: boolean) => {
+    // console.log(" id", id);
+    // console.log(" e", e);
+    // console.log("arr", arr);
+    // console.log("item", item);
+    // console.log("selectedIndex", selectedIndex);
 
-}
-const onChangeDosageInput = (id:any ,e:any)=>{
-  let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,dosageInput: e} :element)
 
-dispatch(UpdateGetQuestionArray(newdata))
-}
+    // console.log("selectedValue", selectedValue);
+    // getQuestions?.map((element: any) => element?._id === getQuestions[id]?._id ? console.log("arr ===>", arr)
+    //   : element)
 
-const onChangeDosageInputType = (id:any ,e:any)=>{
+    if (selectedValue) {
+      // console.log("id ===>", getQuestions[id]?._id);
+      let data = getQuestions?.map((element: any) => element?._id === getQuestions[id]?._id ? { ...element, followUpSelected: arr } : element)
 
-  let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,selectedRadioValue: e} :element)
-  
-  dispatch(UpdateGetQuestionArray(newdata))
+      dispatch(UpdateGetQuestionArray(data))
+    } else {
 
-}
-
-const onChangeFreeText = (id:any ,e:any)=>{
-  let newdata = getQuestions?.map((element:any) => element?._id === id ? {...element ,freeText: e} :element)
-  dispatch(UpdateGetQuestionArray(newdata))
-}
-const onChangeMultiText = (id:any ,e:any)=>{
-  
-}
+      let check = getQuestions[id]?.followUpSelected?.filter((e1: any) => e1 !== item)
+      let data = getQuestions?.map((element: any) => element?._id === getQuestions[id]?._id ? { ...element, followUpSelected: check } : element)
+      // console.log("data ==> ", data[id]);
+      dispatch(UpdateGetQuestionArray(data))
+    }
+  }
 
   return (
     <div>
@@ -240,10 +252,8 @@ const onChangeMultiText = (id:any ,e:any)=>{
               type="date"
               className="date-input"
               value={item?.selectedDate}
-              onChange={(e:any) => 
+              onChange={(e: any) =>
                 selectDateChange(item?._id, e)
-              
-                
               }
             />
           </div>
@@ -254,15 +264,15 @@ const onChangeMultiText = (id:any ,e:any)=>{
               <input
                 type="text"
                 value={item?.hours}
-                onChange={(e:any) => onChangeHours(item?._id , e)}
+                onChange={(e: any) => onChangeHours(item?._id, e)}
               />
               <select
                 className="ms-2"
                 aria-label="Default select example"
                 value={item?.selectedOption}
-                onChange={(e:any) => 
-                  onChangeHoursDuration(item?._id , e.target.value)
-                 }
+                onChange={(e: any) =>
+                  onChangeHoursDuration(item?._id, e.target.value)
+                }
               >
                 <option value="">Select</option>
                 <option value="Hours">Hours</option>
@@ -275,13 +285,13 @@ const onChangeMultiText = (id:any ,e:any)=>{
           </div>
         </div>
       ) : item?.questionType === "Dosage" ? (
-        <div className="answer mt-3 mb-2 ms-3">
+        <div className="answer mt-3 mb-2 ms-3" style={{ display: 'flex', alignItems: 'center' }}>
           <div className="first">
             <label>When did this start?</label>
             <input
               type="text"
               value={item?.dosageInput}
-              onChange={(e:any) => onChangeDosageInput(item?._id , e.target.value)}
+              onChange={(e: any) => onChangeDosageInput(item?._id, e.target.value)}
             />
             <b className="mg"> mg</b>
           </div>
@@ -291,7 +301,7 @@ const onChangeMultiText = (id:any ,e:any)=>{
               aria-labelledby="demo-form-control-label-placement"
               name="position"
               value={item?.selectedRadioValue}
-              onChange={(e:any) =>  onChangeDosageInputType(item?._id , e.target.value)}
+              onChange={(e: any) => onChangeDosageInputType(item?._id, e.target.value)}
               sx={{
                 border: "1px solid #6049cd",
                 borderRadius: "20px",
@@ -326,50 +336,36 @@ const onChangeMultiText = (id:any ,e:any)=>{
             </RadioGroup>
           </FormControl>
 
-          <FormControlLabel
-            value="end"
-            control={
-              <Radio
-                style={customRadioStyle}
-                value={states.singeldRadioValue}
-                onChange={(e) =>
-                  setFormData1(state =>({
-                    ...state ,
-                    id:create_UUID(),
-                    singeldRadioValue:e
-                  })
-                  )
-                }
-              />
-            }
-            label="PRN"
-            labelPlacement="start"
-          />
+          <div onClick={(e) => {
+            setSelectedDose(!selectedDose);
+            onChangeDosageInputType2(item?._id, !selectedDose ? "PRN" : "")
+          }} style={{ border: '0.25px solid black', padding: 5, borderRadius: 10, backgroundColor: selectedDose ? ' #6049cd' : "white", color: selectedDose ? 'white' : 'black' }}>
+            PRN
+          </div>
         </div>
       ) : item?.questionType === "Free Text" ? (
         <div className="answer mt-3 mb-2 ms-3">
           <div className="first">
-            <input value={item?.freeText} onChange={(e)=>onChangeFreeText(item?._id , e.target.value)} type="text" placeholder="Free Text" />
+            <input value={item?.freeText} onChange={(e) => onChangeFreeText(item?._id, e.target.value)} type="text" placeholder="Free Text" />
           </div>
         </div>
       ) : item?.questionType === "Multiple Choice" ? (
         <div>
           {item?.answer?.length > 0 && (
             <ul>
-              {item?.answer?.map((item: any, index: any) => (
+              {item?.answer?.map((item: any, indexx: any) => (
 
-<div  style={{marginTop:10}}>
-                  <span  onClick={(e) => {
-        selected.includes(item)
-          ? setSelected(selected.filter((i: any) => i !== item))
-          : setSelected([...selected, item]);
-      }} style={{border:'0.25px solid black' , padding:5 , borderRadius:10 , backgroundColor:selected.includes(item) ? ' #6049cd' :  "white" , color:selected.includes(item) ? 'white': 'black' }}>
-                  {item}
+
+                <div style={{ marginTop: 10 }}>
+                  <span onClick={(e) => {
+                    onChangeMultiText(index, selected, [...selected, item], item, indexx, !selected.includes(item) ? true : false);
+                    selected.includes(item)
+                      ? setSelected(selected.filter((i: any) => i !== item))
+                      : setSelected([...selected, item]);
+                  }} style={{ border: '0.25px solid black', padding: 5, borderRadius: 10, backgroundColor: selected.includes(item) ? ' #6049cd' : "white", color: selected.includes(item) ? 'white' : 'black' }}>
+                    {item ? item?.split('-')[0] : null}
                   </span>
-               
                 </div>
-
-               
               ))}
             </ul>
           )}
@@ -378,19 +374,22 @@ const onChangeMultiText = (id:any ,e:any)=>{
               <>
                 <div style={{ padding: 20 }}>
                   <li>
-                    {++i}:- {e1.question}
+                    {++i}:- {e1?.question}
                   </li>
-                  {e1?.answer.map((item: any, index: any) => (
-                     <div  style={{marginTop:10}}>
-                     <span  onClick={(e) => {
-           selected.includes(item)
-             ? setSelected(selected.filter((i: any) => i !== item))
-             : setSelected([...selected, item]);
-         }} style={{border:'0.25px solid black' , padding:5 , borderRadius:10 , backgroundColor:selected.includes(item) ? ' #6049cd' :  "white" , color:selected.includes(item) ? 'white': 'black' }}>
-                     {item}
-                     </span>
-                  
-                   </div>
+                  {e1?.answer.map((item: any, indexx: any) => (
+                    <div style={{ marginTop: 10 }}>
+                      <span onClick={(e) => {
+                        onChangeMultiText(index, selected, [...selected, item], item, indexx, !selected.includes(item) ? true : false);
+
+
+                        selected.includes(item)
+                          ? setSelected(selected.filter((i: any) => i !== item))
+                          : setSelected([...selected, item]);
+
+                      }} style={{ border: '0.25px solid black', padding: 5, borderRadius: 10, backgroundColor: selected.includes(item) ? ' #6049cd' : "white", color: selected.includes(item) ? 'white' : 'black' }}>
+                        {item}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </>
@@ -411,21 +410,26 @@ const onChangeMultiText = (id:any ,e:any)=>{
           {item?.followUp.map((e1: any) => {
             return (
               <div className=" mt-3 mb-2 ms-3">
-                <li> {e1?.question}</li>
-                <div className="first">
+                <li> {e1?.question} </li>
+                <span className="first"
+                  onChange={(e) => onChangeSingleText(item?._id, e1?.answer)}
+
+
+                >
                   <input
                     disabled
                     value={e1?.answer}
                     type="text"
                     placeholder="Free Text"
                   />
-                </div>
+                </span>
               </div>
             );
           })}
         </div>
-      ) : null}
-    </div>
+      ) : null
+      }
+    </div >
   );
 };
 
