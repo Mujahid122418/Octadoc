@@ -54,11 +54,13 @@ const AddTemplate: React.FC = () => {
 
   const handleClose = () => {
     // setOpen(false);
+    dispatch(selectTemplateModelFun({}))
     dispatch(addTemplateModelFun(true));
     setName("");
     setdescription("");
     setcategory("");
     setCommunity(false);
+
   };
 
   useEffect(() => {
@@ -90,15 +92,19 @@ const AddTemplate: React.FC = () => {
         user_id: user?._id,
       };
 
-      dispatch(addTemplate(data))
+      dispatch(addTemplate(data)).unwrap()
         .then((response) => {
+
           dispatch(getTemplates());
           dispatch(addTemplateModelFun(true));
           setName("");
           setdescription("");
           setcategory("");
+
+          // dispatch(selectTemplateModelFun({}))
         })
         .catch((error) => {
+
           toast.error(error);
         });
     }
@@ -118,8 +124,15 @@ const AddTemplate: React.FC = () => {
       .unwrap()
       .then((response) => {
         toast.success("Template Upated successfully");
+
         dispatch(getTemplates());
         dispatch(addTemplateModelFun(true));
+        dispatch(selectTemplateModelFun({}))
+        setName("");
+        setdescription("");
+        setcategory("");
+        setCommunity(false);
+
       })
       .catch((error) => {
         toast.error(error);
@@ -133,7 +146,11 @@ const AddTemplate: React.FC = () => {
       <Modal open={open} onClose={handleClose}>
         <Box className="modalStyle">
           <div className="modal-header">
-            <h1 className="modal-title fs-5">New Template</h1>
+            <h1 className="modal-title fs-5">
+              {Object.keys(selectedTemplate)?.length > 0 ? "Update Template" :
+                "New Template"}
+
+            </h1>
             <button
               type="button"
               className="btn-close"
@@ -177,7 +194,6 @@ const AddTemplate: React.FC = () => {
                   onChange={(e) => setcategory(e.target.value)}
                 >
                   <option value="">Select</option>
-
                   {allcategory?.map((category) => (
                     <option key={category?._id} value={category._id}>
                       {category?.category}

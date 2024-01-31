@@ -19,17 +19,15 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addQuestionFollowupModelFun,
   addQuestionModelFun,
-  questionTypeFun,
+
 } from "../../../../redux/TemplateQuestion/TemplateQuestion";
-import { toast } from "react-toastify";
+
 import {
   addQuestionFunAPI,
   getQuestion,
-  updateAnswerFunAPI,
-  addAnswerFunAPI,
-  add_FollowUp_FunAPI,
+
 } from "../../../../redux/TemplateQuestion/TemplateQuestionAPI";
-import { create_UUID } from "../../../../utils/UUID";
+
 import { customRadioStyle } from "../EditQuestionBar";
 
 interface StateType {
@@ -41,9 +39,12 @@ type Anchor = "right";
 interface IAnswerBar {
   newAnswer: string;
   setNewAnswer: (value: any) => void;
+  newAnswerOutput: string;
+  setNewAnswerOutput: (value: any) => void;
   setQuestionType: (value: any) => void;
   setNewQuestion: (value: any) => void;
   newQuestion: string;
+  newQuestionOutput: string;
   qna: any;
   setQna: (value: any) => void;
   // UpdateQuestionsArray: (value: any) => void;
@@ -53,12 +54,14 @@ interface IAnswerBar {
 const AnswerBar: React.FC<IAnswerBar> = ({
   newAnswer,
   setNewAnswer,
+  newAnswerOutput,
+  setNewAnswerOutput,
   setQuestionType,
   setNewQuestion,
   newQuestion,
+  newQuestionOutput,
   qna,
   setQna,
-
   // UpdateQuestionsArray,
 
   QuestionType,
@@ -76,25 +79,10 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   const { activeSection } = useSelector((state: RootState) => state?.section);
 
   useEffect(() => {
-    // let data =
-    //   EditSelectedQuestion?.length > 0 ? EditSelectedQuestion[0].Question : [];
 
     setQna(EditSelectedQuestion);
 
-    // if (data?.length > 0) {
 
-    // EditSelectedQuestion.map((item: any) => {
-    //   newData.push({
-    //     question: item.question,
-    //     answer: item?.answer,
-    //     QuestionType: item.QuestionType,
-    //     followUp: item.followUp,
-    //     Qindex: item.Qindex,
-    //   });
-    // });
-    //  }
-
-    // setQna(newData);
   }, [EditSelectedQuestion]);
 
   // handel answer state start
@@ -124,12 +112,16 @@ const AnswerBar: React.FC<IAnswerBar> = ({
   const SaveFollowupQuestions = async () => {
     let data = {
       question: newQuestion,
-      answer: newAnswer,
+      questionOutput: newQuestionOutput,
+      // answer: newAnswer,
+      answer: [`${newAnswer}-${newAnswerOutput}`],
+      answerOutput: newAnswerOutput,
       template_id: template_id,
       section_id: activeSection,
       questionType: QuestionType,
       parentId: parent_id,
     };
+    console.log("see data", data);
 
     dispatch(addQuestionFunAPI(data)).then(() => {
       let d1 = {
@@ -139,10 +131,11 @@ const AnswerBar: React.FC<IAnswerBar> = ({
       dispatch(getQuestion(d1));
     });
   };
-  const AddModelFollowUpBtn = () => {
-    dispatch(addQuestionModelFun(!addQuestionModel));
-    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
-  };
+
+  // const AddModelFollowUpBtn = () => {
+  //   dispatch(addQuestionModelFun(!addQuestionModel));
+  //   dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
+  // };
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 600 }} role="presentation">
@@ -162,7 +155,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
         <input
           type="text"
           placeholder="Add Your Answer"
-          // onClick={handleInputClick}
+
           value={newAnswer}
           onChange={(e) => setNewAnswer(e.target.value)}
         />
@@ -173,20 +166,22 @@ const AnswerBar: React.FC<IAnswerBar> = ({
         />
         {/* ===collpase==== */}
         <div className="mt-3">
-          <h6 className="coll">No Tip</h6>
           <div>
             <div className="coll-body">
+              <label htmlFor="">Output</label>
               <div className="coll-band">
-                <p className="mb-0">
+                <p className="mb-0" style={{ textAlign: 'initial' }}>
                   Text that will appear in the patient notes
                 </p>
               </div>
+
               <input
-                value={newAnswer}
-                disabled
+                value={newAnswerOutput}
+                onChange={(e) => setNewAnswerOutput(e.target.value)}
+
                 className="mt-2 ms-0"
                 type="text"
-                placeholder="add Out Put Text"
+                placeholder="add output text"
               />
             </div>
           </div>
@@ -208,33 +203,7 @@ const AnswerBar: React.FC<IAnswerBar> = ({
             />
           )}
         </div>
-        {/* <div className="label-button mt-4">
-          <label htmlFor="">Follow Up Question</label>
-          <Button2
-            name="Add Follow Up Question"
-            onClick={() => {
-              AddModelFollowUpBtn();
-            }}
-            icon={<AddIcon />}
-          />
-        </div> */}
 
-        {/* <div className="save-button mt-2">
-          {isLoading ? (
-            <Button2
-              name="Loading ..."
-              onClick={() => console.log("loading...")}
-              isLoading={isLoading}
-            />
-          ) : (
-            <Button2
-              name="Save Followup Questions "
-              onClick={() => {
-                SaveFollowupQuestions();
-              }}
-            />
-          )}
-        </div> */}
         <div className="close-button mt-2">
           <Button2
             name="Close"

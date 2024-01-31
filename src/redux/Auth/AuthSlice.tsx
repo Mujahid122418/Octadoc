@@ -8,7 +8,7 @@ import {
   getAllUsers,
   checkEmail,
   sendOtp,
-  updatePassword,
+  updatePassword, LoginFunGoogle
 } from "./AuthAPI";
 interface Login {
   user: any;
@@ -52,6 +52,20 @@ export const authSlice = createSlice({
       state.isLoading = false;
     },
     [LoginFun.rejected.type]: (state, action) => {
+      state.status = "failed";
+      state.isLoading = false;
+    },
+    [LoginFunGoogle.pending.type]: (state, action) => {
+      state.status = "pending";
+      state.isLoading = true;
+    },
+    [LoginFunGoogle.fulfilled.type]: (state, { payload }) => {
+
+      state.status = "success";
+      state.user = payload;
+      state.isLoading = false;
+    },
+    [LoginFunGoogle.rejected.type]: (state, action) => {
       state.status = "failed";
       state.isLoading = false;
     },

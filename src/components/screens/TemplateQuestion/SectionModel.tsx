@@ -13,6 +13,7 @@ import {
   updateSection,
 } from "../../../redux/Section/SectionAPI";
 import { AppDispatch } from "../../../redux/Store";
+import { toast } from "react-toastify";
 
 interface ModelProps {
   openSection: boolean;
@@ -30,13 +31,13 @@ const SectionModal: React.FC<ModelProps> = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const { isLoading } = useSelector((state: RootState) => state?.section);
-  // console.log("section ", section);
-  const [newname, setnewname] = React.useState("");
-  React.useEffect(() => {
-    setnewname(upSection.name || "");
-  }, [upSection]);
 
   const [name, setName] = React.useState("");
+  React.useEffect(() => {
+    setName(upSection.name || "");
+  }, [upSection]);
+
+
   // const [open, setOpen] = React.useState(false);
   //   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -44,23 +45,32 @@ const SectionModal: React.FC<ModelProps> = ({
     setupSection("");
   };
   const onSubmit = () => {
+    console.log("name ", name);
+
     let template_id =
       window.location.href.split("/questions/edit/")[1] ||
       window.location.href.split("/questions/")[1];
-    let data = {
-      tempplate_id: template_id,
-      name: name,
-      order: "",
-    };
-    let d1 = {
-      page: 1,
-      pageSize: 20,
-      tempplate_id: template_id,
-    };
-    dispatch(addSection(data)).then(() => {
-      dispatch(getSection(d1));
-      setOpenSection(false);
-    });
+    if (!name) {
+      toast.error('Name is Required')
+    } else {
+
+
+      let data = {
+        tempplate_id: template_id,
+        name: name,
+        order: "",
+      };
+      let d1 = {
+        page: 1,
+        pageSize: 20,
+        tempplate_id: template_id,
+      };
+      dispatch(addSection(data)).then(() => {
+        dispatch(getSection(d1));
+        setOpenSection(false);
+        setName("")
+      });
+    }
   };
 
   const onUpdate = () => {
@@ -69,7 +79,7 @@ const SectionModal: React.FC<ModelProps> = ({
       window.location.href.split("/questions/")[1];
     const data = {
       id: upSection._id,
-      name: newname,
+      name: name,
     };
     let d1 = {
       page: 1,
@@ -88,7 +98,7 @@ const SectionModal: React.FC<ModelProps> = ({
       <Modal open={openSection} onClose={handleClose}>
         <Box className="modalStyle">
           <div className="modal-header">
-            <h1 className="modal-title fs-5">New Section</h1>
+            <h1 className="modal-title fs-5">New Section  </h1>
             <button
               type="button"
               className="btn-close"
@@ -105,13 +115,15 @@ const SectionModal: React.FC<ModelProps> = ({
                 <input
                   type="text"
                   className="form-control mt-2"
-                  value={upSection ? newname : name}
-                  onChange={(e) => {
-                    upSection
-                      ? setnewname(e.target.value)
-                      : setName(e.target.value);
-                  }}
-                  placeholder="What is this template for?"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  // value={upSection ? newname : name}
+                  // onChange={(e) => {
+                  //   upSection
+                  //     ? setnewname(e.target.value)
+                  //     : setName(e.target.value);
+                  // }}
+                  placeholder="What is this Section for?"
                 />
               </div>
             </form>
@@ -127,7 +139,7 @@ const SectionModal: React.FC<ModelProps> = ({
               >
                 <span>Submit</span>
               </LoadingButton>
-            ) : upSection ? (
+            ) : Object.keys(upSection).length > 0 ? (
               <Button2 name="Update" onClick={onUpdate} />
             ) : (
               <Button2 name="Submit" onClick={onSubmit} />

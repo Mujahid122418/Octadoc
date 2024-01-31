@@ -1,4 +1,4 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 
 import "./Header.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -117,6 +117,9 @@ const Header = () => {
           <Link to="/category">
             <MenuItem onClick={handleClose}>Category</MenuItem>
           </Link>
+          {/* <Link to="/section">
+            <MenuItem onClick={handleClose}>Section</MenuItem>
+          </Link> */}
           <Link to="/interest">
             <MenuItem onClick={handleClose}>Interest</MenuItem>
           </Link>

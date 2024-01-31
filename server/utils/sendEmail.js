@@ -18,12 +18,12 @@ const sendEmail = async (options) => {
 
   const message = {
     // from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
-    from: { name: "GP Scribe", email: "mujahid122418@gmail.com" },
+    from: { name: "GP.Scribe", email: "mujahid122418@gmail.com" },
 
     to: options.email,
     // to: "developer.mujahid@gmail.com",
 
-    subject: "Verification Code GP Scribe App",
+    subject: "Verification Code GP.Scribe",
     text: "Please Click The Below Link To Verify Your Email Address",
     html: `<!DOCTYPE html>
     <html lang="en">
@@ -89,18 +89,30 @@ const sendEmail = async (options) => {
       <body>
         <div class="main">
           <div class="container">
-            <h1>Confirm Your Email</h1>
-            <p class="firstParagraph">Please use the following code to confirm your account. </p>
+            <h1>Dear ${options.email}</h1>
+            <p class="secondParagraph">We received a request to reset your password for your GP.Scribe account. We're here to help! </p>
+            <p class="secondParagraph">Enter the below OPT to create a new password:</p>
             <div class="button">${options.otp}</div>
             <br/>
+
             <p class="secondParagraph">
-             Thank you
+           If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one.
             </p>
         
             <p class="secondParagraph">
-            GP Scribe
+            Remember, GP.Scribe representatives will never ask you for your password, so please don't share it with anyone.
            </p>
-      
+              
+           <p class="secondParagraph">
+           If you have any questions or need further assistance, feel free to contact our support team at support@gpscribe.au.
+          </p>
+          <br/>
+          <p class="secondParagraph">
+          Best,
+          </p>
+          <p class="secondParagraph">
+          GP.Scribe Team
+          </p>
           </div>
         </div>
       </body>

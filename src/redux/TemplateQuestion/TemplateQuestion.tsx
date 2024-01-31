@@ -79,6 +79,9 @@ export const templateQuestionSlice = createSlice({
     ParentId_Fun: (state, action) => {
       state.parent_id = action.payload;
     },
+    UpdateGetQuestionArray: (state , action)=>{
+      state.getQuestions = action.payload
+    }
   },
   extraReducers: {
     [getQuestion.pending.type]: (state, action) => {
@@ -147,6 +150,6 @@ export const {
   EditAnswerFun,
   editQuestionModelFun,
   editQuestionFollowupModelFun,
-  ParentId_Fun,
+  ParentId_Fun, UpdateGetQuestionArray
 } = templateQuestionSlice.actions;
 export default templateQuestionSlice.reducer;

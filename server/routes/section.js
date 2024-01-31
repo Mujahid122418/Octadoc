@@ -24,3 +24,4 @@ router.put("/section/:id", updateSection);
 // router.get("/section/:id", getSectionTemplate);
 
 module.exports = router;
+// answer: [{ ans: newAnswer }, { ansOutput: newAnswerOutput }],

@@ -49,7 +49,7 @@ interface StateType {
   right: any; // Change 'any' to the appropriate type
 }
 export const customRadioStyle = {
-  color: "#9F496E", // Your custom color code
+  color: "#6049cd", // Your custom color code
 };
 type Anchor = "right";
 
@@ -60,7 +60,6 @@ export default function EditQuestionBar() {
     editQuestionModel,
     editQuestionFollowupModel,
     questionType,
-
     EditSelectedQuestion,
     getSingleQuestion,
     isLoading,
@@ -388,6 +387,7 @@ export default function EditQuestionBar() {
                           aria-label="delete"
                           onClick={() => EditFollowupAns(item, parent_id)}
                           size="small"
+                          sx={{ width: 30, height: 30 }}
                         >
                           <EditIcon sx={{ width: 15, height: 15 }} />
                         </IconButton>
@@ -395,6 +395,7 @@ export default function EditQuestionBar() {
                           aria-label="delete"
                           size="small"
                           onClick={() => DeleteAns(item?._id, parent_id)}
+                          sx={{ width: 30, height: 30 }}
                         >
                           <DeleteIcon sx={{ width: 15, height: 15 }} />
                         </IconButton>

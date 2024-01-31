@@ -7,25 +7,13 @@ import { toast } from "react-toastify";
 
 export const getAllUsers = createAsyncThunk("/auth/allUser", async () => {
   try {
-    const response = await axios.get(Baseurl + "/auth/allUser", );
+    const response = await axios.get(Baseurl + "/auth/allUser",);
     return response.data?.data;
   } catch (error) {
     console.log(error);
   }
 });
-// export const deleteEmployee = createAsyncThunk(
-//   "template/deleteTemplate",
-//   async (id: string) => {
-//     try {
-//       console.log("id delete", id);
 
-//       const response = await axios.delete(Baseurl + `/template/template/${id}`);
-//       console.log("response", response?.data);
-//     } catch (error) {
-//       console.log("error", error);
-//     }
-//   }
-// );
 export const SignupFun = createAsyncThunk(
   "auth/register",
   async (data: any) => {
@@ -33,8 +21,6 @@ export const SignupFun = createAsyncThunk(
       const response = await axios.post(Baseurl + `/auth/register`, data);
       console.log("error signup api false", response?.data);
       if (response?.data?.success) {
-        // localStorage.setItem("token", response?.data?.token);
-        // localStorage.setItem("user", response?.data?.user?._id);
         toast.success("Account Created Successfully, Login First");
       } else {
         console.log("error signup api false", response?.data);
@@ -63,10 +49,11 @@ export const LoginFun = createAsyncThunk("auth/login", async (data: any) => {
   }
 });
 export const getMeFun = createAsyncThunk("auth/getme", async (data: any) => {
+  console.log("data getMeFun", data);
+
   try {
     const response = await axios.post(
       Baseurl + `/auth/getme`,
-     
       data
     );
 
@@ -86,7 +73,7 @@ export const updateProfile = createAsyncThunk(
 
       const response = await axios.put(
         Baseurl + `/auth/updatedetails`,
-        
+
         data
       );
       console.log("ressss", response.data);
@@ -131,7 +118,7 @@ export const updatePassword = createAsyncThunk(
     try {
       const response = await axios.put(
         Baseurl + `/auth/updatepassword`,
-       
+
         data
       );
       console.log("ressss", response.data);
@@ -183,7 +170,7 @@ export const updaterole = createAsyncThunk(
     try {
       const response = await axios.put(
         Baseurl + `/auth/updatedetails`,
-        
+
         data
       );
       console.log("ressss", response.data);
@@ -196,3 +183,53 @@ export const updaterole = createAsyncThunk(
     }
   }
 );
+
+export const GoogleAuth = createAsyncThunk(
+  "auth/GoogleAuth",
+  async (data: any) => {
+    // console.log("data action", data);
+
+    try {
+      const response = await axios.post(
+        Baseurl + `/auth/GoogleAuth`,
+        data
+      );
+      console.log("ressss", response.data);
+      // if (response.data?.success) {
+      //   toast.success("Updated Successfully");
+      // }
+      return response.data;
+    } catch (error: any) {
+      if (error?.response.data.success === false) {
+        toast.error(error?.response.data.message);
+      }
+      else {
+        toast.error("Server Error");
+      }
+      console.log("error in google auth", error);
+    }
+  }
+);
+export const LoginFunGoogle = createAsyncThunk("auth/loginGoogle", async (data: any) => {
+  try {
+    let data1 = {
+      email: data.email,
+      sub: data.sub
+    }
+
+
+    const response = await axios.post(Baseurl + `/auth/loginGoogle`, data1);
+
+
+    if (response?.data?.success) {
+      localStorage.setItem("token", response?.data?.data?.email);
+      localStorage.setItem("user", response?.data?.data?._id);
+    } else {
+      console.log("error login api false", response?.data);
+    }
+    return response?.data?.data;
+  } catch (error) {
+    toast.error("Server Error");
+    console.log("error auth api", error);
+  }
+});

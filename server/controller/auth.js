@@ -87,6 +87,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     res.status(401).send({ success: false, message: "Invalid credentials" });
   }
+
   res.status(200).send({ success: true, data: user });
 
   // sendTokenResponse(user, 200, res);
@@ -200,7 +201,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     data: user,
   });
 });
-
 // @desc      Update password
 // @route     PUT /api/v1/auth/updatepassword
 // @access    Private
@@ -289,3 +289,95 @@ exports.AllUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+exports.GoogleAuth =  asyncHandler(async (req, res, next) => {
+  console.log("req body" , req.body);
+  try {
+    const {
+      name,
+      email,
+      // password,
+      // role,
+      // gender,
+      // state,
+      // language,
+      // countryofTraining,
+      // workingHours,
+      // yearsofPractice,
+      // phone,
+      // isPurchased,
+      picture,
+      sub
+    } = req.body;
+
+    //  Create user
+    let isAlready = await User.findOne({ email: email });
+
+    if (isAlready) {
+      return res.status(500).send({
+        success: false,
+        message: `${email} Email is Already exist`,
+        // message: error,
+      });
+    } else {
+      const user = await User.create({
+        name,
+        email,
+        // password,
+        // role,
+        // gender,
+        // state,
+        // language,
+        // countryofTraining,
+        // workingHours,
+        // yearsofPractice,
+        // phone,
+        // isPurchased,
+        picture,
+        sub
+      });
+      WellcomeSendEmail({
+        email: email,
+        subject: "Wellcome Email",
+      });
+      sendTokenResponse(user, 200, res);
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Something went wrong or Not authorized to access this route",
+      // message: error,
+    });
+  }
+});
+exports.loginGoogle = asyncHandler(async (req, res, next) => {
+console.log("req.body ==> " , req.body);
+
+  const { email, sub } = req.body;
+
+  // Validate emil & password
+  if (!email || !sub) {
+    res
+      .status(401)
+      .send({ success: false, message: "Not authorized to access this route" });
+  }
+
+  // Check for user
+  const user = await User.findOne({ email :email, sub :sub })
+console.log("user found" , user);
+  if (!user) {
+    res.status(401).send({ success: false, message: "Invalid credentials" });
+  }else{
+   
+    res.status(200).send({ success: true, data: user});
+  }
+
+  // Check if password matches
+//   const isMatch = await user.matchPassword(sub);
+// console.log("isMatch" , isMatch);
+//   if (!isMatch) {
+//     res.status(401).send({ success: false, message: "Invalid credentials" });
+//   }
+//   res.status(200).send({ success: true, data: user });
+
+  // sendTokenResponse(user, 200, res);
+});

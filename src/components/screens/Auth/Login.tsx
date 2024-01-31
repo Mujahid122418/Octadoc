@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Login.css"; // Import your CSS file if needed
-import { LoginFun, SignupFun } from "../../../redux/Auth/AuthAPI";
+import { GoogleAuth, LoginFun, LoginFunGoogle, SignupFun } from "../../../redux/Auth/AuthAPI";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../redux/Store";
 import { AppDispatch } from "../../../redux/Store";
@@ -9,7 +9,11 @@ import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { Fade } from "react-reveal";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin, } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
+const REACT_APP_CLIENT_ID = "141709252515-theg73me3puorimalueqngn4r0b86jhq.apps.googleusercontent.com"
 export default function Login() {
   const navigate = useNavigate(); // Use useNavigate hook to access
   const dispatch = useDispatch<AppDispatch>();
@@ -31,13 +35,13 @@ export default function Login() {
           email: email,
           password: password,
         };
-        console.log("data", data);
+
         dispatch(LoginFun(data))
           .unwrap()
           .then((res) => {
             navigate("/");
           })
-          .catch((error) => {});
+          .catch((error) => { });
       } catch (error) {
         console.log("errpr", error);
       }
@@ -49,6 +53,7 @@ export default function Login() {
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [number, setNumber] = useState("");
+  const [googleAuth, setGoogleAuth] = useState({});
   const handelSignup = (e: any) => {
     e.preventDefault();
     if (!signUpEmail) {
@@ -79,6 +84,7 @@ export default function Login() {
       }
     }
   };
+
   return (
     <div className="login-Container" style={{ height: window.innerHeight }}>
       <Fade bottom>
@@ -152,6 +158,32 @@ export default function Login() {
                       <CircularProgress sx={{ color: "white" }} size={16} />
                     )}
                   </button>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '5%' }}>
+
+
+                    <GoogleOAuthProvider clientId={REACT_APP_CLIENT_ID}>
+
+                      <GoogleLogin
+                        onSuccess={(credentialResponse: any) => {
+                          if (credentialResponse) {
+                            // console.log("credentialResponse ==> ", credentialResponse);
+                            let decode = jwtDecode(credentialResponse?.credential)
+                            // console.log("credentialResponse ==> ", decode);
+                            dispatch(LoginFunGoogle(decode))
+                              .unwrap()
+                              .then((res) => {
+                                navigate("/");
+                              })
+                              .catch((error) => { });
+                            setGoogleAuth(decode)
+                          }
+                        }}
+                        onError={() => {
+                          console.log('Login Failed');
+                        }}
+                      />
+                    </GoogleOAuthProvider>
+                  </div>
                 </div>
                 <div className="hr"></div>
                 <div className="foot-lnk">
@@ -160,7 +192,6 @@ export default function Login() {
                   </Link>
                 </div>
               </div>
-
               <div className="sign-up-htm">
                 <div className="group">
                   <label htmlFor="user" className="label">
@@ -222,16 +253,44 @@ export default function Login() {
                       <CircularProgress sx={{ color: "white" }} size={16} />
                     )}
                   </button>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '5%' }}>
+
+
+                    <GoogleOAuthProvider clientId={REACT_APP_CLIENT_ID}>
+
+                      <GoogleLogin
+                        onSuccess={(credentialResponse: any) => {
+                          if (credentialResponse) {
+                            // console.log("credentialResponse ==> ", credentialResponse);
+                            let decode = jwtDecode(credentialResponse?.credential)
+                            // console.log("credentialResponse ==> ", decode);
+                            dispatch(GoogleAuth(decode))
+                            setGoogleAuth(decode)
+                          }
+                        }}
+                        onError={() => {
+                          console.log('Signup fail Failed');
+                        }}
+                      />
+                    </GoogleOAuthProvider>
+                  </div>
                 </div>
                 <div className="hr"></div>
                 <div className="foot-lnk">
                   <label htmlFor="tab-1">Already Member?</label>
                 </div>
               </div>
+
             </div>
+            {/* AIzaSyDy6FxYpCOsu_repdVKKavSvIOv5JI6axM */}
+            <br />
+
           </div>
+
+
         </div>
       </Fade>
+
     </div>
   );
 }

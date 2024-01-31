@@ -60,6 +60,7 @@ export default function QuestionBar() {
   const createUUID = (): string => {
     return create_UUID();
   };
+
   // handel states start
 
   const [qna, setQna] = useState<any>([
@@ -79,7 +80,11 @@ export default function QuestionBar() {
     dispatch(getQuestion(data));
   }, []);
   const [newQuestion, setNewQuestion] = useState<string>("");
+  const [newQuestionOutput, setNewQuestionOutput] = useState<string>("");
+
   const [newAnswer, setNewAnswer] = useState<string>("");
+  const [newAnswerOutput, setNewAnswerOutput] = useState<string>("");
+
 
   const [QuestionType, setQuestionType] = useState("");
   const [tip, setTip] = useState("");
@@ -105,17 +110,20 @@ export default function QuestionBar() {
     } else if (!activeSection) {
       toast.error("Please Select Active Section.");
     } else {
+
       try {
         let data = {
           question: newQuestion,
-          answer: [newAnswer],
+          questionOutput: newQuestionOutput,
+          answer: [`${newAnswer}-${newAnswerOutput}`],
+          answerOutput: newAnswerOutput,
           template_id: template_id,
           section_id: activeSection,
           questionType: questionType,
           parentId: "",
           tip: tip,
         };
-        console.log("add data", data);
+
 
         dispatch(addQuestionFunAPI(data))
           .unwrap()
@@ -169,15 +177,7 @@ export default function QuestionBar() {
   };
   // handel qdit question
 
-  const EditAnsewer = (e: any) => {
-    console.log("ans id", e);
-    let ans = {
-      id: e.ans_id,
-      ans: e.text,
-    };
-    dispatch(EditAnswerFun(ans));
-    dispatch(addQuestionFollowupModelFun(!addQuestionFollowupModel));
-  };
+
 
   const list = (anchor: Anchor) => (
     <Box sx={{ width: 600 }} role="presentation">
@@ -229,6 +229,23 @@ export default function QuestionBar() {
             </div>
           </Collapse>
         </div>
+        <div className="coll-body">
+          <label htmlFor="">Output</label>
+          <div className="coll-band">
+
+            <p className="mb-0" style={{ textAlign: 'initial' }}>
+              Text that will appear in the patient notes
+            </p>
+          </div>
+
+          <input
+            value={newQuestionOutput}
+            onChange={(e) => setNewQuestionOutput(e.target.value)}
+            className="mt-2 ms-0"
+            type="text"
+            placeholder="add output text"
+          />
+        </div>
         {/* ===collpase==== */}
         <div className="selectt-box mt-3">
           <label htmlFor="">Type*</label>
@@ -261,9 +278,9 @@ export default function QuestionBar() {
           label="Hide this from your clinical notes"
         />
         {questionType === "Multiple Choice" ||
-        QuestionType === "Multiple Choice" ||
-        questionType === "Single Choice" ||
-        QuestionType === "Single Choice" ? (
+          QuestionType === "Multiple Choice" ||
+          questionType === "Single Choice" ||
+          QuestionType === "Single Choice" ? (
           <div>
             <div className="label-button">
               <label htmlFor="">Answer </label>
@@ -276,58 +293,7 @@ export default function QuestionBar() {
                 icon={<AddIcon />}
               />
             </div>
-            {/* <div
-              style={{
-                padding: 5,
-                border: "1px black solid",
-                marginTop: 5,
-                borderRadius: 8,
-              }}
-            >
-              {
-                getQuestions?.length > 0
-                  ? getQuestions.map((item: any) => {
-                      return (
-                        <div
-                          style={{
-                            borderRadius: 5,
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            padding: 10,
-                          }}
-                        >
-                          <div> {item?.question}</div>
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            style={{
-                              display: "flex",
-                              justifyContent: "flex-end",
-                            }}
-                          >
-                            <IconButton
-                              aria-label="delete"
-                              // onClick={() => EditAnsewer(item)}
-                              size="small"
-                            >
-                              <EditIcon sx={{ width: 15, height: 15 }} />
-                            </IconButton>
-                            <IconButton
-                              aria-label="delete"
-                              size="small"
-                              // onClick={() => DeleteTemplate(item?._id)}
-                            >
-                              <DeleteIcon sx={{ width: 15, height: 15 }} />
-                            </IconButton>
-                          </Stack>
-                        </div>
-                      );
-                    })
-                  : null
-                // <textarea name="" id="" cols={30} rows={5} />
-              }
-            </div> */}
+
             <textarea name="" id="" cols={30} rows={5} />
           </div>
         ) : null}
@@ -367,9 +333,12 @@ export default function QuestionBar() {
       <AnswerBar
         newAnswer={newAnswer}
         setNewAnswer={setNewAnswer}
+        newAnswerOutput={newAnswerOutput}
+        setNewAnswerOutput={setNewAnswerOutput}
         setQuestionType={setQuestionType}
         setNewQuestion={setNewQuestion}
         newQuestion={newQuestion}
+        newQuestionOutput={newQuestionOutput}
         qna={qna}
         setQna={setQna}
         // UpdateQuestionsArray={UpdateQuestionsArray}

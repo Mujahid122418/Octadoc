@@ -12,7 +12,7 @@ import { Fade } from "react-reveal";
 import { countries } from "./country";
 import Tagify from "@yaireo/tagify";
 import { getinterest } from "../../../redux/interest/InterestAPI";
-
+import Multiselect from 'multiselect-react-dropdown';
 const Profilee = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -33,10 +33,15 @@ const Profilee = () => {
   const [yearsofPractice, setyearsofPractice] = useState(
     user?.yearsofPractice || ""
   );
-  const [interest, setInterest] = useState("");
+  const [interest, setInterest] = useState<any>([]);
+  const [selectedValues, setSelectedValues] = useState<any>([]);
   // Initialize with user's yearsofPractice
 
+
+
   useEffect(() => {
+    console.log("user", user?.interest);
+
     setname(user?.name);
     setEmail(user?.email);
     setGender(user?.gender);
@@ -46,7 +51,8 @@ const Profilee = () => {
     setworkingHours(user?.workingHours);
     setyearsofPractice(user?.yearsofPractice);
     setInterest(user?.interest);
-  }, [user]);
+
+  }, [user, GetInterestData]);
   const handleClickBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (!name) {
@@ -65,9 +71,12 @@ const Profilee = () => {
           countryofTraining: countryofTraining,
           workingHours: workingHours,
           yearsofPractice: yearsofPractice,
+          interest: interest
         };
+
+
         dispatch(updateProfile(data));
-      } catch (error) {}
+      } catch (error) { }
     }
   };
   // handel tagify
@@ -106,6 +115,46 @@ const Profilee = () => {
     dispatch(getinterest(dataa));
   }, [rowsPerPage]);
   // get interest end
+  // interest start
+  // one filter interest
+  useEffect(() => {
+    let interest: string[] = [];
+    selectedValues?.forEach((item: any) => {
+      if (item?.name) {
+        interest.push(item?._id);
+      }
+    });
+    console.log("see interest", interest);
+
+    setInterest(interest)
+
+  }, [selectedValues]);
+  // one filter interest end
+  useEffect(() => {
+
+    console.log("selectedValues", selectedValues);
+
+    console.log("GetInterestData", GetInterestData);
+    console.log("interest", interest);
+
+    if (GetInterestData?.length > 0 && user?.interest?.length > 0) {
+      const filteredData = GetInterestData?.filter((item) => user?.interest?.includes(item?._id));
+
+      setSelectedValues(filteredData)
+    }
+
+  }, [GetInterestData, user]) // user, interest,
+
+  const onSelect = (selectedList: any, selectedItem: any) => {
+    setSelectedValues(selectedList);
+  };
+
+  const onRemove = (selectedList: any, removedItem: any) => {
+    setSelectedValues(selectedList);
+  };
+
+  // interest end
+
   return (
     <div>
       <div className="container mb-5">
@@ -167,6 +216,18 @@ const Profilee = () => {
                       <label style={{ marginLeft: "0px" }} htmlFor="user">
                         Interest
                       </label>
+                      <Multiselect
+                        options={GetInterestData}
+                        displayValue="name"
+                        onSelect={onSelect}
+                        onRemove={onRemove}
+                        selectedValues={selectedValues}
+                      />
+                    </div>
+                    {/* <div className="position-relative">
+                      <label style={{ marginLeft: "0px" }} htmlFor="user">
+                        Interest
+                      </label>
                       <select
                         className="form-control select-arrow"
                         id="customSelect"
@@ -180,7 +241,7 @@ const Profilee = () => {
                         ))}
                       </select>
                       <ArrowDropDownIcon className="mui-select-arrow" />
-                    </div>
+                    </div> */}
                     <div className="position-relative">
                       <label style={{ marginLeft: "0px" }} htmlFor="user">
                         Gender

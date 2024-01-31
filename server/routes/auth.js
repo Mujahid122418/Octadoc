@@ -7,7 +7,7 @@ const {
   resetPassword,
   updateDetails,
   updatePassword,
-  AllUser,
+  AllUser, GoogleAuth , loginGoogle
 } = require("../controller/auth");
 
 const router = express.Router();
@@ -21,5 +21,7 @@ router.put("/resetpassword/:resettoken", resetPassword);
 router.put("/updatepassword", updatePassword);
 router.post("/getme", getMe);
 router.get("/allUser", AllUser);
+router.post('/GoogleAuth', GoogleAuth)
+router.post('/loginGoogle', loginGoogle)
 
 module.exports = router;

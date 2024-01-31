@@ -37,9 +37,12 @@ const ShowTemplateQuestion = () => {
   const { user } = useSelector((state: RootState) => state?.auth);
   const [section, setSection] = useState([1]);
   const [openSection, setOpenSection] = useState(false);
+  // handel edit start
+  const [editSection, seteditSection] = useState<boolean>(false);
+  // handel edit end
 
   const [formData, setFormData] = useState({
-    id:0,
+    id: 0,
     hours: "",
     dosageInput: "",
     selectedDate: "",
@@ -48,6 +51,7 @@ const ShowTemplateQuestion = () => {
     checkboxValues: false,
     singeldRadioValue: false,
   });
+
   const { addQuestionModel, getQuestions, editQuestionModel } = useSelector(
     (state: RootState) => state?.templateQuestion
   );
@@ -58,6 +62,7 @@ const ShowTemplateQuestion = () => {
   const [TemplateName, setTemplateName] = useState("");
 
   // model state end
+
   // handel section start
   const { activeSection } = useSelector((state: RootState) => state?.section);
 
@@ -98,9 +103,7 @@ const ShowTemplateQuestion = () => {
   }, [dispatch]);
   const init = async () => {
     let data = await template.filter((item) => item?._id == tem_id);
-
     let name = data[0]?.template_name;
-
     setTemplateName(name ? name : "");
   };
   useEffect(() => {
@@ -122,29 +125,41 @@ const ShowTemplateQuestion = () => {
         <div
           style={{
             width: "100%",
-            backgroundColor:'#F8F9FB',
+            backgroundColor: "#F8F9FB",
           }}
           // className="container"
         >
           <Box
             sx={{
               flexGrow: 1,
-              bgcolor:'#F8F9FB',
+              bgcolor: "#F8F9FB",
               display: "flex",
               width: "100%",
-
             }}
-
           >
-            <div className="bg" >
+            <div className="bg">
               <SectionTabs
                 openSection={openSection}
                 setOpenSection={setOpenSection}
                 setSectionName={setSectionName}
+                editSection={editSection}
               />
             </div>
 
-            <div style={{ width: "50%", marginRight: 20, marginLeft: 20, zIndex:1000 }}>
+            <div
+              style={{
+                width: "50%",
+                marginRight: 20,
+                marginLeft: 20,
+                zIndex: 1000,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button2
+                  name="Edit"
+                  onClick={() => seteditSection(!editSection)}
+                />
+              </div>
               <div key={index}>
                 <div className="questions-box">
                   <div className="d-flex justify-content-between ">
@@ -153,7 +168,6 @@ const ShowTemplateQuestion = () => {
                     </h3>
                   </div>
                   <div className="question-head">
-                    {/* <HelpOutlineIcon className="icon-size" />{" "} */}
                     <h5 className="mb-0 ms-1">
                       {sectionName ? sectionName : "Select Section"}{" "}
                     </h5>
@@ -179,7 +193,7 @@ const ShowTemplateQuestion = () => {
                             return (
                               <div key={item._id}>
                                 <ItemsRender
-                                index={i}
+                                  index={i}
                                   item={item}
                                   checkLink={checkLink}
                                   states={formData}
@@ -196,8 +210,7 @@ const ShowTemplateQuestion = () => {
                   <div className="question-footer">
                     <Button2
                       name="Add Question"
-                      onClick={
-                         () => 
+                      onClick={() =>
                         // AddQuestionModel()
                         user?.isPurchased
                           ? AddQuestionModel()
@@ -220,7 +233,14 @@ const ShowTemplateQuestion = () => {
                 </div>
               </div>
             </div>
-            <div style={{ width: "30%" , display:'flex' , justifyContent:'center' , background:'#F8F9FB'}}>
+            <div
+              style={{
+                width: "30%",
+                display: "flex",
+                justifyContent: "center",
+                background: "#F8F9FB",
+              }}
+            >
               <CopyText sectionName={sectionName} states={formData} />
             </div>
           </Box>

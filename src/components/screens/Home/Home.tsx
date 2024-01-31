@@ -85,10 +85,12 @@ const Home: React.FC = () => {
   const DeleteTemplate = async (e: any) => {
     if (e) {
       dispatch(deleteEmployee(e))
-        .unwrap()
+        // .unwrap()
         .then((response) => {
           toast.success("Delete successfully");
-          dispatch(getTemplates());
+          setTimeout(() => {
+            dispatch(getTemplates());
+          }, 1000);
         })
         .catch((error) => {
           toast.error(error);
@@ -115,7 +117,7 @@ const Home: React.FC = () => {
               <div className="col-md-6 col-lg-4">
                 <h2 className="card-heading">
                   <SummarizeRoundedIcon sx={{ fontSize: 40 }} />
-                  My Template 
+                  My Template
                 </h2>
               </div>
               <div className="col-md-6 col-lg-4">
